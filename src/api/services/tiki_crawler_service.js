@@ -87,23 +87,13 @@ exports.getProductDetail = async (url) => {
 // Hàm đồng bộ sản phẩm
 exports.syncProduct = async (product) => {
     try {
-        // Tính toán giá trị thời gian 1 ngày trước
-        const day  = 1;
-        const timeNeedUpdate = Date.now() - (day * 24 * 60 * 60 * 1000);
-
         // Tìm trong bảng products sản phẩm có bằng url
         const existingProduct = await CheckExistingProduct(product.product_url)
 
         // Nếu sản phẩm đã tồn tại, thực hiện đồng bộ hóa
         if (existingProduct){
-            // Nếu sản phẩm đã quá 1 ngày chưa cập nhật => cập nhật lại
-            if(new Date(existingProduct.update_at).getTime() < timeNeedUpdate) {
-                const updatedProduct = await productService.updateProduct(product);
-                return updatedProduct;
-            }else{
-                console.log("sản phẩm đã được cập trong vòng 24h trước!");
-                return existingProduct;
-            }
+            const updatedProduct = await productService.updateProduct(product);
+            return updatedProduct;
         } else {
             // Nếu sản phẩm chưa tồn tại, thêm mới
             const newProduct = await addProduct(product);

@@ -19,7 +19,7 @@ const Product = sequelize.define('Product', {
         allowNull: false
     },
     promotion: {
-        type: DataTypes.DOUBLE,
+        type: DataTypes.INTEGER,
         allowNull: true
     },
     rate_starts: {

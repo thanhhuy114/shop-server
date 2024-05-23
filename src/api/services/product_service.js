@@ -82,7 +82,7 @@ exports.updateProduct = async (productData) => {
 
         // Cập nhật dữ liệu chỉ khi dữ liệu mới khác null
         fieldsToUpdate.forEach(field => {
-            if (productData[field] !== null) {
+            if (productData[field] !== null && productData[field] !== product[field]) {
                 product[field] = productData[field];
                 isUpdated = true;
             }

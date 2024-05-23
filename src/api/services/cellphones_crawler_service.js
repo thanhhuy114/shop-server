@@ -74,6 +74,9 @@ exports.getProductDetail = async (url) => {
         // Lấy chi tiết sản phẩm
         const product = await getProductDetail(page, url);
 
+        // Lấy danh sách cửa hàng có bán
+        // const stores = await getStores(page, url);
+
         // Đóng trình duyệt
         browser.close();
 
@@ -87,23 +90,13 @@ exports.getProductDetail = async (url) => {
 // Hàm đồng bộ sản phẩm
 exports.syncProduct = async (product) => {
     try {
-        // Tính toán giá trị thời gian 1 ngày trước
-        const day  = 1;
-        const timeNeedUpdate = Date.now() - (day * 24 * 60 * 60 * 1000);
-
         // Tìm trong bảng products sản phẩm có bằng url
         const existingProduct = await CheckExistingProduct(product.product_url)
 
-        // Nếu sản phẩm đã tồn tại, thực hiện đồng bộ hóa
+        // Nếu sản phẩm đã tồn tại, thực hiện cập nhật lại dữ liệu
         if (existingProduct){
-            // Nếu sản phẩm đã quá 1 ngày chưa cập nhật => cập nhật lại
-            if(new Date(existingProduct.update_at).getTime() < timeNeedUpdate) {
-                const updatedProduct = await productService.updateProduct(product);
-                return updatedProduct;
-            }else{
-                console.log("sản phẩm đã được cập trong vòng 24h trước!");
-                return existingProduct;
-            }
+            const updatedProduct = await productService.updateProduct(product);
+            return updatedProduct;
         } else {
             // Nếu sản phẩm chưa tồn tại, thêm mới
             const newProduct = await addProduct(product);
@@ -290,8 +283,8 @@ const ShowAllProduct = async (page, url) => {
                 // Chờ cho đến khi selector hiện ra
                 await page.waitForSelector(showMoreSelector, { visible: true , timeout});
 
-                // Chờ 1 giây
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                // Chờ 500 mili giây
+                await new Promise(resolve => setTimeout(resolve, 500));
             } catch (error) {
                 // Kết thúc khi không tìm thấy nút "Xem thêm"
                 break;
@@ -305,8 +298,10 @@ const getProductDetail = async (page, productUrl) => {
     // Các Selector chứa thông tin sản phẩm
     const nameSelector = 'h1';
     const imageUrlSelector = 'div.swiper-slide.button__view-gallery.swiper-slide-visible img';
-    const priceSelector = 'div.tpt-box.active .tpt---sale-price';
+    const priceSelector = 'div.tpt-box.active p.tpt---sale-price';
     const originalPriceSelector = 'p.tpt---price';
+    const rateCountSelector = '.box-rating';
+    const rateStartsSelector = '.box-rating .icon.is-active';
     
     try {
         await page.goto(productUrl, { waitUntil: "networkidle2"});
@@ -330,12 +325,129 @@ const getProductDetail = async (page, productUrl) => {
         // Tính % khuyến mãi
         const promotion = Math.round(((originalPrice - price) / originalPrice) * 100);
 
-        // Đồng bộ sản phẩm
-        const newProduct = { image_url: imageUrlList[0], name, price, promotion, rate_starts : null, rate_count : null, sold_count : null, product_url: productUrl };
+        // Lấy số lượt đánh giá
+        const rateText = await page.$eval(rateCountSelector, el => el.textContent);
+        const rateMatch = rateText.match(/(\d+)\s+đánh giá/);
+        rateCount = parseInt(rateMatch[1], 10);
+
+        // Lấy số sao đánh giá (số ngôi sao màu vàng)
+        rateStars = await page.$$eval(rateStartsSelector, stars => stars.length);
+        
+        // Kết quả
+        const newProduct = {
+            image_url: imageUrlList[0],
+            name,
+            price,
+            promotion,
+            rate_starts: rateStars,
+            rate_count: rateCount,
+            sold_count: null,
+            product_url: productUrl
+        };
 
         return newProduct;
     } catch (error) {
-        console.error(`Lỗi khi lấy chi tiết sản phẩm của CellphoneS có url ${productUrl}`, error);
+        console.error(`Lỗi khi lấy chi tiết sản phẩm có URL ${productUrl}`, error);
         return null;
+    }
+};
+
+// Hàm lấy danh sách cửa hàng có bán sản phẩm 
+const getStores = async (page, productUrl) => {
+    // Các selector
+    const btn_ChangeProvinceSelector = '.box-on-stock-option.button__change-province';
+    const provinceListSelector = 'ul.menu-list li';
+    const btn_selectProvinceSelector = 'li a.modal__button';
+    const btn_closeProvinceSelector = '.button.modal__button';
+    const provinceIdSelector = 'data-province-id';
+    const storeSelector = '.box-on-stock-item.p-2.is-flex';
+    const storePhoneSelector = '.phone';
+    const storeAddressSelector = '.address';
+
+    // Tạo danh sách các tỉnh thành đã được xử lý để tránh bị trùng
+    const processedProvinces = new Set();
+
+    // Tạo danh sách các cửa hàng, mỗi cửa hàng có số điện thoại và địa chỉ
+    const storeList = [];
+
+    try{
+        // Truy cập trang chi tiết
+        await page.goto(productUrl, { waitUntil: "networkidle2" });
+
+        // cuộn xuống cho phần danh sách cửa hàng hiện ra
+        await scrollAnhFindSelector(page, btn_ChangeProvinceSelector);
+
+        // Ấn nút thay đổi tỉnh thành
+        await page.click(btn_ChangeProvinceSelector);
+
+        // Lấy và lưu lại danh sách các tỉnh thành
+        const provinces = await page.$$eval(provinceListSelector, (items, btn_selectProvinceSelector, provinceIdSelector) => {
+            return items.map(item => {
+              const name = item.querySelector(btn_selectProvinceSelector).textContent;
+              const id = item.getAttribute(provinceIdSelector);
+              return { name, id };
+            });
+        }, btn_selectProvinceSelector, provinceIdSelector);
+
+        // Đóng menu chọn tỉnh
+        await page.click(btn_closeProvinceSelector);
+
+        // Tạo vòng lặp, truy xuất lấy thông tin các cửa hàng của từ tỉnh thành
+        for (const province of provinces) {
+            // Chỉ chọn tỉnh thành chưa xử lý
+            if (!processedProvinces.has(province.name)) {
+                // Ấn nút thay đổi tỉnh thành
+                await page.click(btn_ChangeProvinceSelector);
+                
+                try{await page.waitForNavigation({ timeout: 5000 });}catch(e){}
+                
+                // Chọn tỉnh
+                if(province.id === null){
+                    await page.click(`.menu-list li a.modal__button:has-text("${province}")`);
+                }
+                
+                try{await page.waitForNavigation({ timeout: 5000 });}catch(e){}
+        
+                // Lấy danh sách cửa hàng của tỉnh thành đó
+                const storesInProvince = await page.$$eval(storeSelector);
+                console.log({storesInProvince});
+
+                // storesInProvince.map(async (store) => {
+                //     // Lấy thông tin về cửa hàng 
+                //     const address = await page.$eval(storeAddressSelector, element => element.getAttribute('title'));
+                //     const phone = store.querySelector(storePhoneSelector).innerText;
+            
+                //     console.log({phone, address});
+                    
+                //     // Lưu địa chỉ mới vào kết quả
+                //     storeList.push({phone, address});
+                // });
+            
+                // Thêm tỉnh vào danh sách đã xử lý
+                processedProvinces.add(province.name);
+            }
+        }
+        console.log(storeList);
+
+        // Trả về kết quả
+        return storeList;
+    }catch(error){
+        console.error('Lỗi khi lấy danh sách cửa hàng có bán sản phẩm:', error);
+        return [];
+    }
+};
+
+// Cuộn xuống tìm phần tử
+const scrollAnhFindSelector = async (page, selector) => {
+    let foundElement = null;
+
+    while (!foundElement) {
+        // Cuộn xuống cuối trang
+        await page.evaluate(() => {
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+
+        // Tìm phần tử
+        foundElement = await page.$(selector);
     }
 };
