@@ -12,6 +12,20 @@ exports.getAllProduct = async (req, res) => {
     }
 };
 
+// Lấy danh sách từ khóa gợi ý
+exports.getSuggestions = async (req, res) => {
+    try {
+        const key = req.body.key;
+
+        const suggestions = await productService.getSuggestions(key);
+
+        res.status(200).json({ suggestions });
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách từ khóa gợi ý:', error);
+        res.status(500).json({ error: 'Lỗi khi lấy danh sách từ khóa gợi ý' });
+    }
+};
+
 // Tìm kiếm sản phẩm theo tên
 exports.searchProductByName = async (req, res) => {
     try {

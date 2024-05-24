@@ -7,6 +7,73 @@ exports.getAllProduct = async () => {
 };
 
 // Tìm kiếm sản phẩm theo tên
+exports.getSuggestions = async (key) => {
+    // Ở mỗi tên sản phẩm, tách tên thành các từ (cụm từ) lưu vào mảng [{word,count},{word,count}]
+        // (ví dụ: iphone 15 promax 1TB 
+        // -> các từ (cụm từ): iphone, 15, promax, 1TB, 
+        //    iphone 15, iphone 15 promax, iphone 15 promax 1TB,
+        //    15 promax, 15 promax 1TB. )
+    // Sau đó đếm số lần xuất hiện của các từ (cụm từ)
+    // Sắp xếp danh sách theo thứ tự lượt xuất hiện giảm dần
+    // Lấy ra 10 từ (cụm từ) phù hợp với key truyền vào (có chứa key, số lượt xuất hiện cao - phổ biến)
+
+    try{
+        // Lấy danh sách tất cả sản phẩm từ cơ sở dữ liệu
+        const products = await Product.findAll();
+        const combinationCounts = new Map();
+
+        // Tách các tên sản phẩm thành các tổ hợp từ và đếm số lần xuất hiện
+        products.forEach(product => {
+            // tách tên sàn phẩn thành 1 mảng chứa các từ và tạo các tổ hợp
+            const words = product.name.split(" ");
+            const combinations = generateCombinations(words);
+
+            // đếm số lần xuất hiện
+            combinations.forEach(combination => {
+                if (combinationCounts.has(combination)) {
+                    combinationCounts.set(combination, combinationCounts.get(combination) + 1);
+                } else {
+                    combinationCounts.set(combination, 1);
+                }
+            });
+        });
+
+        // Xắp xếp theo tần suất (sau khi sắp xếp, nếu lấy 10 kết quả đầu tiên thì sẻ lấy 10 kết quả phổ biến nhất)
+        const sortedCombinations = Array.from(combinationCounts.entries())
+            .sort((a, b) => b[1] - a[1]); // màng có dạng {0: "128GB", 1: 53} => 0 là từ khóa, 1 là số lần xuất hiện
+
+        // Lọc các tổ hợp phù hợp với key và lấy ra 10 tổ hợp phổ biến nhất
+        const suggestions = [];
+        let count = 0;
+
+        for (let i = 0; i < sortedCombinations.length; i++) {
+            if(sortedCombinations[i][0].toLowerCase().includes(key.toLowerCase())) {
+                suggestions.push(sortedCombinations[i][0]);
+                count ++;
+                //if(count == 10) break;
+            }
+        };
+
+        return suggestions;
+    }catch(error){
+        return [];
+    }
+};
+
+// Hàm tạo ra tất cả các tổ hợp từ
+const generateCombinations = (words) => {
+    const combinations = [];
+    for (let start = 0; start < words.length; start++) {
+        let combination = "";
+        for (let end = start; end < words.length; end++) {
+            combination += (end === start ? "" : " ") + words[end];
+            combinations.push(combination);
+        }
+    }
+    return combinations;
+};
+
+// Tìm kiếm sản phẩm theo tên
 exports.searchProductByName = async (name) => {
     return await Product.findAll({
         where: {
@@ -30,11 +97,6 @@ exports.getProductByUrlProduct = async (url) => {
             product_url: url
         }
     });
-
-    // các bước
-        // b1: lấy tên website bán sản phẩm
-        // b2: gọi hàm crawl của website tương ứng
-        // b3: trả về kết quả thu được
 };
 
 // Thêm mới sản phẩm

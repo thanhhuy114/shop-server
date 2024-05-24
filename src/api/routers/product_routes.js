@@ -5,14 +5,17 @@ const productController = require('../controllers/product_controller');
 // Lấy  danh sách tất cả sản phẩm
 router.post('/get_all', productController.getAllProduct);
 
+// Lấy  danh sách từ khóa gợi ý
+router.post('/get_suggestions', productController.getSuggestions);
+
 // Lấy  danh sách sản phẩm có tên sản phẩm phù hợp với từ khóa
-router.post('/searchByName', productController.searchProductByName);
+router.post('/search_by_name', productController.searchProductByName);
 
 // Lấy sản phẩm bằng id
-router.post('/getProductById', productController.getProductById);
+router.post('/get_product_by_id', productController.getProductById);
 
 // Lấy sản phẩm bằng url trang chi tiết
-router.post('/getProductByUrlProduct', productController.getProductByUrlProduct);
+router.post('/get_product_by_url_product', productController.getProductByUrlProduct);
 
 // Thêm mới sản phẩm
 router.post('/add', productController.addProduct);

@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const indexRouter = require('./api/routers/index.js')
 const crawlRoutes = require('./api/routers/crawler_routes.js');
-const productRoutes = require('./api/routers/crawler_routes.js');
+const productRoutes = require('./api/routers/product_routes.js');
 
 app.use(cookieParser());
 app.use(bodyParser.json());
