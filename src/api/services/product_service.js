@@ -23,24 +23,14 @@ exports.getSuggestions = async (key) => {
         const combinationCounts = new Map();
 
         // Tách các tên sản phẩm thành các tổ hợp từ và đếm số lần xuất hiện
+        const names = products.map(product => product.name)
         products.forEach(product => {
-            // tách tên sàn phẩn thành 1 mảng chứa các từ và tạo các tổ hợp
-            const words = product.name.split(" ");
-            const combinations = generateCombinations(words);
-
-            // đếm số lần xuất hiện
-            combinations.forEach(combination => {
-                if (combinationCounts.has(combination)) {
-                    combinationCounts.set(combination, combinationCounts.get(combination) + 1);
-                } else {
-                    combinationCounts.set(combination, 1);
-                }
-            });
+            generateAndCountCombinations(product.name, combinationCounts, names);
         });
 
         // Xắp xếp theo tần suất (sau khi sắp xếp, nếu lấy 10 kết quả đầu tiên thì sẻ lấy 10 kết quả phổ biến nhất)
         const sortedCombinations = Array.from(combinationCounts.entries())
-            .sort((a, b) => b[1] - a[1]); // màng có dạng {0: "128GB", 1: 53} => 0 là từ khóa, 1 là số lần xuất hiện
+            .sort((a, b) => b[1] - a[1]); // mỗi phần tử mảng có dạng {0: "128GB", 1: 53} => 0 là từ khóa, 1 là số lần xuất hiện
 
         // Lọc các tổ hợp phù hợp với key và lấy ra 10 tổ hợp phổ biến nhất
         const suggestions = [];
@@ -56,21 +46,88 @@ exports.getSuggestions = async (key) => {
 
         return suggestions;
     }catch(error){
+        console.error('Lỗi lấy danh sách gợi ý tìm kiếm: ', error);
         return [];
     }
 };
 
-// Hàm tạo ra tất cả các tổ hợp từ
-const generateCombinations = (words) => {
+// Hàm tạo ra tất cả các tổ hợp từ và đếm số lần xuất hiện
+const generateAndCountCombinations = (name, combinationCounts, names) => {
+    // Chỉ xử lý phần tên sản phẩm từ đầu đến ký tự đặc biệt (nếu có)
+    const specialCharIndex = name.search(/[\|\-\,]/);
+    if (specialCharIndex !== -1) {
+        name = name.substring(0, specialCharIndex).trim();
+    }
+
+    // Tách các từ
+    const words = name.split(" ").map(word => {
+        if (/[A-Z]/.test(word)) {
+            return word;
+        } else {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }
+    });
+
+    // Tạo các tổ hợp từ
     const combinations = [];
     for (let start = 0; start < words.length; start++) {
         let combination = "";
         for (let end = start; end < words.length; end++) {
             combination += (end === start ? "" : " ") + words[end];
+            combination = combination.trim();
+
             combinations.push(combination);
         }
     }
-    return combinations;
+
+    // Đếm số lần xuất hiện của các tổ hợp trong danh sách tên sản phẩm đầy đủ
+    combinations.forEach(combination => {
+        let count = 0;
+        names.forEach(productName => {
+            if (productName.toLowerCase().includes(combination.toLowerCase())) {
+                count++;
+            }
+        });
+
+        // Lọc các tổ hợp không cần thiết
+        let isValid = true;
+        combinations.forEach(otherCombination => {
+            // nếu combination là chuỗi con của 1 chuỗi khác và có số lần xuất hiện <= chuỗi khác đó => xóa
+            if (combination !== otherCombination && otherCombination.includes(combination)) {
+                if (combinationCounts.get(otherCombination) >= count) {
+                    isValid = false;
+                }
+            }
+
+            // nếu trong combination có '(' mà thiếu ')' => xóa
+            if (combination.includes('(') && !combination.includes(')')) {
+                isValid = false;
+            }
+
+            // Xóa chuỗi bắt đầu bằng số
+            if (!isNaN(parseInt(combination[0]))) {
+                isValid = false;
+            }
+
+            // xóa chuỗi dưới 5 ký tự
+            if(combination.length <= 5) {
+                isValid = false;
+            }
+
+            // xóa chuỗi bắt đầu bằng các từ
+            const needDetetedWords = ['thoại', 'hàng', 'chính', 'hãng', '(', '['];
+            needDetetedWords.forEach(word =>{
+                if(combination.toLowerCase().startsWith(word.toLowerCase())){
+                    isValid = false;
+                }
+            });
+            
+        });
+
+        if (isValid) {
+            combinationCounts.set(combination, count);
+        }
+    });
 };
 
 // Tìm kiếm sản phẩm theo tên
