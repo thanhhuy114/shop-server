@@ -61,14 +61,35 @@ exports.getProductDetail = async (req, res) => {
         // Url trang chi tiết của sản phẩm
         const url = req.body.url;
 
-        // Lấy sản phẩm
-        const product = await tikiCrawlService.getProductDetail(url);
+        // test cellphoneS
+        const selectors = [
+            { id: 'name', selector: 'h1' },
+            { id: 'imageUrlList', selector: 'div.swiper-slide.button__view-gallery.swiper-slide-visible img', attribute: 'src', isList: true },
+            { id: 'price', selector: 'div.tpt-box.active p.tpt---sale-price' },
+            { id: 'originalPrice', selector: 'p.tpt---price' },
+            { id: 'rateCount', selector: '.box-rating' },
+            { id: 'rateStars', selector: '.box-rating .icon.is-active', isList: true }
+        ];
+        
+        // test tiki
+        // const selectors = [
+        //     { id: 1, selector: '.Title__TitledStyled-sc-c64ni5-0.iXccQY' },
+        //     { id: 2, selector: '.slider img', attribute: 'src' },
+        //     { id: 3, selector: '.product-price__current-price' },
+        //     { id: 4, selector: '.product-price__discount-rate' },
+        //     { id: 5, selector: '.styles__StyledReview-sc-1onuk2l-1 > div:first-child' },
+        //     { id: 6, selector: '.number' },
+        //     { id: 7, selector: '[data-view-id="pdp_quantity_sold"]' }
+        // ];
+
+        // Lấy danh sách item 
+        const items = await tikiCrawlService.getProductDetail(url, selectors);
 
         // Đồng bộ sản phẩm
-        const newProduct= await tikiCrawlService.syncProduct(product);
+        //const newProduct= await tikiCrawlService.syncProduct(product);
 
         // Gửi kết quả về client
-        res.status(200).json({ newProduct });
+        res.status(200).json({ items });
     } catch (error) {
         res.status(500).json({ error: 'Đã xảy ra lỗi khi lấy thông tin sản phẩm từ trang chi tiết Tiki!' });
     }

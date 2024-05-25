@@ -272,10 +272,10 @@ const ShowAllProduct = async (page, url) => {
             return btnCancel != null;
         }, cancelSelector);
 
-        // Nếu có thông báo xuất hiện, tắt thông báo
         if (isNotificationVisible) {
+            // Nếu có thông báo xuất hiện, tắt thông báo
             await page.click(cancelSelector);
-        } else {
+        } else { 
             try {
                 // Click nút "Xem thêm"
                 await page.click(showMoreSelector);

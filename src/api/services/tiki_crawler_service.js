@@ -265,7 +265,10 @@ const getSearchResultPage = async (page, keySearch) => {
 // Hàm lấy danh sách url của tất cả sản phẩm có trong trang danh sách
 const getProducts = async (page, url) => {
     // khai báo selector chứa thông tin của mỗi sản phẩm trong trang danh sách
-    const productSelector = '.styles__ProductItemContainerStyled-sc-bszvl7-0';
+    const fieldSelectors = {
+        productItem: '.styles__ProductItemContainerStyled-sc-bszvl7-0',
+        
+    }
 
     // Các Selector chứa thông tin sản phẩm
         // url ảnh
@@ -298,7 +301,7 @@ const getProducts = async (page, url) => {
         await ShowAllProduct(page, url);
 
         // Lấy nội dung HTML của danh sách sản phẩm lưu vào mảng
-        const productsHtml = await page.$$eval(productSelector, elements => {
+        const productsHtml = await page.$$eval(fieldSelectors['productItem'], elements => {
             return elements.map(element => {
                 return element.outerHTML;
             });
