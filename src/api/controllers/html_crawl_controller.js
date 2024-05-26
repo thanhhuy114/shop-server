@@ -2,6 +2,7 @@ const htmlCrawlService = require('../services/html_crawl_service');
 
 // Lấy chi tiết sản phẩm bằng url trang chi tiết
 exports.get = async (req, res) => {
+    // API: http://localhost:3001/api/html_crawl/get
 
     // test cellphoneS (có thể thay đổi url)
     // {
@@ -46,6 +47,7 @@ exports.get = async (req, res) => {
 
 // Lấy danh sách tất cả sản phẩm là điện thoại
 exports.getAll = async (req, res) => {
+    // API: http://localhost:3001/api/html_crawl/get_all
 
     // test tiki
     // {
@@ -60,6 +62,22 @@ exports.getAll = async (req, res) => {
     //     ],
     //     "itemSelector": ".styles__ProductItemContainerStyled-sc-bszvl7-0.elOGIo",
     //     "viewMoreSelector": "div[data-view-id='category_infinity_view.more']"
+    // }
+
+    // test cellphoneS
+    // {
+    //     "url": "https://cellphones.com.vn/mobile.html",
+    //     "selectors": [
+    //         { "id": 1, "selector": "h3" },
+    //         { "id": 2, "selector": "img", "attribute": "src"},
+    //         { "id": 3, "selector": ".product__price--show" },
+    //         { "id": 4, "selector": ".product__price--percent-detail" },
+    //         { "id": 5, "selector": ".icon-star.is-active", "type": "count" },
+    //         { "id": 6, "selector": "a.product__link", "attribute": "href" }
+    //     ],
+    //     "itemSelector": ".product-info-container.product-item",
+    //     "viewMoreSelector": ".cps-block-content_btn-showmore a.button.btn-show-more.button__show-more-product",
+    //     "closeNotificationSelector": ".cancel-button-top"
     // }
 
     try {

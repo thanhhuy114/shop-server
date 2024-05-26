@@ -165,7 +165,7 @@ const showAll = async (page, viewMoreSelector, closeNotiFicationSelector) => {
                     await page.click(viewMoreSelector);
                     await page.waitForSelector(viewMoreSelector, { visible: true, timeout: 5000 });
 
-                    // Chờ 500 mili giây
+                    // Chờ 0.5 giây
                     await new Promise(resolve => setTimeout(resolve, 500));
                 } catch (error) {
                     break;
