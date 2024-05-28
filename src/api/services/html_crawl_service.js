@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
+const database = require('./database_demo');
 
 // Hàm khởi tạo trình duyệt
 const initPage = async () => {
@@ -20,40 +21,41 @@ const initPage = async () => {
 };
 
 // Lấy dữ liệu 1 đối tượng
-exports.get = async (url, selectors) => {
+exports.get = async (crawl_config, crawl_event_details, crawl_details, crawl_option_details) => {
     try {
-        // Khởi tạo trình duyệt
+        // Khởi tạo trình duyệt và chuyển đến trang chứa dữ liệu
         const { browser, page } = await initPage();
+        await page.goto(crawl_config.url, { waitUntil: "networkidle2"});
 
-        // Chuyển đến trang
-        await page.goto(url, { waitUntil: "networkidle2"});
+        // Thực hiện các sự kiện trong quá trình lấy dữ liệu
 
-        // Mảng kết quả để chứa id và value
-        const results = [];
+        // Mảng lưu kết quả trả về
+        const data = [];
 
-        // Duyệt qua các selector
-        for (const selectorObj of selectors) {
-            const { id, selector, attribute, type } = selectorObj;
+        // Duyệt qua từng chi tiết cần crawl
+        for (const crawl_detail of crawl_details) {
+            const { id, name, selector, attribute, data_type_id } = crawl_detail;
+            const type = database.getCrawlDataType(data_type_id);
             
             let value;
-            if (attribute) {
-                // Lấy giá trị thuộc tính của element
+            if (type === 'attribute') {
                 value = await page.$eval(selector, (el, attr) => el.getAttribute(attr), attribute);
-            } else if (type === 'count') {
-                // Đếm số lượng phần tử
-                value = await page.$$eval(selector, elements => elements.length);
-            } else {
-                // Lấy nội dung text của element
+            } else if (type === 'content') {
                 value = await page.$eval(selector, el => el.textContent.trim());
+            } else if (type === 'count') {
+                value = await page.$$eval(selector, elements => elements.length);
             }
 
+            // Thực hiện các option
+            //
+
             // Thêm vào mảng kết quả
-            results.push({ id, value });
+            data.push({ id, name, value });
         }
 
         browser.close();
 
-        return results;
+        return data;
     } catch (error) {
         console.error('Đã xảy ra lỗi khi lấy dữ liệu của 1 đối tượng:', error);
         throw error;
@@ -61,7 +63,7 @@ exports.get = async (url, selectors) => {
 };
 
 // Lấy dữ liệu tất cả đối tượng
-exports.getAll = async (url, selectors, itemSelector, viewMoreSelector, closeNotiFicationSelector) => {
+exports.getAll = async (crawl_config, crawl_event_details, crawl_details, crawl_option_details) => {
     // Khai báo mảng kết quả
     const results = [];
 
@@ -70,45 +72,43 @@ exports.getAll = async (url, selectors, itemSelector, viewMoreSelector, closeNot
         const { browser, page } = await initPage();
 
         // Chuyển đến trang 
-        await page.goto(url, { waitUntil: 'networkidle2' });
+        await page.goto(crawl_config.url, { waitUntil: 'networkidle2' });
         
-        // Hiện tất cả sản phẩm trong trang
-        await showAll(page, viewMoreSelector, closeNotiFicationSelector);
+        // Xử lý các sự kiện trong lúc thu thập 
+        //
         
         // Lấy nội dung HTML của danh sách sản phẩm lưu vào mảng
-        const datasHtml = await page.$$eval(itemSelector, elements => {
+        const datasHtml = await page.$$eval(crawl_config.item_selector, elements => {
             return elements.map(element => element.outerHTML);
         });
 
-        // Truy xuất mảng, lấy thông tin từng sản phẩm
+        // Truy xuất mảng, lấy thông tin từng item
         for (let dataHtml of datasHtml) {
             // Chuyển đổi chuỗi HTML thành một đối tượng DOM ảo
             const $ = cheerio.load(dataHtml);
 
             // khai báo mảng chứa 1 item
-            const data = [];
+            let data = [];
 
             // Duyệt qua các selector
-            for (const selectorObj of selectors) {
-                const { id, selector, type, attribute } = selectorObj;
+            for (const crawl_detail of crawl_details) {
+                const { id, name, selector, attribute, data_type_id } = crawl_detail;
+                const type = database.getCrawlDataType(data_type_id);
 
                 let value;
-                if (attribute) {
-                    if (type === 'count') {
-                        // Đếm số lượng phần tử
-                        value = $(selector).attr(attribute).length;
-                    }
-                    // Lấy giá trị thuộc tính của element
-                    value = $(selector).attr(attribute) || null;
+                if (type === 'attribute') {
+                    value = $(selector).attr(attribute);
                 } else if (type === 'count') {
-                    // Đếm số lượng phần tử
-                    value = value = $(selector).length;
-                } else {
-                    // Lấy nội dung text của element
-                    value = $(selector).text().trim() || null;
+                    value = $(selector).length;
+                } else if (type === 'content') {
+                    value = $(selector).text();
                 }
 
-                data.push({ id, value });
+                // Thực hiện các option
+                //
+
+                // Thêm vào kết quả
+                data.push({ id, name, value });
             }
 
             results.push(data);
@@ -119,61 +119,6 @@ exports.getAll = async (url, selectors, itemSelector, viewMoreSelector, closeNot
         return results;
     } catch (error) {
         console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả đối tượng:', error);
-        throw error;
-    }
-};
-
-// Tìm kiếm dữ liệu các dối tượng phù hợp
-exports.search = async (keySearch) => {
-    // try {
-    //     // Khởi tạo trình duyệt
-    //     const { browser, page } = await initPage();
-
-    //     // Nhập và tìm kiếm
-    //     const searchResultUrl = await getSearchResultPage(page, keySearch);
-
-    //     // Lấy danh sách sản phẩm trong trang kết quả tìm kiếm
-    //     const products = await getProducts(page, searchResultUrl);
-
-    //     // Đóng trình duyệt
-    //     browser.close();
-
-    //     return products;
-    // } catch (error) {
-    //     console.error('Đã xảy ra lỗi khi tìm kiếm dữ liệu các đối tượng phù hợp:', error);
-    //     throw error;
-    // }
-};
-
-// Hiện tất cả dữ liệu trong trang (bằng cách nhấn nút "Xem thêm" cho đến khi nút không hiển thị nữa)
-const showAll = async (page, viewMoreSelector, closeNotiFicationSelector) => {
-    try {
-        while (true) {
-            // Kiểm tra xem có thông báo đăng ký nhận khuyến mãi xuất hiện không
-            const isNotificationVisible = await page.evaluate((closeNotiFicationSelector) => {
-                const btnClose = document.querySelector(closeNotiFicationSelector);
-                return btnClose != null;
-            }, closeNotiFicationSelector);
-
-            // Nếu có thông báo xuất hiện, tắt thông báo
-            if (isNotificationVisible) {
-                await page.click(closeNotiFicationSelector);
-            }
-
-            else{
-                try {
-                    await page.click(viewMoreSelector);
-                    await page.waitForSelector(viewMoreSelector, { visible: true, timeout: 5000 });
-
-                    // Chờ 0.5 giây
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                } catch (error) {
-                    break;
-                }
-            }
-        }
-    } catch (error) {
-        console.error('Lỗi khi cho hiển thị tất cả:', error);
         throw error;
     }
 };
