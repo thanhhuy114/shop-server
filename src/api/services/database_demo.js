@@ -23,11 +23,16 @@ const crawl_result_types = [
 ];
 
 // Bảng loại sự kiện
-const crawl_event_types = [
+const crawl_action_types = [
     {
         "id": 1,
-        "type": "Click when appears",
-        "description": "Selector được gán sự kiện này sẽ được ấn mỗi khi nó xuất hiện trên màn hình"
+        "type": "Click when appear",
+        "description": "Ấn mỗi khi phần tử xuất hiện trên màn hình"
+    },
+    {
+        "id": 2,
+        "type": "Show all",
+        "description": "Ấn cho đến khi tất cả dữ liệu được hiện ra"
     }
 ];
 
@@ -55,7 +60,17 @@ const crawl_option_types = [
     {
         "id": 1,
         "type": "prepend",
-        "description": "Thêm chuỗi vào đầu"
+        "description": "Thêm vào đầu chuỗi"
+    },
+    {
+        "id": 2,
+        "type": "append",
+        "description": "Thêm vào cuối chuỗi"
+    },
+    {
+        "id": 3,
+        "type": "to number",
+        "description": "Loại bỏ ký tự không phải số trong chuỗi"
     }
 ];
 
@@ -101,9 +116,9 @@ exports.getCrawlResultType = (id) => {
     return crawl_result_types.find(type => type.id === id).type;
 }
 
-// Hàm lấy loại sự kiện dựa trên id
-exports.getCrawlEventType = (id) => {
-    return crawl_event_types.find(type => type.id === id).type;
+// Hàm lấy loại hành động dựa trên id
+exports.getCrawlActionType = (id) => {
+    return crawl_action_types.find(type => type.id === id).type;
 }
 
 // Hàm lấy loại dữ liệu dựa trên id
@@ -112,7 +127,7 @@ exports.getCrawlDataType = (id) => {
 }
 
 // Hàm lấy loại lựa chọn dựa trên id
-exports.getCrawlOptionTypeBy = (id) => {
+exports.getCrawlOptionType = (id) => {
     return crawl_option_types.find(type => type.id === id).type;
 }
 

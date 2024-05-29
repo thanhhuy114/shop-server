@@ -21,13 +21,17 @@ const initPage = async () => {
 };
 
 // Lấy dữ liệu 1 đối tượng
-exports.get = async (crawl_config, crawl_event_details, crawl_details, crawl_option_details) => {
+exports.get = async (body) => {
     try {
+        // Tách dữ liệu thành từ phần
+        const { crawl_config, crawl_action_details, crawl_details, crawl_option_details } = body;
+
         // Khởi tạo trình duyệt và chuyển đến trang chứa dữ liệu
         const { browser, page } = await initPage();
         await page.goto(crawl_config.url, { waitUntil: "networkidle2"});
 
-        // Thực hiện các sự kiện trong quá trình lấy dữ liệu
+        // Thực hiện các hành động trong quá trình lấy dữ liệu
+        if (crawl_action_details) await handleActions(page, crawl_action_details)
 
         // Mảng lưu kết quả trả về
         const data = [];
@@ -47,7 +51,7 @@ exports.get = async (crawl_config, crawl_event_details, crawl_details, crawl_opt
             }
 
             // Thực hiện các option
-            //
+            if (crawl_option_details) value = await handleOptions(crawl_option_details, id, value);
 
             // Thêm vào mảng kết quả
             data.push({ id, name, value });
@@ -63,19 +67,22 @@ exports.get = async (crawl_config, crawl_event_details, crawl_details, crawl_opt
 };
 
 // Lấy dữ liệu tất cả đối tượng
-exports.getAll = async (crawl_config, crawl_event_details, crawl_details, crawl_option_details) => {
+exports.getAll = async (body) => {
     // Khai báo mảng kết quả
     const results = [];
 
     try {
+        // Tách dữ liệu thành từ phần
+        const { crawl_config, crawl_action_details, crawl_details, crawl_option_details } = body;
+
         // Khởi tạo trình duyệt
         const { browser, page } = await initPage();
 
         // Chuyển đến trang 
         await page.goto(crawl_config.url, { waitUntil: 'networkidle2' });
         
-        // Xử lý các sự kiện trong lúc thu thập 
-        //
+        // Thực hiện các hành động trong lúc thu thập 
+        if (crawl_action_details) await handleActions(page, crawl_action_details)
         
         // Lấy nội dung HTML của danh sách sản phẩm lưu vào mảng
         const datasHtml = await page.$$eval(crawl_config.item_selector, elements => {
@@ -105,7 +112,7 @@ exports.getAll = async (crawl_config, crawl_event_details, crawl_details, crawl_
                 }
 
                 // Thực hiện các option
-                //
+                if (crawl_option_details) value = await handleOptions(crawl_option_details, id, value);
 
                 // Thêm vào kết quả
                 data.push({ id, name, value });
@@ -121,4 +128,123 @@ exports.getAll = async (crawl_config, crawl_event_details, crawl_details, crawl_
         console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả đối tượng:', error);
         throw error;
     }
+};
+
+// Hàm thực hiện xử lý các hành động
+const handleActions = async (page, actions) => {
+    for (const event of actions) {
+        const event_type = database.getCrawlActionType(event.action_type_id);
+        const { selector } = event;
+
+        if (event_type === 'Click when appear') {
+            clickWhenAppear(page, selector);
+        } else if (event_type === 'Show all') {
+            await showAll(page, selector);
+        }
+    }
+};
+
+// Xử lý sự kiện Show all
+const showAll = async (page, selector) => {	
+    try {	
+        while (true) {	
+            try {	
+                await page.click(selector);	
+                await page.waitForSelector(selector, { visible: true, timeout: 5000 });	
+
+                // Chờ 0.5 giây	
+                await new Promise(resolve => setTimeout(resolve, 500));	
+            } catch (error) {	
+                break;	
+            }
+        }	
+    } catch (error) {	
+        console.error('Lỗi khi thực hiện showAll():', error);	
+        throw error;
+    }	
+};
+
+// Xử lý sự kiện clickWhenAppear
+const clickWhenAppear = async (page, selector) => {
+    try {
+        while (!page.isClosed()) {
+            // Kiểm tra phần tử có tồn tại
+            const isElementVisible = await page.evaluate((selector) => {
+                const element = document.querySelector(selector);
+                return element != null;
+            }, selector);
+
+            // Click phần tử nếu có
+            if (isElementVisible) {
+                await page.click(selector);
+                await new Promise(resolve => setTimeout(resolve, 500));
+            } else {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
+    } catch (error) {	
+        console.error('Lỗi khi thực hiện clickWhenAppear():', error);	
+        throw error;
+    }	
+};
+
+// Hàm thực hiện xử lý các hành động
+const handleOptions = async (options, crawl_detail_id, value) => {
+    for (const option of options) {
+        if(option.crawl_detail_id === crawl_detail_id) {
+            const { option_type_id, option_value, type_option_condition_id, condition_value } = option;
+
+            const type_option = database.getCrawlOptionType(option_type_id);
+
+            // Thêm vào đầu chuỗi
+            if (type_option === 'prepend') {
+                if (type_option_condition_id) {
+                    const type_option_condition = database.getCrawlOptionConditionType(type_option_condition_id);
+
+                    // Kiểm tra điều kiện thực hiện
+                        // 
+                        if (true) {
+                            value = option_value + value;
+                        }
+                    
+                } else {
+                    value = option_value + value;
+                }
+            }
+
+            // Thêm vào cuối chuỗi
+            if (type_option === 'append') {
+                if (type_option_condition_id) {
+                    const type_option_condition = database.getCrawlOptionConditionType(type_option_condition_id);
+
+                    // Kiểm tra điều kiện thực hiện
+                        // 
+                        if (true) {
+                            value = value + option_value;
+                        }
+                    
+                } else {
+                    value = value + option_value;
+                }
+            }
+
+            // Loại bỏ ký tự không phải số
+            if (type_option === 'to number') {
+                if (type_option_condition_id) {
+                    const type_option_condition = database.getCrawlOptionConditionType(type_option_condition_id);
+
+                    // Kiểm tra điều kiện thực hiện
+                        // 
+                        if (true) {
+                            value = value.replace(/\D/g, '');
+                        }
+                    
+                } else {
+                    value = value.replace(/\D/g, '');
+                }
+            }
+        }
+    }
+
+    return value;
 };
