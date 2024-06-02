@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
-const database = require('./database_demo');
+const type_service = require('./type_service');
 
 // Hàm khởi tạo trình duyệt
 const initPage = async () => {
@@ -39,7 +39,7 @@ exports.get = async (body) => {
         // Duyệt qua từng chi tiết cần crawl
         for (const crawl_detail of crawl_details) {
             const { id, name, selector, attribute, data_type_id } = crawl_detail;
-            const type = database.getCrawlDataType(data_type_id);
+            const type = type_service.getCrawlDataType(data_type_id);
             
             let value;
             if (type === 'attribute') {
@@ -100,7 +100,7 @@ exports.getAll = async (body) => {
             // Duyệt qua các selector
             for (const crawl_detail of crawl_details) {
                 const { id, name, selector, attribute, data_type_id } = crawl_detail;
-                const type = database.getCrawlDataType(data_type_id);
+                const type = type_service.getCrawlDataType(data_type_id);
 
                 let value;
                 if (type === 'attribute') {
@@ -133,7 +133,7 @@ exports.getAll = async (body) => {
 // Hàm thực hiện xử lý các hành động
 const handleActions = async (page, actions) => {
     for (const event of actions) {
-        const event_type = database.getCrawlActionType(event.action_type_id);
+        const event_type = type_service.getCrawlActionType(event.action_type_id);
         const { selector } = event;
 
         if (event_type === 'Click when appear') {
@@ -146,28 +146,23 @@ const handleActions = async (page, actions) => {
 
 // Xử lý sự kiện Show all
 const showAll = async (page, selector) => {	
-    try {	
-        while (true) {	
-            try {	
-                await page.click(selector);	
-                await page.waitForSelector(selector, { visible: true, timeout: 5000 });	
+    while (true) {	
+        try {	
+            await page.click(selector);	
+            await page.waitForSelector(selector, { visible: true, timeout: 5000 });	
 
-                // Chờ 0.5 giây	
-                await new Promise(resolve => setTimeout(resolve, 500));	
-            } catch (error) {	
-                break;	
-            }
-        }	
-    } catch (error) {	
-        console.error('Lỗi khi thực hiện showAll():', error);	
-        throw error;
-    }	
+            // Chờ 0.5 giây	
+            await new Promise(resolve => setTimeout(resolve, 500));	
+        } catch (error) {	
+            break;	
+        }
+    }
 };
 
 // Xử lý sự kiện clickWhenAppear
 const clickWhenAppear = async (page, selector) => {
-    try {
-        while (!page.isClosed()) {
+    while (!page.isClosed()) {
+        try {
             // Kiểm tra phần tử có tồn tại
             const isElementVisible = await page.evaluate((selector) => {
                 const element = document.querySelector(selector);
@@ -181,11 +176,10 @@ const clickWhenAppear = async (page, selector) => {
             } else {
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
+        } catch (error) {	
+            break;
         }
-    } catch (error) {	
-        console.error('Lỗi khi thực hiện clickWhenAppear():', error);	
-        throw error;
-    }	
+    }
 };
 
 // Hàm thực hiện xử lý các hành động
@@ -194,12 +188,12 @@ const handleOptions = async (options, crawl_detail_id, value) => {
         if(option.crawl_detail_id === crawl_detail_id) {
             const { option_type_id, option_value, type_option_condition_id, condition_value } = option;
 
-            const type_option = database.getCrawlOptionType(option_type_id);
+            const type_option = type_service.getCrawlOptionType(option_type_id);
 
             // Thêm vào đầu chuỗi
             if (type_option === 'prepend') {
                 if (type_option_condition_id) {
-                    const type_option_condition = database.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = type_service.getCrawlOptionConditionType(type_option_condition_id);
 
                     // Kiểm tra điều kiện thực hiện
                         // 
@@ -215,7 +209,7 @@ const handleOptions = async (options, crawl_detail_id, value) => {
             // Thêm vào cuối chuỗi
             if (type_option === 'append') {
                 if (type_option_condition_id) {
-                    const type_option_condition = database.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = type_service.getCrawlOptionConditionType(type_option_condition_id);
 
                     // Kiểm tra điều kiện thực hiện
                         // 
@@ -231,7 +225,7 @@ const handleOptions = async (options, crawl_detail_id, value) => {
             // Loại bỏ ký tự không phải số
             if (type_option === 'to number') {
                 if (type_option_condition_id) {
-                    const type_option_condition = database.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = type_service.getCrawlOptionConditionType(type_option_condition_id);
 
                     // Kiểm tra điều kiện thực hiện
                         // 

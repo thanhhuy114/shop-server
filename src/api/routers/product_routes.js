@@ -3,19 +3,19 @@ const router = express.Router();
 const productController = require('../controllers/product_controller');
 
 // Lấy  danh sách tất cả sản phẩm
-router.post('/get_all', productController.getAllProduct);
+router.post('/get-all', productController.getAllProduct);
 
 // Lấy  danh sách từ khóa gợi ý
-router.post('/get_suggestions', productController.getSuggestions);
+router.post('/get-suggestions', productController.getSuggestions);
 
 // Lấy  danh sách sản phẩm có tên sản phẩm phù hợp với từ khóa
-router.post('/search_by_name', productController.searchProductByName);
+router.post('/search-by-name', productController.searchProductByName);
 
 // Lấy sản phẩm bằng id
-router.post('/get_product_by_id', productController.getProductById);
+router.post('/get-product-by-id', productController.getProductById);
 
 // Lấy sản phẩm bằng url trang chi tiết
-router.post('/get_product_by_url_product', productController.getProductByUrlProduct);
+router.post('/get-product-by-url-product', productController.getProductByUrlProduct);
 
 // Thêm mới sản phẩm
 router.post('/add', productController.addProduct);

@@ -6,7 +6,7 @@ const crawl_types = [
       "type": "HTML",
       "description": "Phương pháp này sử dụng các selector để trích xuất dữ liệu"
     }
-]; 
+];
 
 // Bảng loại dữ liệu trả về
 const crawl_result_types = [
@@ -106,42 +106,13 @@ const websites = [
     }
 ];
 
-// Hàm lấy loại thu thập dựa trên id
-exports.getCrawlType = (id) => {
-    return crawl_types.find(type => type.id === id).type;
-}
-
-// Hàm lấy loại kết quả dựa trên id
-exports.getCrawlResultType = (id) => {
-    return crawl_result_types.find(type => type.id === id).type;
-}
-
-// Hàm lấy loại hành động dựa trên id
-exports.getCrawlActionType = (id) => {
-    return crawl_action_types.find(type => type.id === id).type;
-}
-
-// Hàm lấy loại dữ liệu dựa trên id
-exports.getCrawlDataType = (id) => {
-    return crawl_data_types.find(type => type.id === id).type;
-}
-
-// Hàm lấy loại lựa chọn dựa trên id
-exports.getCrawlOptionType = (id) => {
-    return crawl_option_types.find(type => type.id === id).type;
-}
-
-// Hàm lấy loại điều kiện lựa chọn dựa trên id
-exports.getCrawlOptionConditionType = (id) => {
-    return crawl_option_condition_types.find(type => type.id === id).type;
-}
-
-// Hàm lấy loại sản phẩm dựa trên id
-exports.getItemType = (id) => {
-    return item_types.find(type => type.id === id).type;
-}
-
-// Hàm lấy tên website
-exports.getWebsiteName = (id) => {
-    return websites.find(type => type.id === id).name;
-}
+module.exports = {
+    crawl_types,
+    crawl_result_types,
+    crawl_action_types,
+    crawl_data_types,
+    crawl_option_types,
+    crawl_option_condition_types,
+    item_types,
+    websites
+};
