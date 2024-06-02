@@ -76,6 +76,6 @@ exports.getWebsiteName = (req, res) => {
     res.json(typeService.getWebsiteName(id));
 }
 
-exports.getAllWebsiteNames = (req, res) => {
-    res.json(typeService.getAllWebsiteNames());
+exports.getAllWebsites = (req, res) => {
+    res.json(typeService.getAllWebsites());
 }

@@ -25,6 +25,6 @@ router.get('/get-all-crawl-option-condition-types', typeController.getAllCrawlOp
 router.get('/get-all-item-types', typeController.getAllItemTypes);
 
 // Routes cho tên website
-router.get('/get-all-website-names', typeController.getAllWebsiteNames);
+router.get('/get-all-websites', typeController.getAllWebsites);
 
 module.exports = router;

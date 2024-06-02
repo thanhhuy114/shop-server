@@ -77,6 +77,6 @@ exports.getWebsiteName = (id) => {
     return websites.find(type => type.id === id).name;
 }
 
-exports.getAllWebsiteNames = () => {
+exports.getAllWebsites = () => {
     return websites.map(type => ({ id: type.id, name: type.name, url: type.url }));
 }
