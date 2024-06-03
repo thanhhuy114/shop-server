@@ -1,7 +1,8 @@
-// routes.js
 const express = require('express');
 const router = express.Router();
 const typeController = require('../controllers/type_controller');
+
+/* Các route xử lý liên quan đến các bảng chứa các Loại sẽ được tập chung ở đây */
 
 // Routes cho loại thu thập
 router.get('/get-all-crawl-types', typeController.getAllCrawlTypes);

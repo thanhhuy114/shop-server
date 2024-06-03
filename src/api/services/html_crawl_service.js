@@ -39,7 +39,7 @@ exports.get = async (body) => {
         // Duyệt qua từng chi tiết cần crawl
         for (const crawl_detail of crawl_details) {
             const { id, name, selector, attribute, data_type_id } = crawl_detail;
-            const type = type_service.getCrawlDataType(data_type_id);
+            const type = await type_service.getCrawlDataType(data_type_id);
             
             let value;
             if (type === 'attribute') {
@@ -100,7 +100,7 @@ exports.getAll = async (body) => {
             // Duyệt qua các selector
             for (const crawl_detail of crawl_details) {
                 const { id, name, selector, attribute, data_type_id } = crawl_detail;
-                const type = type_service.getCrawlDataType(data_type_id);
+                const type = await type_service.getCrawlDataType(data_type_id);
 
                 let value;
                 if (type === 'attribute') {
@@ -133,7 +133,7 @@ exports.getAll = async (body) => {
 // Hàm thực hiện xử lý các hành động
 const handleActions = async (page, actions) => {
     for (const event of actions) {
-        const event_type = type_service.getCrawlActionType(event.action_type_id);
+        const event_type = await type_service.getCrawlActionType(event.action_type_id);
         const { selector } = event;
 
         if (event_type === 'Click when appear') {
@@ -188,12 +188,12 @@ const handleOptions = async (options, crawl_detail_id, value) => {
         if(option.crawl_detail_id === crawl_detail_id) {
             const { option_type_id, option_value, type_option_condition_id, condition_value } = option;
 
-            const type_option = type_service.getCrawlOptionType(option_type_id);
+            const type_option = await type_service.getCrawlOptionType(option_type_id);
 
             // Thêm vào đầu chuỗi
             if (type_option === 'prepend') {
                 if (type_option_condition_id) {
-                    const type_option_condition = type_service.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = await type_service.getCrawlOptionConditionType(type_option_condition_id);
 
                     // Kiểm tra điều kiện thực hiện
                         // 
@@ -209,7 +209,7 @@ const handleOptions = async (options, crawl_detail_id, value) => {
             // Thêm vào cuối chuỗi
             if (type_option === 'append') {
                 if (type_option_condition_id) {
-                    const type_option_condition = type_service.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = await type_service.getCrawlOptionConditionType(type_option_condition_id);
 
                     // Kiểm tra điều kiện thực hiện
                         // 
@@ -225,7 +225,7 @@ const handleOptions = async (options, crawl_detail_id, value) => {
             // Loại bỏ ký tự không phải số
             if (type_option === 'to number') {
                 if (type_option_condition_id) {
-                    const type_option_condition = type_service.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = await type_service.getCrawlOptionConditionType(type_option_condition_id);
 
                     // Kiểm tra điều kiện thực hiện
                         // 

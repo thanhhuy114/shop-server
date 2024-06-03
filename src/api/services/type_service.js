@@ -1,82 +1,168 @@
-const {
-    crawl_types,
-    crawl_result_types,
-    crawl_action_types,
-    crawl_data_types,
-    crawl_option_types,
-    crawl_option_condition_types,
-    item_types,
-    websites
-} = require('./database_demo');
-
-// Bảng loại thu thập
-exports.getCrawlType = (id) => {
-    return crawl_types.find(type => type.id === id).type;
-}
-
-exports.getAllCrawlTypes = () => {
-    return crawl_types.map(type => ({ id: type.id, type: type.type, description: type.description }));
-}
-
-// Bảng loại kết quả
-exports.getCrawlResultType = (id) => {
-    return crawl_result_types.find(type => type.id === id).type;
-}
-
-exports.getAllCrawlResultTypes = () => {
-    return crawl_result_types.map(type => ({ id: type.id, type: type.type, description: type.description }));
-}
-
-// Bảng loại hành động
-exports.getCrawlActionType = (id) => {
-    return crawl_action_types.find(type => type.id === id).type;
-}
-
-exports.getAllCrawlActionTypes = () => {
-    return crawl_action_types.map(type => ({ id: type.id, type: type.type, description: type.description }));
-}
-
-// Bảng loại dữ liệu
-exports.getCrawlDataType = (id) => {
-    return crawl_data_types.find(type => type.id === id).type;
-}
-
-exports.getAllCrawlDataTypes = () => {
-    return crawl_data_types.map(type => ({ id: type.id, type: type.type, description: type.description }));
-}
-
-// Bảng loại lựa chọn
-exports.getCrawlOptionType = (id) => {
-    return crawl_option_types.find(type => type.id === id).type;
-}
-
-exports.getAllCrawlOptionTypes = () => {
-    return crawl_option_types.map(type => ({ id: type.id, type: type.type, description: type.description }));
-}
-
-// Bảng loại điều kiện lựa chọn
-exports.getCrawlOptionConditionType = (id) => {
-    return crawl_option_condition_types.find(type => type.id === id).type;
-}
-
-exports.getAllCrawlOptionConditionTypes = () => {
-    return crawl_option_condition_types.map(type => ({ id: type.id, type: type.type, description: type.description }));
-}
+const websites = require('../models/websites_model');
+const crawlTypes = require('../models/crawl_types_model');
+const crawlActionTypes = require('../models/crawl_action_types_model');
+const itemTypes = require('../models/item_types_model');
+const crawlOptionConditionTypes = require('../models/crawl_option_condition_types_model');
+const crawlOptionTypes = require('../models/crawl_option_types_model');
+const crawlResultTypes = require('../models/crawl_result_types_model');
+const crawlDataTypes = require('../models/crawl_data_types_model');
 
 // Bảng loại sản phẩm
-exports.getItemType = (id) => {
-    return item_types.find(type => type.id === id).type;
+exports.getItemType = async (id) => {
+    try {
+        const itemType = await itemTypes.findByPk(id);
+        return itemType ? itemType.type : null;
+    } catch (error) {
+        console.error('Lỗi khi lấy loại sản phẩm:', error);
+        throw error;
+    }
 }
 
-exports.getAllItemTypes = () => {
-    return item_types.map(type => ({ id: type.id, type: type.type, description: type.description }));
+exports.getAllItemTypes = async () => {
+    try {
+        return await itemTypes.findAll();
+    } catch (error) {
+        console.error('Lỗi khi lấy tất cả loại sản phẩm:', error);
+        throw error;
+    }
 }
 
 // Bảng tên website
-exports.getWebsiteName = (id) => {
-    return websites.find(type => type.id === id).name;
+exports.getWebsiteName = async (id) => {
+    try {
+        const website = await websites.findByPk(id);
+        return website ? website.name : null;
+    } catch (error) {
+        console.error('Lỗi khi lấy tên website:', error);
+        throw error;
+    }
 }
 
-exports.getAllWebsites = () => {
-    return websites.map(type => ({ id: type.id, name: type.name, url: type.url }));
+exports.getAllWebsites = async () => {
+    try {
+        return await websites.findAll();
+    } catch (error) {
+        console.error('Lỗi khi lấy tất cả website:', error);
+        throw error;
+    }
+}
+
+// Bảng loại thu thập
+exports.getCrawlType = async (id) => {
+    try {
+        const crawlType = await crawlTypes.findByPk(id);
+        return crawlType ? crawlType.type : null;
+    } catch (error) {
+        console.error('Lỗi khi lấy loại thu thập:', error);
+        throw error;
+    }
+}
+
+exports.getAllCrawlTypes = async () => {
+    try {
+        return await crawlTypes.findAll();
+    } catch (error) {
+        console.error('Lỗi khi lấy tất cả loại thu thập:', error);
+        throw error;
+    }
+}
+
+// Bảng loại kết quả
+exports.getCrawlResultType = async (id) => {
+    try {
+        const crawlResultType = await crawlResultTypes.findByPk(id);
+        return crawlResultType ? crawlResultType.type : null;
+    } catch (error) {
+        console.error('Lỗi khi lấy loại kết quả:', error);
+        throw error;
+    }
+}
+
+exports.getAllCrawlResultTypes = async () => {
+    try {
+        return await crawlResultTypes.findAll();
+    } catch (error) {
+        console.error('Lỗi khi lấy tất cả loại kết quả:', error);
+        throw error;
+    }
+}
+
+// Bảng loại hành động
+exports.getCrawlActionType = async (id) => {
+    try {
+        const crawlActionType = await crawlActionTypes.findByPk(id);
+        return crawlActionType ? crawlActionType.type : null;
+    } catch (error) {
+        console.error('Lỗi khi lấy loại hành động:', error);
+        throw error;
+    }
+}
+
+exports.getAllCrawlActionTypes = async () => {
+    try {
+        return await crawlActionTypes.findAll();
+    } catch (error) {
+        console.error('Lỗi khi lấy tất cả loại hành động:', error);
+        throw error;
+    }
+}
+
+// Bảng loại dữ liệu
+exports.getCrawlDataType = async (id) => {
+    try {
+        const crawlDataType = await crawlDataTypes.findByPk(id);
+        return crawlDataType ? crawlDataType.type : null;
+    } catch (error) {
+        console.error('Lỗi khi lấy loại dữ liệu:', error);
+        throw error;
+    }
+}
+
+exports.getAllCrawlDataTypes = async () => {
+    try {
+        return await crawlDataTypes.findAll();
+    } catch (error) {
+        console.error('Lỗi khi lấy tất cả loại dữ liệu:', error);
+        throw error;
+    }
+}
+
+// Bảng loại lựa chọn
+exports.getCrawlOptionType = async (id) => {
+    try {
+        const crawlOptionType = await crawlOptionTypes.findByPk(id);
+        return crawlOptionType ? crawlOptionType.type : null;
+    } catch (error) {
+        console.error('Lỗi khi lấy loại lựa chọn:', error);
+        throw error;
+    }
+}
+
+exports.getAllCrawlOptionTypes = async () => {
+    try {
+        return await crawlOptionTypes.findAll();
+    } catch (error) {
+        console.error('Lỗi khi lấy tất cả loại lựa chọn:', error);
+        throw error;
+    }
+}
+
+// Bảng loại điều kiện lựa chọn
+exports.getCrawlOptionConditionType = async (id) => {
+    try {
+        const crawlOptionConditionType = await crawlOptionConditionTypes.findByPk(id);
+        return crawlOptionConditionType ? crawlOptionConditionType.type : null;
+    } catch (error) {
+        console.error('Lỗi khi lấy loại điều kiện áp dụng lựa chọn:', error);
+        throw error;
+    }
+}
+
+exports.getAllCrawlOptionConditionTypes = async () => {
+    try {
+        return await crawlOptionConditionTypes.findAll();
+    } catch (error) {
+        console.error('Lỗi khi lấy tất cả loại điều kiện áp dụng lựa chọn:', error);
+        throw error;
+    }
 }

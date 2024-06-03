@@ -12,7 +12,7 @@ exports.crawlingData = async (req, res) => {
 
         // Lấy danh sách item
             // Lấy loại thu thập (trang danh sách hay trang chi tiết)
-            const result_type = typeService.getCrawlResultType(body.crawl_config.result_type_id);
+            const result_type = await typeService.getCrawlResultType(body.crawl_config.result_type_id);
 
             // Thực hiện thu thập theo từng loại
             let data;

@@ -11,7 +11,7 @@ require('dotenv').config();
 // }
 
 const db = {
-  database: "db_shop",
+  database: "crawling_db",
   username: "root",
   password: "",
   host: "localhost",
