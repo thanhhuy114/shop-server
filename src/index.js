@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const htmlCrawlRoutes = require('./api/routes/html_crawl_routes.js');
-const productRoutes = require('./api/routes/product_routes.js');
+const itemRoutes = require('./api/routes/item_routes.js');
 const typeRoutes = require('./api/routes/type_routes.js');
 
 app.use(cookieParser());

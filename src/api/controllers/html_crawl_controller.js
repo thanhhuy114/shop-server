@@ -8,22 +8,25 @@ exports.crawlingData = async (req, res) => {
         const body = req.body;
 
         // Lưu lại cấu hình của lần thu thập
-        //
+        // 
 
         // Lấy danh sách item
             // Lấy loại thu thập (trang danh sách hay trang chi tiết)
             const result_type = await typeService.getCrawlResultType(body.crawl_config.result_type_id);
 
             // Thực hiện thu thập theo từng loại
-            let data;
+            let crawlResult;
             if(result_type === 'single') {
-                data = await htmlCrawlService.get(body);
+                crawlResult = await htmlCrawlService.singleCrawl(body);
             } else if (result_type === 'multi') {
-                data = await htmlCrawlService.getAll(body);
+                crawlResult = await htmlCrawlService.multiCrawl(body);
             }
 
+            // Lưu lại danh sách items
+            // 
+
         // Gửi kết quả về client
-        res.status(200).json({ data });
+        res.status(200).json({ crawlResult });
     } catch (error) {
         res.status(500).json({ error: 'Đã xảy ra lỗi khi thu thập dữ liệu'});
     }

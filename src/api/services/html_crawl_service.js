@@ -21,7 +21,7 @@ const initPage = async () => {
 };
 
 // Lấy dữ liệu 1 đối tượng
-exports.get = async (body) => {
+exports.singleCrawl = async (body) => {
     try {
         // Tách dữ liệu thành từ phần
         const { crawl_config, crawl_action_details, crawl_details, crawl_option_details } = body;
@@ -67,7 +67,7 @@ exports.get = async (body) => {
 };
 
 // Lấy dữ liệu tất cả đối tượng
-exports.getAll = async (body) => {
+exports.multiCrawl = async (body) => {
     // Khai báo mảng kết quả
     const results = [];
 
@@ -241,4 +241,15 @@ const handleOptions = async (options, crawl_detail_id, value) => {
     }
 
     return value;
+};
+
+// Hàm lưu kết quả thu thập được vào database
+const saveCrawlResult = async (crawlResult) => {
+    // Tách kết quả thu được thành các mảng con, mỗi mảng con là 1 item, mỗi phần tữ trong mảng con là 1 chi tiết item
+    // Duyệt danh sách item
+        // Tạo item trong database (item_type_id, website_id, crawl_config_id, update_at)
+        // Lấy id của item vừa tạo
+        // Lưu các chi tiết item của item đó (item_id, name, value)
+        // Lưu vào mảng để trả về
+    // Trả về danh sách item vừa lưu
 };

@@ -63,6 +63,8 @@ exports.deleteItemType = async (id) => {
     try {
         const itemType = await itemTypes.findByPk(id);
         
+        if(!itemType) return false;
+
         await itemType.destroy();
         
         return itemType;
@@ -128,12 +130,14 @@ exports.deleteWebsite = async (id) => {
     try {
         const website = await websites.findByPk(id);
         
+        if(!website) return false;
+
         await website.destroy();
         
-        return website;
+        return true;
     } catch (error) {
         console.error('Lỗi khi xóa website:', error);
-        return null;
+        return false;
     }
 }
 

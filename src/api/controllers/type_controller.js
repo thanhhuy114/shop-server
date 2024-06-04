@@ -18,7 +18,10 @@ exports.updateItemType = async (req, res) => {
 exports.deleteItemType = async (req, res) => {
     const id = req.body.id;
 
-    res.json(await typeService.deleteItemType(id));
+    const result = await typeService.deleteItemType(id);
+
+    if(result) res.json({success: "Xóa loại sản phẩm thành công!"});
+    else res.json({error: "Xóa loại sản phẩm thất bại!"});
 }
 
 // Bảng tên website
@@ -38,7 +41,10 @@ exports.updateWebsite = async (req, res) => {
 exports.deleteWebsite = async (req, res) => {
     const id = req.body.id;
 
-    res.json(await typeService.deleteWebsite(id));
+    const result = await typeService.deleteWebsite(id)
+
+    if(result) res.json({success: "Xóa website thành công!"});
+    else res.json({error: "Xóa website thất bại!"});
 }
 
 // Bảng loại thu thập
