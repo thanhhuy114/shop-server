@@ -5,10 +5,40 @@ const typeService = require('../services/type_service');
 exports.getAllItemTypes = async (req, res) => {
     res.json(await typeService.getAllItemTypes());
 }
+exports.addItemType = async (req, res) => {
+    const data = req.body.data;
+
+    res.json(await typeService.addItemType(data));
+}
+exports.updateItemType = async (req, res) => {
+    const data = req.body.data;
+
+    res.json(await typeService.updateItemType(data));
+}
+exports.deleteItemType = async (req, res) => {
+    const id = req.body.id;
+
+    res.json(await typeService.deleteItemType(id));
+}
 
 // Bảng tên website
 exports.getAllWebsites = async (req, res) => {
     res.json(await typeService.getAllWebsites());
+}
+exports.addWebsite = async (req, res) => {
+    const data = req.body.data;
+
+    res.json(await typeService.addWebsite(data));
+}
+exports.updateWebsite = async (req, res) => {
+    const data = req.body.data;
+
+    res.json(await typeService.updateWebsite(data));
+}
+exports.deleteWebsite = async (req, res) => {
+    const id = req.body.id;
+
+    res.json(await typeService.deleteWebsite(id));
 }
 
 // Bảng loại thu thập

@@ -14,7 +14,7 @@ exports.getItemType = async (id) => {
         return itemType ? itemType.type : null;
     } catch (error) {
         console.error('Lỗi khi lấy loại sản phẩm:', error);
-        throw error;
+        return null;
     }
 }
 
@@ -23,7 +23,52 @@ exports.getAllItemTypes = async () => {
         return await itemTypes.findAll();
     } catch (error) {
         console.error('Lỗi khi lấy tất cả loại sản phẩm:', error);
-        throw error;
+        return [];
+    }
+}
+
+exports.addItemType = async (data) => {
+    try {
+        return await itemTypes.create({
+            type: data.type,
+            description: data.description
+        });
+    } catch (error) {
+        console.error('Lỗi khi thêm loại sản phẩm:', error);
+        return null;
+    }
+}
+
+exports.updateItemType = async (data) => {
+    try {
+        let itemType = await itemTypes.findOne({
+            where: {
+                id: data.id
+            }
+        });
+
+        itemType.type = data.type;
+        itemType.description = data.description;
+
+        await itemType.save();
+
+        return itemType;
+    } catch (error) {
+        console.error('Lỗi khi cập nhật loại sản phẩm:', error);
+        return null
+    }
+}
+
+exports.deleteItemType = async (id) => {
+    try {
+        const itemType = await itemTypes.findByPk(id);
+        
+        await itemType.destroy();
+        
+        return itemType;
+    } catch (error) {
+        console.error('Lỗi khi xóa loại sản phẩm:', error);
+        return null;
     }
 }
 
@@ -44,6 +89,51 @@ exports.getAllWebsites = async () => {
     } catch (error) {
         console.error('Lỗi khi lấy tất cả website:', error);
         throw error;
+    }
+}
+
+exports.addWebsite = async (data) => {
+    try {
+        return await websites.create({
+            name: data.name,
+            url: data.url
+        });
+    } catch (error) {
+        console.error('Lỗi khi thêm website:', error);
+        return null;
+    }
+}
+
+exports.updateWebsite = async (data) => {
+    try {
+        let website = await websites.findOne({
+            where: {
+                id: data.id
+            }
+        });
+
+        website.name = data.name;
+        website.url = data.url;
+
+        await website.save();
+
+        return website;
+    } catch (error) {
+        console.error('Lỗi khi cập nhật website:', error);
+        return null
+    }
+}
+
+exports.deleteWebsite = async (id) => {
+    try {
+        const website = await websites.findByPk(id);
+        
+        await website.destroy();
+        
+        return website;
+    } catch (error) {
+        console.error('Lỗi khi xóa website:', error);
+        return null;
     }
 }
 
