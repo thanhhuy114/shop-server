@@ -14,12 +14,12 @@ exports.getAll = async () => {
 }
 
 // Thêm mới
-exports.add = async (data) => {
+exports.add = async (itemData) => {
     try {
         return await items.create({
-            item_type_id: data.item_type_id,
-            website_id: data.website_id,
-            crawl_config_id: data.crawl_config_id,
+            item_type_id: itemData.item_type_id,
+            website_id: itemData.website_id,
+            crawl_config_id: itemData.crawl_config_id,
             update_at: Date.now()
         });
     } catch (error) {

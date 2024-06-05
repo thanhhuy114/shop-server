@@ -10,13 +10,28 @@ exports.getAll = async () => {
     }
 }
 
+// Lấy tất cả item details theo item_id
+exports.getListItemDetailsByItemId = async (itemId) => {
+    try {
+        return await itemDetails.findAll({
+            where: {
+                item_id: itemId
+            }
+        });
+    } catch (error) {
+        console.error('Lỗi khi lấy chi tiết item theo item_id:', error);
+        return [];
+    }
+}
+
 // Thêm mới
-exports.add = async (data) => {
+exports.add = async (itemDetail) => {
     try {
         return await itemDetails.create({
-            item_id: data.item_id,
-            name: data.name,
-            value: data.value
+            item_id: itemDetail.item_id,
+            name: itemDetail.name,
+            value: itemDetail.value,
+            is_primary_key: itemDetail.is_primary_key || false,
         });
     } catch (error) {
         console.error('Lỗi khi thêm mới chi tiết item:', error);

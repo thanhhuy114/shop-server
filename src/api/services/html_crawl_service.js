@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
-const type_service = require('./type_service');
+const typeService = require('./type_service');
+const itemService = require('./item_service');
+const itemDetailService = require('./item_detail_service');
 
 // Hàm khởi tạo trình duyệt
 const initPage = async () => {
@@ -21,14 +23,14 @@ const initPage = async () => {
 };
 
 // Lấy dữ liệu 1 đối tượng
-exports.singleCrawl = async (body) => {
+exports.singleCrawl = async (crawlConfig, body) => {
     try {
         // Tách dữ liệu thành từ phần
-        const { crawl_config, crawl_action_details, crawl_details, crawl_option_details } = body;
+        const { crawl_action_details, crawl_details, crawl_option_details } = body;
 
         // Khởi tạo trình duyệt và chuyển đến trang chứa dữ liệu
         const { browser, page } = await initPage();
-        await page.goto(crawl_config.url, { waitUntil: "networkidle2"});
+        await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
 
         // Thực hiện các hành động trong quá trình lấy dữ liệu
         if (crawl_action_details) await handleActions(page, crawl_action_details)
@@ -36,10 +38,13 @@ exports.singleCrawl = async (body) => {
         // Mảng lưu kết quả trả về
         const data = [];
 
+        // Lưu lại url
+        data.push({ id, name : 'url', value: crawlConfig.url, is_primary_key: true })
+
         // Duyệt qua từng chi tiết cần crawl
         for (const crawl_detail of crawl_details) {
-            const { id, name, selector, attribute, data_type_id } = crawl_detail;
-            const type = await type_service.getCrawlDataType(data_type_id);
+            const { id, name, selector, attribute, data_type_id, is_primary_key } = crawl_detail;
+            const type = await typeService.getCrawlDataType(data_type_id);
             
             let value;
             if (type === 'attribute') {
@@ -54,7 +59,7 @@ exports.singleCrawl = async (body) => {
             if (crawl_option_details) value = await handleOptions(crawl_option_details, id, value);
 
             // Thêm vào mảng kết quả
-            data.push({ id, name, value });
+            data.push({ id, name, value, is_primary_key });
         }
 
         browser.close();
@@ -67,25 +72,25 @@ exports.singleCrawl = async (body) => {
 };
 
 // Lấy dữ liệu tất cả đối tượng
-exports.multiCrawl = async (body) => {
+exports.multiCrawl = async (crawlConfig, body) => {
     // Khai báo mảng kết quả
     const results = [];
 
     try {
         // Tách dữ liệu thành từ phần
-        const { crawl_config, crawl_action_details, crawl_details, crawl_option_details } = body;
+        const { crawl_action_details, crawl_details, crawl_option_details } = body;
 
         // Khởi tạo trình duyệt
         const { browser, page } = await initPage();
 
         // Chuyển đến trang 
-        await page.goto(crawl_config.url, { waitUntil: 'networkidle2' });
+        await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
         
         // Thực hiện các hành động trong lúc thu thập 
         if (crawl_action_details) await handleActions(page, crawl_action_details)
         
         // Lấy nội dung HTML của danh sách sản phẩm lưu vào mảng
-        const datasHtml = await page.$$eval(crawl_config.item_selector, elements => {
+        const datasHtml = await page.$$eval(crawlConfig.item_selector, elements => {
             return elements.map(element => element.outerHTML);
         });
 
@@ -99,8 +104,8 @@ exports.multiCrawl = async (body) => {
 
             // Duyệt qua các selector
             for (const crawl_detail of crawl_details) {
-                const { id, name, selector, attribute, data_type_id } = crawl_detail;
-                const type = await type_service.getCrawlDataType(data_type_id);
+                const { id, name, selector, attribute, data_type_id, is_primary_key } = crawl_detail;
+                const type = await typeService.getCrawlDataType(data_type_id);
 
                 let value;
                 if (type === 'attribute') {
@@ -115,7 +120,7 @@ exports.multiCrawl = async (body) => {
                 if (crawl_option_details) value = await handleOptions(crawl_option_details, id, value);
 
                 // Thêm vào kết quả
-                data.push({ id, name, value });
+                data.push({ id, name, value, is_primary_key });
             }
 
             results.push(data);
@@ -130,10 +135,51 @@ exports.multiCrawl = async (body) => {
     }
 };
 
+// Hàm lưu kết quả thu thập được vào database
+exports.saveCrawlResult = async (crawlResult, itemTypeId, websiteId, crawlConfigId) => {
+    // Khai báo
+    const items = [];
+    const itemDetails = [];
+
+    // Tách kết quả thu được (danh sách item) thành các mảng con, mỗi mảng con là 1 item, mỗi phần tữ trong mảng con là 1 chi tiết item
+    for (const item of crawlResult) {
+        // Tạo item trong database (item_type_id, website_id, crawl_config_id, update_at)
+        const newItem = await itemService.add({
+            item_type_id: itemTypeId,
+            website_id: websiteId, 
+            crawl_config_id: crawlConfigId,
+            update_at: Date.now(),
+        });
+        
+        // Lưu vào mảng để trả về
+        items.push(newItem);
+        
+        // Lấy id của item vừa tạo
+        const itemId = newItem.id;
+
+        // Duyệt qua từng phần tử JSON trong mảng con
+        for (const itemDetail of item) {
+            // Lưu chi tiết item của một item (item_id, name, value, is_primary_key)
+            const newItemDetail = await itemDetailService.add({
+                item_id: itemId,
+                name: itemDetail.name,
+                value: itemDetail.value,
+                is_primary_key: itemDetail.is_primary_key || false,
+            })
+
+            // Lưu vào mảng để trả về
+            itemDetails.push(newItemDetail);
+        }
+    }
+
+    // Trả về danh sách item vừa lưu
+    return { items, itemDetails };
+};
+
 // Hàm thực hiện xử lý các hành động
 const handleActions = async (page, actions) => {
     for (const event of actions) {
-        const event_type = await type_service.getCrawlActionType(event.action_type_id);
+        const event_type = await typeService.getCrawlActionType(event.action_type_id);
         const { selector } = event;
 
         if (event_type === 'Click when appear') {
@@ -188,12 +234,12 @@ const handleOptions = async (options, crawl_detail_id, value) => {
         if(option.crawl_detail_id === crawl_detail_id) {
             const { option_type_id, option_value, type_option_condition_id, condition_value } = option;
 
-            const type_option = await type_service.getCrawlOptionType(option_type_id);
+            const type_option = await typeService.getCrawlOptionType(option_type_id);
 
             // Thêm vào đầu chuỗi
             if (type_option === 'prepend') {
                 if (type_option_condition_id) {
-                    const type_option_condition = await type_service.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = await typeService.getCrawlOptionConditionType(type_option_condition_id);
 
                     // Kiểm tra điều kiện thực hiện
                         // 
@@ -209,7 +255,7 @@ const handleOptions = async (options, crawl_detail_id, value) => {
             // Thêm vào cuối chuỗi
             if (type_option === 'append') {
                 if (type_option_condition_id) {
-                    const type_option_condition = await type_service.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = await typeService.getCrawlOptionConditionType(type_option_condition_id);
 
                     // Kiểm tra điều kiện thực hiện
                         // 
@@ -225,7 +271,7 @@ const handleOptions = async (options, crawl_detail_id, value) => {
             // Loại bỏ ký tự không phải số
             if (type_option === 'to number') {
                 if (type_option_condition_id) {
-                    const type_option_condition = await type_service.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = await typeService.getCrawlOptionConditionType(type_option_condition_id);
 
                     // Kiểm tra điều kiện thực hiện
                         // 
@@ -241,15 +287,4 @@ const handleOptions = async (options, crawl_detail_id, value) => {
     }
 
     return value;
-};
-
-// Hàm lưu kết quả thu thập được vào database
-const saveCrawlResult = async (crawlResult) => {
-    // Tách kết quả thu được thành các mảng con, mỗi mảng con là 1 item, mỗi phần tữ trong mảng con là 1 chi tiết item
-    // Duyệt danh sách item
-        // Tạo item trong database (item_type_id, website_id, crawl_config_id, update_at)
-        // Lấy id của item vừa tạo
-        // Lưu các chi tiết item của item đó (item_id, name, value)
-        // Lưu vào mảng để trả về
-    // Trả về danh sách item vừa lưu
 };

@@ -18,6 +18,10 @@ const ItemDetails = sequelize.define('ItemDetails', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  is_primary_key: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
 }, {
   tableName: 'item_details',
   timestamps: false,
