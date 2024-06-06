@@ -13,7 +13,7 @@ exports.crawlingData = async (req, res) => {
 
         // Lấy danh sách item
             // Lấy loại thu thập (trang danh sách hay trang chi tiết)
-            const result_type = await typeService.getCrawlResultType(crawlConfig.result_type_id);
+            const result_type = (await typeService.getCrawlResultType(crawlConfig.result_type_id)).type;
 
             // Thực hiện thu thập theo từng loại
             let crawlResult;
@@ -35,5 +35,6 @@ exports.crawlingData = async (req, res) => {
         res.status(200).json( items );
     } catch (error) {
         res.status(500).json({ error: 'Đã xảy ra lỗi khi thu thập dữ liệu'});
+        console.log(error);
     }
 };

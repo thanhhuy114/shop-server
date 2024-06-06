@@ -11,7 +11,7 @@ const crawlDataTypes = require('../models/crawl_data_types_model');
 exports.getItemType = async (id) => {
     try {
         const itemType = await itemTypes.findByPk(id);
-        return itemType ? itemType.type : null;
+        return itemType ? itemType : null;
     } catch (error) {
         console.error('Lỗi khi lấy loại sản phẩm:', error);
         return null;
@@ -75,10 +75,10 @@ exports.deleteItemType = async (id) => {
 }
 
 // Bảng tên website
-exports.getWebsiteName = async (id) => {
+exports.getWebsite = async (id) => {
     try {
         const website = await websites.findByPk(id);
-        return website ? website.name : null;
+        return website ? website : null;
     } catch (error) {
         console.error('Lỗi khi lấy tên website:', error);
         throw error;
@@ -145,7 +145,7 @@ exports.deleteWebsite = async (id) => {
 exports.getCrawlType = async (id) => {
     try {
         const crawlType = await crawlTypes.findByPk(id);
-        return crawlType ? crawlType.type : null;
+        return crawlType ? crawlType : null;
     } catch (error) {
         console.error('Lỗi khi lấy loại thu thập:', error);
         throw error;
@@ -165,7 +165,7 @@ exports.getAllCrawlTypes = async () => {
 exports.getCrawlResultType = async (id) => {
     try {
         const crawlResultType = await crawlResultTypes.findByPk(id);
-        return crawlResultType ? crawlResultType.type : null;
+        return crawlResultType ? crawlResultType : null;
     } catch (error) {
         console.error('Lỗi khi lấy loại kết quả:', error);
         throw error;
@@ -185,7 +185,7 @@ exports.getAllCrawlResultTypes = async () => {
 exports.getCrawlActionType = async (id) => {
     try {
         const crawlActionType = await crawlActionTypes.findByPk(id);
-        return crawlActionType ? crawlActionType.type : null;
+        return crawlActionType ? crawlActionType : null;
     } catch (error) {
         console.error('Lỗi khi lấy loại hành động:', error);
         throw error;
@@ -205,7 +205,7 @@ exports.getAllCrawlActionTypes = async () => {
 exports.getCrawlDataType = async (id) => {
     try {
         const crawlDataType = await crawlDataTypes.findByPk(id);
-        return crawlDataType ? crawlDataType.type : null;
+        return crawlDataType ? crawlDataType : null;
     } catch (error) {
         console.error('Lỗi khi lấy loại dữ liệu:', error);
         throw error;
@@ -225,7 +225,7 @@ exports.getAllCrawlDataTypes = async () => {
 exports.getCrawlOptionType = async (id) => {
     try {
         const crawlOptionType = await crawlOptionTypes.findByPk(id);
-        return crawlOptionType ? crawlOptionType.type : null;
+        return crawlOptionType ? crawlOptionType : null;
     } catch (error) {
         console.error('Lỗi khi lấy loại lựa chọn:', error);
         throw error;
@@ -245,7 +245,7 @@ exports.getAllCrawlOptionTypes = async () => {
 exports.getCrawlOptionConditionType = async (id) => {
     try {
         const crawlOptionConditionType = await crawlOptionConditionTypes.findByPk(id);
-        return crawlOptionConditionType ? crawlOptionConditionType.type : null;
+        return crawlOptionConditionType ? crawlOptionConditionType : null;
     } catch (error) {
         console.error('Lỗi khi lấy loại điều kiện áp dụng lựa chọn:', error);
         throw error;

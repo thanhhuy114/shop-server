@@ -44,7 +44,7 @@ exports.singleCrawl = async (crawlConfig, body) => {
         // Duyệt qua từng chi tiết cần crawl
         for (const crawl_detail of crawl_details) {
             const { id, name, selector, attribute, data_type_id, is_primary_key } = crawl_detail;
-            const type = await typeService.getCrawlDataType(data_type_id);
+            const type = (await typeService.getCrawlDataType(data_type_id)).type;
             
             let value;
             if (type === 'attribute') {
@@ -105,7 +105,7 @@ exports.multiCrawl = async (crawlConfig, body) => {
             // Duyệt qua các selector
             for (const crawl_detail of crawl_details) {
                 const { id, name, selector, attribute, data_type_id, is_primary_key } = crawl_detail;
-                const type = await typeService.getCrawlDataType(data_type_id);
+                const type = (await typeService.getCrawlDataType(data_type_id)).type;
 
                 let value;
                 if (type === 'attribute') {
@@ -139,11 +139,10 @@ exports.multiCrawl = async (crawlConfig, body) => {
 exports.saveCrawlResult = async (crawlResult, itemTypeId, websiteId, crawlConfigId) => {
     // Khai báo
     const items = [];
-    const itemDetails = [];
 
     // Tách kết quả thu được (danh sách item) thành các mảng con, mỗi mảng con là 1 item, mỗi phần tữ trong mảng con là 1 chi tiết item
     for (const item of crawlResult) {
-        // Tạo item trong database (item_type_id, website_id, crawl_config_id, update_at)
+        // Tạo item trong database
         const newItem = await itemService.add({
             item_type_id: itemTypeId,
             website_id: websiteId, 
@@ -151,35 +150,40 @@ exports.saveCrawlResult = async (crawlResult, itemTypeId, websiteId, crawlConfig
             update_at: Date.now(),
         });
         
-        // Lưu vào mảng để trả về
-        items.push(newItem);
-        
-        // Lấy id của item vừa tạo
-        const itemId = newItem.id;
+        const itemDetails = [];
 
         // Duyệt qua từng phần tử JSON trong mảng con
         for (const itemDetail of item) {
-            // Lưu chi tiết item của một item (item_id, name, value, is_primary_key)
+            // Lưu chi tiết item của một item
             const newItemDetail = await itemDetailService.add({
-                item_id: itemId,
+                item_id: newItem.id,
                 name: itemDetail.name,
                 value: itemDetail.value,
                 is_primary_key: itemDetail.is_primary_key || false,
             })
 
             // Lưu vào mảng để trả về
-            itemDetails.push(newItemDetail);
+            itemDetails.push({name: newItemDetail.name, value: newItemDetail.value});
         }
+        
+        // Lưu vào mảng để trả về
+        items.push(itemDetails);
     }
 
+    // Lấy tên loại item
+    const itemType = await typeService.getItemType(itemTypeId);
+
+    // Lấy website
+    const website = await typeService.getWebsite(websiteId);
+
     // Trả về danh sách item vừa lưu
-    return { items, itemDetails };
+    return { item_type_name: itemType.type, websiteName: website.name, website_url: website.url, items };
 };
 
 // Hàm thực hiện xử lý các hành động
 const handleActions = async (page, actions) => {
     for (const event of actions) {
-        const event_type = await typeService.getCrawlActionType(event.action_type_id);
+        const event_type = (await typeService.getCrawlActionType(event.action_type_id)).type;
         const { selector } = event;
 
         if (event_type === 'Click when appear') {
@@ -234,12 +238,12 @@ const handleOptions = async (options, crawl_detail_id, value) => {
         if(option.crawl_detail_id === crawl_detail_id) {
             const { option_type_id, option_value, type_option_condition_id, condition_value } = option;
 
-            const type_option = await typeService.getCrawlOptionType(option_type_id);
+            const type_option = (await typeService.getCrawlOptionType(option_type_id)).type;
 
             // Thêm vào đầu chuỗi
             if (type_option === 'prepend') {
                 if (type_option_condition_id) {
-                    const type_option_condition = await typeService.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = (await typeService.getCrawlOptionConditionType(type_option_condition_id)).type;
 
                     // Kiểm tra điều kiện thực hiện
                         // 
@@ -255,7 +259,7 @@ const handleOptions = async (options, crawl_detail_id, value) => {
             // Thêm vào cuối chuỗi
             if (type_option === 'append') {
                 if (type_option_condition_id) {
-                    const type_option_condition = await typeService.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = (await typeService.getCrawlOptionConditionType(type_option_condition_id)).type;
 
                     // Kiểm tra điều kiện thực hiện
                         // 
@@ -271,7 +275,7 @@ const handleOptions = async (options, crawl_detail_id, value) => {
             // Loại bỏ ký tự không phải số
             if (type_option === 'to number') {
                 if (type_option_condition_id) {
-                    const type_option_condition = await typeService.getCrawlOptionConditionType(type_option_condition_id);
+                    const type_option_condition = (await typeService.getCrawlOptionConditionType(type_option_condition_id)).type;
 
                     // Kiểm tra điều kiện thực hiện
                         // 
