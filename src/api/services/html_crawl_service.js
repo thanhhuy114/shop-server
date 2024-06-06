@@ -145,7 +145,7 @@ exports.saveCrawlResult = async (crawlResult, itemTypeId, websiteId, crawlConfig
         // Tạo item trong database
         const newItem = await itemService.add({
             item_type_id: itemTypeId,
-            website_id: websiteId, 
+            website_id: websiteId,
             crawl_config_id: crawlConfigId,
             update_at: Date.now(),
         });
