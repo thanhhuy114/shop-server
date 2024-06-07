@@ -232,7 +232,7 @@ const clickWhenAppear = async (page, selector) => {
     }
 };
 
-// Hàm thực hiện xử lý các hành động
+// Hàm thực hiện xử lý các lựa chọn custom kết quả
 const handleOptions = async (options, crawl_detail_id, value) => {
     for (const option of options) {
         if(option.crawl_detail_id === crawl_detail_id) {
@@ -242,48 +242,33 @@ const handleOptions = async (options, crawl_detail_id, value) => {
 
             // Thêm vào đầu chuỗi
             if (type_option === 'prepend') {
-                if (type_option_condition_id) {
-                    const type_option_condition = (await typeService.getCrawlOptionConditionType(type_option_condition_id)).type;
+                // Kiểm tra điều kiện thực hiện
+                const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
 
-                    // Kiểm tra điều kiện thực hiện
-                        // 
-                        if (true) {
-                            value = option_value + value;
-                        }
-                    
-                } else {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
                     value = option_value + value;
                 }
             }
 
             // Thêm vào cuối chuỗi
             if (type_option === 'append') {
-                if (type_option_condition_id) {
-                    const type_option_condition = (await typeService.getCrawlOptionConditionType(type_option_condition_id)).type;
+                // Kiểm tra điều kiện thực hiện
+                const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
 
-                    // Kiểm tra điều kiện thực hiện
-                        // 
-                        if (true) {
-                            value = value + option_value;
-                        }
-                    
-                } else {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
                     value = value + option_value;
                 }
             }
 
             // Loại bỏ ký tự không phải số
             if (type_option === 'to number') {
-                if (type_option_condition_id) {
-                    const type_option_condition = (await typeService.getCrawlOptionConditionType(type_option_condition_id)).type;
+                // Kiểm tra điều kiện thực hiện
+                const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
 
-                    // Kiểm tra điều kiện thực hiện
-                        // 
-                        if (true) {
-                            value = value.replace(/\D/g, '');
-                        }
-                    
-                } else {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
                     value = value.replace(/\D/g, '');
                 }
             }
@@ -291,4 +276,31 @@ const handleOptions = async (options, crawl_detail_id, value) => {
     }
 
     return value;
+};
+
+// Hàm kiểm tra điều kiện
+const checkCondition = async (conditionId, conditionValue, value) => {
+    // TRUE nếu không có điều kiện cần kiểm tra
+    if(!conditionId) return true;
+
+    // Lấy tên loại điều kiện
+    const conditionType = (await typeService.getCrawlOptionConditionType(conditionId)).type;
+
+    // Kiểm tra cho từng loại điều kiện
+    if (conditionType === 'Start with') {
+        if(!conditionValue) return true;
+
+        return value.toLowerCase().startsWith(conditionValue.toLowerCase());
+    } else if (conditionType === 'End with') {
+        if(!conditionValue) return true;
+
+        return value.toLowerCase().endsWith(conditionValue.toLowerCase());
+    } else if (conditionType === 'Contain') {
+        if(!conditionValue) return true;
+
+        return value.toLowerCase().includes(conditionValue.toLowerCase());
+    } else {
+        console.error('Loại điều kiện chưa được định nghĩa:', conditionType);
+        return false;
+    }
 };
