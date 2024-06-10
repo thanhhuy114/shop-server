@@ -24,14 +24,29 @@ exports.getListItemDetailsByItemId = async (itemId) => {
     }
 }
 
+// Lấy tất cả item details theo item_id
+exports.getItemDetailContainUrl = async (itemId) => {
+    try {
+        return await itemDetails.findOne({
+            where: {
+                item_id: itemId,
+                is_primary_key: true
+            }
+        });
+    } catch (error) {
+        console.error('Lỗi khi lấy chi tiết item theo item_id:', error);
+        return null;
+    }
+}
+
 // Thêm mới
-exports.add = async (itemDetail) => {
+exports.add = async (itemId, itemDetailData) => {
     try {
         return await itemDetails.create({
-            item_id: itemDetail.item_id,
-            name: itemDetail.name,
-            value: itemDetail.value,
-            is_primary_key: itemDetail.is_primary_key || false,
+            item_id: itemId,
+            name: itemDetailData.name,
+            value: itemDetailData.value,
+            is_primary_key: itemDetailData.is_primary_key || false,
         });
     } catch (error) {
         console.error('Lỗi khi thêm mới chi tiết item:', error);
@@ -40,16 +55,12 @@ exports.add = async (itemDetail) => {
 }
 
 // Cập nhật
-exports.update = async (data) => {
+exports.update = async (id, newItemDetailData) => {
     try {
-        let itemDetail = await itemDetails.findOne({
-            where: {
-                id: data.id
-            }
-        });
+        let itemDetail = await itemDetails.findByPk(id);
 
-        itemDetail.name = data.name;
-        itemDetail.value = data.value;
+        itemDetail.name = newItemDetailData.name;
+        itemDetail.value = newItemDetailData.value;
 
         await itemDetail.save();
 

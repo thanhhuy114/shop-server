@@ -138,47 +138,33 @@ exports.multiCrawl = async (crawlConfig, body) => {
 // Hàm lưu kết quả thu thập được vào database
 exports.saveCrawlResult = async (crawlResult, itemTypeId, websiteId, crawlConfigId) => {
     // Khai báo
-    const items = [];
+    const results = [];
 
-    // Tách kết quả thu được (danh sách item) thành các mảng con, mỗi mảng con là 1 item, mỗi phần tữ trong mảng con là 1 chi tiết item
+    // Duyệt qua kết quả thu được (crawlResult - danh sách item)
     for (const item of crawlResult) {
-        // Tạo item trong database
-        const newItem = await itemService.add({
-            item_type_id: itemTypeId,
-            website_id: websiteId,
-            crawl_config_id: crawlConfigId,
-            update_at: Date.now(),
-        });
-        
         const itemDetails = [];
 
         // Duyệt qua từng phần tử JSON trong mảng con
         for (const itemDetail of item) {
-            // Lưu chi tiết item của một item
-            const newItemDetail = await itemDetailService.add({
-                item_id: newItem.id,
-                name: itemDetail.name,
-                value: itemDetail.value,
-                is_primary_key: itemDetail.is_primary_key || false,
-            })
-
             // Lưu vào mảng để trả về
-            itemDetails.push({name: newItemDetail.name, value: newItemDetail.value});
+            itemDetails.push({
+                name: itemDetail.name, 
+                value: itemDetail.value, 
+                is_primary_key: itemDetail.is_primary_key
+            });
         }
+
+        const saveResult = await itemService.save(
+            {item_type_id: itemTypeId, website_id: websiteId, crawl_config_id: crawlConfigId},
+            itemDetails
+        )
         
         // Lưu vào mảng để trả về
-        items.push(itemDetails);
+        results.push(saveResult);
     }
 
-    // Lấy tên loại item
-    const itemType = await typeService.getItemType(itemTypeId);
-
-    // Lấy website
-    const website = await typeService.getWebsite(websiteId);
-
-    // Trả về danh sách item vừa lưu
-    return { item_type_name: itemType.type, websiteName: website.name, website_url: website.url, items };
-};
+    return results;
+}
 
 // Hàm thực hiện xử lý các hành động
 const handleActions = async (page, actions) => {

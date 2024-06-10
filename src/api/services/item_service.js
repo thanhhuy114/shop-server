@@ -101,8 +101,71 @@ exports.getListItemByItemType = async (itemTypeId) => {
     }
 }
 
+// Lấy item theo id
+exports.get = async (id) => {
+    try {
+        return await items.findByPk(id);
+
+    } catch (error) {
+        console.error('Lỗi khi lấy item:', error);
+        return null;
+    }
+}
+
+// Lưu: cập nhật nếu đã tồn tại và tạo mới khi chưa tồn tại
+exports.save = async (itemData, itemDetailDatas) => {
+    try {
+        // Khai báo
+        let item;
+        const itemDetails = [];
+        let url;
+
+        // Lấy url
+        for (const itemDetail of itemDetailDatas) {
+            if (itemDetail.is_primary_key == true) {
+                url = itemDetail.value;
+
+                break;
+            }
+        }
+
+        // Kiểm tra item đã tồn tại
+        const itemId =  await getIdItemExist(url);
+
+        // Nếu đã tồn tại, cập nhật
+        if (itemId) {
+            // Lấy thông tin item
+            item = await this.get(itemId);
+
+            // Cập nhật chi tiết item
+            const itemDetail = await this.updateItemDetails(itemId, itemDetailDatas);
+
+            // Thêm vào kết quả trả về
+            itemDetails.push(itemDetail);
+        }
+        // Thêm mới
+        else {
+            // Tạo item
+            item = await this.create(itemData);
+
+            // Tạo các chi tiết item
+            for (const itemDetail of itemDetailDatas) {
+                const newItemDetail = await itemDetailService.add(item.id, itemDetail)
+                
+                // Thêm vào kết quả trả về
+                itemDetails.push(newItemDetail);
+            }
+        }
+
+        return {item, item_details: itemDetails }
+    } catch (error) {
+        console.error('Lỗi khi lưu item:', error);
+        return null;
+    }
+}
+
 // Thêm mới
-exports.add = async (itemData) => {
+exports.create = async (itemData) => {
     try {
         return await items.create({
             item_type_id: itemData.item_type_id,
@@ -117,24 +180,78 @@ exports.add = async (itemData) => {
 }
 
 // Cập nhật
-exports.update = async (data) => {
+exports.updateItemDetails = async (itemId, newItemDetails) => {
     try {
-        let item = await items.findOne({
-            where: {
-                id: data.id
-            }
-        });
+        const results = [];
 
-        item.item_type_id = data.item_type_id;
-        item.website_id = data.website_id;
-        item.crawl_config_id = data.crawlconfig_id;
+        // Lấy item cần cập nhật
+        let item = await items.findByPk(itemId);
+
+        // Lấy danh sách itemDetails của item cần cập nhật
+        let itemDetails = await itemDetailService.getListItemDetailsByItemId(itemId);
+
+        // Duyệt danh sách itemDetail, cập nhật từng thuộc tính (trùng tên)
+        for (let i = 0; i < itemDetails.length; i++) {
+            for (let j = 0; j < newItemDetails.length; j++) {
+                if (itemDetails[i].name === newItemDetails[j].name) {
+                    const updatedItemDetail = await itemDetailService.update(itemDetails[i].id, newItemDetails[j]);
+
+                    // Lưu vào kết quả trả về
+                    results.push(updatedItemDetail);
+
+                    // Xóa phần tử khỏi mảng newItemDetails sau khi đã cập nhật
+                    itemDetails.splice(j, 1);
+
+                    break;
+                }
+            }
+        }
+        
+        // Cập nhật lại thời gian cập nhật (nếu có)
         item.update_at = Date.now();
 
         await item.save();
 
-        return item;
+        return results;
     } catch (error) {
         console.error('Lỗi khi cập nhật item:', error);
-        return null
+        return null;
     }
 }
+
+// Lấy id item đã tồn tại hay chưa
+const getIdItemExist = async (url) => {
+    try {
+        // Lấy danh sách tất cả id trong bảng items
+        const itemIds  = await getAllItemId();
+
+        for (const itemId of itemIds) {
+            // Lấy chi tiết item chứa url trang chi tiết của từng item
+            const itemDetail = await itemDetailService.getItemDetailContainUrl(itemId);
+
+            // Trả về itemId nếu có
+            if (itemDetail && itemDetail.value === url) {
+                return itemId;
+            }
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Lỗi khi kiểm tra item đã tồn tại:', error);
+        return null;
+    }
+};
+
+// Lấy danh sách tất cả id trong bảng items
+const getAllItemId = async () => {
+    try {
+        const itemIds = await items.findAll({
+            attributes: ['id']
+        });
+
+        return itemIds.map(item => item.id);
+    } catch (error) {
+        console.error('Lỗi khi Lấy danh sách tất cả id trong bảng items:', error);
+        return [];
+    }
+};
