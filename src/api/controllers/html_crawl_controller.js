@@ -18,16 +18,26 @@ exports.crawlingData = async (req, res) => {
             // Thực hiện thu thập theo từng loại
             let crawlResult;
             if(result_type === 'single') {
-                crawlResult = await htmlCrawlService.singleCrawl(crawlConfig, body);
+                crawlResult = await htmlCrawlService.singleCrawl(
+                    crawlConfig, 
+                    body.crawl_action_details, 
+                    body.crawl_details, 
+                    body.crawl_option_details
+                );
             } else if (result_type === 'multi') {
-                crawlResult = await htmlCrawlService.multiCrawl(crawlConfig, body);
+                crawlResult = await htmlCrawlService.multiCrawl(
+                    crawlConfig, 
+                    body.crawl_action_details, 
+                    body.crawl_details, 
+                    body.crawl_option_details
+                );
             }
 
             // Lưu lại danh sách items
             const items = await htmlCrawlService.saveCrawlResult(
-                crawlResult, 
-                crawlConfig.item_type_id, 
-                crawlConfig.website_id, 
+                crawlResult,
+                crawlConfig.item_type_id,
+                crawlConfig.website_id,
                 crawlConfig.id
             );
 

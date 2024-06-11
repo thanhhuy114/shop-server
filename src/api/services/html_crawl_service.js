@@ -23,17 +23,14 @@ const initPage = async () => {
 };
 
 // Lấy dữ liệu 1 đối tượng
-exports.singleCrawl = async (crawlConfig, body) => {
+exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
     try {
-        // Tách dữ liệu thành từ phần
-        const { crawl_action_details, crawl_details, crawl_option_details } = body;
-
         // Khởi tạo trình duyệt và chuyển đến trang chứa dữ liệu
         const { browser, page } = await initPage();
         await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
 
         // Thực hiện các hành động trong quá trình lấy dữ liệu
-        if (crawl_action_details) await handleActions(page, crawl_action_details)
+        if (crawlActionDetails) await handleActions(page, crawlActionDetails)
 
         // Mảng lưu kết quả trả về
         const data = [];
@@ -42,8 +39,8 @@ exports.singleCrawl = async (crawlConfig, body) => {
         data.push({ id, name : 'url', value: crawlConfig.url, is_primary_key: true })
 
         // Duyệt qua từng chi tiết cần crawl
-        for (const crawl_detail of crawl_details) {
-            const { id, name, selector, attribute, data_type_id, is_primary_key } = crawl_detail;
+        for (const crawlDetail of crawlDetails) {
+            const { id, name, selector, attribute, data_type_id, is_primary_key } = crawlDetail;
             const type = (await typeService.getCrawlDataType(data_type_id)).type;
             
             let value;
@@ -56,7 +53,7 @@ exports.singleCrawl = async (crawlConfig, body) => {
             }
 
             // Thực hiện các option
-            if (crawl_option_details) value = await handleOptions(crawl_option_details, id, value);
+            if (crawlOptionDetails) value = await handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào mảng kết quả
             data.push({ id, name, value, is_primary_key });
@@ -72,14 +69,11 @@ exports.singleCrawl = async (crawlConfig, body) => {
 };
 
 // Lấy dữ liệu tất cả đối tượng
-exports.multiCrawl = async (crawlConfig, body) => {
+exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
     // Khai báo mảng kết quả
     const results = [];
 
     try {
-        // Tách dữ liệu thành từ phần
-        const { crawl_action_details, crawl_details, crawl_option_details } = body;
-
         // Khởi tạo trình duyệt
         const { browser, page } = await initPage();
 
@@ -87,7 +81,7 @@ exports.multiCrawl = async (crawlConfig, body) => {
         await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
         
         // Thực hiện các hành động trong lúc thu thập 
-        if (crawl_action_details) await handleActions(page, crawl_action_details)
+        if (crawlActionDetails) await handleActions(page, crawlActionDetails)
         
         // Lấy nội dung HTML của danh sách sản phẩm lưu vào mảng
         const datasHtml = await page.$$eval(crawlConfig.item_selector, elements => {
@@ -103,7 +97,7 @@ exports.multiCrawl = async (crawlConfig, body) => {
             let data = [];
 
             // Duyệt qua các selector
-            for (const crawl_detail of crawl_details) {
+            for (const crawl_detail of crawlDetails) {
                 const { id, name, selector, attribute, data_type_id, is_primary_key } = crawl_detail;
                 const type = (await typeService.getCrawlDataType(data_type_id)).type;
 
@@ -117,7 +111,7 @@ exports.multiCrawl = async (crawlConfig, body) => {
                 }
 
                 // Thực hiện các option
-                if (crawl_option_details) value = await handleOptions(crawl_option_details, id, value);
+                if (crawlOptionDetails) value = await handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
                 data.push({ id, name, value, is_primary_key });
@@ -218,7 +212,7 @@ const clickWhenAppear = async (page, selector) => {
     }
 };
 
-// Hàm thực hiện xử lý các lựa chọn custom kết quả
+// Hàm thực hiện xử lý các lựa chọn để chuyển đổi kết quả về dạng mong muốn
 const handleOptions = async (options, crawl_detail_id, value) => {
     for (const option of options) {
         if(option.crawl_detail_id === crawl_detail_id) {
@@ -268,22 +262,17 @@ const handleOptions = async (options, crawl_detail_id, value) => {
 const checkCondition = async (conditionId, conditionValue, value) => {
     // TRUE nếu không có điều kiện cần kiểm tra
     if(!conditionId) return true;
+    if(!conditionValue) return true;
 
     // Lấy tên loại điều kiện
     const conditionType = (await typeService.getCrawlOptionConditionType(conditionId)).type;
 
     // Kiểm tra cho từng loại điều kiện
     if (conditionType === 'Start with') {
-        if(!conditionValue) return true;
-
         return value.toLowerCase().startsWith(conditionValue.toLowerCase());
     } else if (conditionType === 'End with') {
-        if(!conditionValue) return true;
-
         return value.toLowerCase().endsWith(conditionValue.toLowerCase());
     } else if (conditionType === 'Contain') {
-        if(!conditionValue) return true;
-
         return value.toLowerCase().includes(conditionValue.toLowerCase());
     } else {
         console.error('Loại điều kiện chưa được định nghĩa:', conditionType);

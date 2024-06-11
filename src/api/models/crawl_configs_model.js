@@ -16,11 +16,11 @@ const CrawlConfigs = sequelize.define('CrawlConfigs', {
   },
   crawl_type_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   result_type_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   item_selector: {
     type: DataTypes.TEXT,
@@ -28,19 +28,23 @@ const CrawlConfigs = sequelize.define('CrawlConfigs', {
   },
   item_type_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   url: {
     type: DataTypes.TEXT,
-    allowNull: false,
+    allowNull: true,
   },
   website_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   is_complete: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+  },
+  update_at: {
+    type: DataTypes.DATE,
+    allowNull: true,
   },
 }, {
   tableName: 'crawl_configs',

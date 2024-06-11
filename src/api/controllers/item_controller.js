@@ -4,7 +4,7 @@ const itemService = require('../services/item_service');
 exports.getAll = async (req, res) => {
     try {
         const items = await itemService.getAll();
-        res.json(items);
+        res.status(200).json(items);
     } catch (error) {
         console.error('Lỗi khi lấy tất cả item:', error);
         res.status(500).json({ error: 'Lỗi khi lấy tất cả item' });
@@ -16,7 +16,7 @@ exports.getListItemByItemType = async (req, res) => {
         const { id } = req.params; 
 
         const items = await itemService.getListItemByItemType(id);
-        res.json(items);
+        res.status(200).json(items);
     } catch (error) {
         console.error(`Lỗi khi lấy item theo item_type_id ${id}:`, error);
         res.status(500).json({ error: `Lỗi khi lấy item theo item_type_id ${id}` });

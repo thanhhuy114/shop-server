@@ -157,7 +157,7 @@ exports.save = async (itemData, itemDetailDatas) => {
             }
         }
 
-        return {item, item_details: itemDetails }
+        return {item, item_details: itemDetails };
     } catch (error) {
         console.error('Lỗi khi lưu item:', error);
         return null;
@@ -191,19 +191,30 @@ exports.updateItemDetails = async (itemId, newItemDetails) => {
         let itemDetails = await itemDetailService.getListItemDetailsByItemId(itemId);
 
         // Duyệt danh sách itemDetail, cập nhật từng thuộc tính (trùng tên)
-        for (let i = 0; i < itemDetails.length; i++) {
-            for (let j = 0; j < newItemDetails.length; j++) {
-                if (itemDetails[i].name === newItemDetails[j].name) {
-                    const updatedItemDetail = await itemDetailService.update(itemDetails[i].id, newItemDetails[j]);
+        for (let i = 0; i < newItemDetails.length; i++) {
+            // Biến kiểm tra chi tiết item có được lưu hay chưa
+            let saved = false;
+
+            // kiểm tra, nếu đã tồn tại thì cập nhật
+            for (let j = 0; j < itemDetails.length; j++) {
+                if (itemDetails[j].name === newItemDetails[i].name) {
+                    const updatedItemDetail = await itemDetailService.update(itemDetails[j].id, newItemDetails[i]);
+
+                    saved = true;
 
                     // Lưu vào kết quả trả về
                     results.push(updatedItemDetail);
 
-                    // Xóa phần tử khỏi mảng newItemDetails sau khi đã cập nhật
-                    itemDetails.splice(j, 1);
-
                     break;
                 }
+            }
+
+            // Thêm mới nếu chưa tồn tại
+            if (!saved) {
+                const newItemDetail = await itemDetailService.add(item, newItemDetails[i]);
+
+                // Lưu vào kết quả trả về
+                results.push(newItemDetail);
             }
         }
         

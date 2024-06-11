@@ -4,5 +4,5 @@ const itemDetailService = require('../services/item_detail_service');
 exports.getListItemDetails = async (req, res) => {
     const itemId = req.body.itemId;
 
-    res.json(await itemDetailService.getListItemDetailsByItemId(itemId));
+    res.status(200).json(await itemDetailService.getListItemDetailsByItemId(itemId));
 }

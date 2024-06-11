@@ -1,20 +1,35 @@
-const crawlConfig = require('../models/crawl_configs_model');
+const crawlConfigs = require('../models/crawl_configs_model');
 
-exports.add = async (data) => {
+// Tạo mới
+exports.create = async (name, description) => {
     try {
-        return await crawlConfig.create({
-            name: data.name,
-            description: data.description,
-            crawl_type_id: data.crawl_type_id,
-            result_type_id: data.result_type_id,
-            item_selector: data.item_selector,
-            item_type_id: data.item_type_id,
-            url: data.url,
-            website_id: data.website_id,
+        return await crawlConfigs.create({
+            name: name,
+            description: description,
             is_complete: false
         });
     } catch (error) {
-        console.error('Lỗi khi thêm loại sản phẩm:', error);
+        console.error('Lỗi khi tạo mới cấu hình thu thập:', error);
         return null;
     }
 }
+
+// Kiểm tra tên đã tồn tại
+exports.checkNameExists = async (name) => {
+    try {
+        const crawlConfig = await crawlConfigs.findOne({
+            where: {
+                name: name
+            }
+        });
+
+        return crawlConfig? true : false;
+    } catch (error) {
+        console.error('Lỗi khi lấy item:', error);
+        return null;
+    }
+}
+
+// Đánh dấu hoàn thành
+// Cập nhật (thêm các trường đã cấu hình sau khi tạo)
+// 
