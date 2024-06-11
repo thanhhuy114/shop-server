@@ -9,7 +9,7 @@ exports.crawlingData = async (req, res) => {
         const body = req.body;
 
         // Lưu lại cấu hình của lần thu thập
-        const crawlConfig = await crawlConfigService.add(body.crawl_config);
+        const crawlConfig = await crawlConfigService.update(body.crawl_config);
 
         // Lấy danh sách item
             // Lấy loại thu thập (trang danh sách hay trang chi tiết)
