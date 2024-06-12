@@ -30,13 +30,13 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
         await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
 
         // Thực hiện các hành động trong quá trình lấy dữ liệu
-        if (crawlActionDetails) await handleActions(page, crawlActionDetails)
+        if (crawlActionDetails) await handleActions(page, crawlActionDetails);
 
         // Mảng lưu kết quả trả về
         const data = [];
 
         // Lưu lại url
-        data.push({ id, name : 'url', value: crawlConfig.url, is_primary_key: true })
+        data.push({ id, name : 'url', value: crawlConfig.url, is_primary_key: true });
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {

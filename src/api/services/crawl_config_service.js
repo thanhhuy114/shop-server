@@ -25,16 +25,15 @@ exports.checkNameExists = async (name) => {
 
         return crawlConfig? true : false;
     } catch (error) {
-        console.error('Lỗi khi lấy item:', error);
+        console.error('Lỗi khi lấy kiểm tra tên cấu hình:', error);
         return null;
     }
 }
 
-// Đánh dấu hoàn thành
 // Cập nhật (thêm các trường đã cấu hình sau khi tạo)
-exports.update = async (crawlConfigData) => {
+exports.update = async (id, crawlConfigData) => {
     try {
-        const crawlConfig = await crawlConfigs.findByPk(crawlConfigData.id);
+        const crawlConfig = await crawlConfigs.findByPk(id);
         
         crawlConfig.name = crawlConfigData.name;
         crawlConfig.description = crawlConfigData.description;
@@ -52,6 +51,23 @@ exports.update = async (crawlConfigData) => {
         return crawlConfig;
     } catch (error) {
         console.error('Lỗi khi cập nhật cấu hình thu thập:', error);
+        return null;
+    }
+}
+
+// Đánh dấu hoàn thành
+exports.complete = async (id) => {
+    try {
+        const crawlConfig = await crawlConfigs.findByPk(id);
+        
+        crawlConfig.is_complete = true;
+        crawlConfig.update_at = Date.now();
+        
+        crawlConfig.save();
+
+        return crawlConfig;
+    } catch (error) {
+        console.error('Lỗi khi đánh dấu hoàn thành cấu hình thu thập:', error);
         return null;
     }
 }

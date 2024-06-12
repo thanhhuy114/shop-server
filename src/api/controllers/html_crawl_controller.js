@@ -8,25 +8,30 @@ exports.crawlingData = async (req, res) => {
         // Lấy tham số
         const body = req.body;
 
-        // Lưu lại cấu hình của lần thu thập
-        const crawlConfig = await crawlConfigService.update(body.crawl_config);
+        // Lưu lại cấu hình của lần thu thập (bất đồng bộ)
+            // Lưu thêm các thuộc tính khác vào bảng crawl_configs
+            await crawlConfigService.update(body.crawl_config.id, body.crawl_config);
+
+            // Lưu vào bảng crawl_action_details
+            // Lưu vào bảng crawl_details
+            // Lưu vào bảng crawl_option_details
 
         // Lấy danh sách item
             // Lấy loại thu thập (trang danh sách hay trang chi tiết)
-            const result_type = (await typeService.getCrawlResultType(crawlConfig.result_type_id)).type;
+            const result_type = (await typeService.getCrawlResultType(body.crawl_config.result_type_id)).type;
 
             // Thực hiện thu thập theo từng loại
             let crawlResult;
             if(result_type === 'single') {
                 crawlResult = await htmlCrawlService.singleCrawl(
-                    crawlConfig, 
+                    body.crawl_config, 
                     body.crawl_action_details, 
                     body.crawl_details, 
                     body.crawl_option_details
                 );
             } else if (result_type === 'multi') {
                 crawlResult = await htmlCrawlService.multiCrawl(
-                    crawlConfig, 
+                    body.crawl_config, 
                     body.crawl_action_details, 
                     body.crawl_details, 
                     body.crawl_option_details
@@ -36,9 +41,9 @@ exports.crawlingData = async (req, res) => {
             // Lưu lại danh sách items
             const items = await htmlCrawlService.saveCrawlResult(
                 crawlResult,
-                crawlConfig.item_type_id,
-                crawlConfig.website_id,
-                crawlConfig.id
+                body.crawl_config.item_type_id,
+                body.crawl_config.website_id,
+                body.crawl_config.id
             );
 
         // Gửi kết quả về client

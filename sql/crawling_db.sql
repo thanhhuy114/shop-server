@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 11, 2024 lúc 11:30 AM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Jun 12, 2024 at 06:28 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `crawling_db`
+-- Database: `crawling_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_action_details`
+-- Table structure for table `crawl_action_details`
 --
 
 CREATE TABLE `crawl_action_details` (
@@ -37,27 +37,28 @@ CREATE TABLE `crawl_action_details` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_action_types`
+-- Table structure for table `crawl_action_types`
 --
 
 CREATE TABLE `crawl_action_types` (
   `id` int(11) NOT NULL,
   `type` text NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `is_textfield` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_action_types`
+-- Dumping data for table `crawl_action_types`
 --
 
-INSERT INTO `crawl_action_types` (`id`, `type`, `description`) VALUES
-(1, 'Click when appear', 'Ấn mỗi khi phần tử này xuất hiện trên màn hình'),
-(2, 'Show all', 'Ấn liên tục vào phần tử này cho đến khi tất cả dữ liệu hiện ra hoặc phần tử này không còn xuất hiện nữa');
+INSERT INTO `crawl_action_types` (`id`, `type`, `description`, `is_textfield`) VALUES
+(1, 'Click when appear', 'Ấn mỗi khi phần tử này xuất hiện trên màn hình', 1),
+(2, 'Show all', 'Ấn liên tục vào phần tử này cho đến khi tất cả dữ liệu hiện ra hoặc phần tử này không còn xuất hiện nữa rồi mới thực hiện lấy dữ liệu', 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_configs`
+-- Table structure for table `crawl_configs`
 --
 
 CREATE TABLE `crawl_configs` (
@@ -74,84 +75,32 @@ CREATE TABLE `crawl_configs` (
   `update_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Đang đổ dữ liệu cho bảng `crawl_configs`
---
-
-INSERT INTO `crawl_configs` (`id`, `name`, `description`, `crawl_type_id`, `result_type_id`, `item_selector`, `item_type_id`, `url`, `website_id`, `is_complete`, `update_at`) VALUES
-(1, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(2, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(3, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(4, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(5, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(6, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(7, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(8, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(9, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(10, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(11, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(12, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(13, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(14, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(15, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(16, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(17, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(18, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(19, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(20, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(21, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(22, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(23, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(24, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(25, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(26, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(27, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(28, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(29, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(30, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(31, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(32, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(33, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(34, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 13:06:01'),
-(35, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:10:46'),
-(36, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:14:08'),
-(37, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:23:52'),
-(38, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:28:02'),
-(39, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:32:58'),
-(40, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:35:03'),
-(41, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:38:00'),
-(42, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:40:54'),
-(43, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:41:50'),
-(44, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:51:42'),
-(45, 'Crawl danh sách sản phẩm CellphoneS', 'Thu thập dữ liệu từ trang danh sách sản phẩm', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-11 06:53:12'),
-(46, 'abc', 'd', NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-06-11 07:39:19'),
-(47, 'abhc', 'd', NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-06-11 07:41:21');
-
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_data_types`
+-- Table structure for table `crawl_data_types`
 --
 
 CREATE TABLE `crawl_data_types` (
   `id` int(11) NOT NULL,
   `type` text NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `is_textfield` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_data_types`
+-- Dumping data for table `crawl_data_types`
 --
 
-INSERT INTO `crawl_data_types` (`id`, `type`, `description`) VALUES
-(1, 'content', 'Lấy nội dung của thẻ'),
-(2, 'count', 'Đếm số lượng thẻ này'),
-(3, 'attribute', 'Lấy nội dung của một thuộc tính trong thẻ');
+INSERT INTO `crawl_data_types` (`id`, `type`, `description`, `is_textfield`) VALUES
+(1, 'content', 'Lấy nội dung của thẻ', 0),
+(2, 'count', 'Đếm số lượng thẻ này', 0),
+(3, 'attribute', 'Lấy nội dung của một thuộc tính trong thẻ', 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_details`
+-- Table structure for table `crawl_details`
 --
 
 CREATE TABLE `crawl_details` (
@@ -166,28 +115,29 @@ CREATE TABLE `crawl_details` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_option_condition_types`
+-- Table structure for table `crawl_option_condition_types`
 --
 
 CREATE TABLE `crawl_option_condition_types` (
   `id` int(11) NOT NULL,
   `type` text NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `is_textfield` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_option_condition_types`
+-- Dumping data for table `crawl_option_condition_types`
 --
 
-INSERT INTO `crawl_option_condition_types` (`id`, `type`, `description`) VALUES
-(1, 'Start with', 'Kiểm tra xem kết quả có bắt đầu bằng <chuỗi đầu vào>'),
-(2, 'End with', 'Kiểm tra xem kết quả có kết thúc bằng <chuỗi đầu vào>'),
-(3, 'Contain', 'Kiểm tra xem kết quả có chứa<chuỗi đầu vào>');
+INSERT INTO `crawl_option_condition_types` (`id`, `type`, `description`, `is_textfield`) VALUES
+(1, 'Start with', 'Kiểm tra xem kết quả có bắt đầu bằng <chuỗi đầu vào>', 1),
+(2, 'End with', 'Kiểm tra xem kết quả có kết thúc bằng <chuỗi đầu vào>', 1),
+(3, 'Contain', 'Kiểm tra xem kết quả có chứa<chuỗi đầu vào>', 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_option_details`
+-- Table structure for table `crawl_option_details`
 --
 
 CREATE TABLE `crawl_option_details` (
@@ -201,48 +151,50 @@ CREATE TABLE `crawl_option_details` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_option_types`
+-- Table structure for table `crawl_option_types`
 --
 
 CREATE TABLE `crawl_option_types` (
   `id` int(11) NOT NULL,
   `type` text NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `is_textfield` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_option_types`
+-- Dumping data for table `crawl_option_types`
 --
 
-INSERT INTO `crawl_option_types` (`id`, `type`, `description`) VALUES
-(1, 'prepend', 'Thêm một chuỗi vào đầu kết quả'),
-(2, 'append', 'Thêm một chuỗi vào cuối kết quả'),
-(3, 'to number', 'Xóa các ký tự không phải số trong kết quả');
+INSERT INTO `crawl_option_types` (`id`, `type`, `description`, `is_textfield`) VALUES
+(1, 'prepend', 'Thêm một chuỗi vào đầu kết quả', 1),
+(2, 'append', 'Thêm một chuỗi vào cuối kết quả', 1),
+(3, 'to number', 'Xóa các ký tự không phải số trong kết quả', 0);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_result_types`
+-- Table structure for table `crawl_result_types`
 --
 
 CREATE TABLE `crawl_result_types` (
   `id` int(11) NOT NULL,
   `type` text NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `is_textfield` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_result_types`
+-- Dumping data for table `crawl_result_types`
 --
 
-INSERT INTO `crawl_result_types` (`id`, `type`, `description`) VALUES
-(1, 'single', 'Lựa chọn này sẽ trả về kết quả kiểu 1 item'),
-(2, 'multi', 'Lựa chọn này sẽ trả về kết quả là danh sách các item');
+INSERT INTO `crawl_result_types` (`id`, `type`, `description`, `is_textfield`) VALUES
+(1, 'single', 'Lựa chọn này sẽ trả về kết quả kiểu 1 item', 0),
+(2, 'multi', 'Lựa chọn này sẽ trả về kết quả là danh sách các item', 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_types`
+-- Table structure for table `crawl_types`
 --
 
 CREATE TABLE `crawl_types` (
@@ -252,7 +204,7 @@ CREATE TABLE `crawl_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_types`
+-- Dumping data for table `crawl_types`
 --
 
 INSERT INTO `crawl_types` (`id`, `type`, `description`) VALUES
@@ -263,7 +215,7 @@ INSERT INTO `crawl_types` (`id`, `type`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `items`
+-- Table structure for table `items`
 --
 
 CREATE TABLE `items` (
@@ -274,280 +226,10 @@ CREATE TABLE `items` (
   `update_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Đang đổ dữ liệu cho bảng `items`
---
-
-INSERT INTO `items` (`id`, `item_type_id`, `website_id`, `crawl_config_id`, `update_at`) VALUES
-(1, 1, 1, 4, '2024-06-05 16:25:03'),
-(2, 1, 1, 5, '2024-06-11 06:53:21'),
-(3, 1, 1, 5, '2024-06-05 16:39:09'),
-(4, 1, 1, 5, '2024-06-11 06:53:22'),
-(5, 1, 1, 5, '2024-06-05 16:39:10'),
-(6, 1, 1, 5, '2024-06-05 16:39:10'),
-(7, 1, 1, 5, '2024-06-05 16:39:10'),
-(8, 1, 1, 5, '2024-06-11 06:53:22'),
-(9, 1, 1, 5, '2024-06-05 16:39:10'),
-(10, 1, 1, 5, '2024-06-11 06:53:25'),
-(11, 1, 1, 5, '2024-06-05 16:39:10'),
-(12, 1, 1, 5, '2024-06-11 06:53:27'),
-(13, 1, 1, 5, '2024-06-11 06:53:26'),
-(14, 1, 1, 5, '2024-06-05 16:39:10'),
-(15, 1, 1, 5, '2024-06-05 16:39:10'),
-(16, 1, 1, 5, '2024-06-11 06:53:28'),
-(17, 1, 1, 5, '2024-06-05 16:39:11'),
-(18, 1, 1, 5, '2024-06-05 16:39:11'),
-(19, 1, 1, 5, '2024-06-05 16:39:11'),
-(20, 1, 1, 5, '2024-06-05 16:39:11'),
-(21, 1, 1, 5, '2024-06-05 16:39:11'),
-(22, 1, 1, 6, '2024-06-05 16:41:11'),
-(23, 1, 1, 6, '2024-06-05 16:41:12'),
-(24, 1, 1, 6, '2024-06-05 16:41:12'),
-(25, 1, 1, 6, '2024-06-05 16:41:12'),
-(26, 1, 1, 6, '2024-06-05 16:41:12'),
-(27, 1, 1, 6, '2024-06-05 16:41:12'),
-(28, 1, 1, 6, '2024-06-05 16:41:12'),
-(29, 1, 1, 6, '2024-06-05 16:41:13'),
-(30, 1, 1, 6, '2024-06-05 16:41:13'),
-(31, 1, 1, 6, '2024-06-05 16:41:13'),
-(32, 1, 1, 6, '2024-06-05 16:41:13'),
-(33, 1, 1, 6, '2024-06-05 16:41:13'),
-(34, 1, 1, 6, '2024-06-05 16:41:13'),
-(35, 1, 1, 6, '2024-06-05 16:41:13'),
-(36, 1, 1, 6, '2024-06-05 16:41:13'),
-(37, 1, 1, 6, '2024-06-05 16:41:13'),
-(38, 1, 1, 6, '2024-06-05 16:41:13'),
-(39, 1, 1, 6, '2024-06-05 16:41:13'),
-(40, 1, 1, 6, '2024-06-05 16:41:13'),
-(41, 1, 1, 6, '2024-06-05 16:41:13'),
-(42, 1, 1, 7, '2024-06-06 13:12:52'),
-(43, 1, 1, 7, '2024-06-06 13:12:52'),
-(44, 1, 1, 7, '2024-06-06 13:12:52'),
-(45, 1, 1, 7, '2024-06-06 13:12:52'),
-(46, 1, 1, 7, '2024-06-06 13:12:52'),
-(47, 1, 1, 7, '2024-06-06 13:12:53'),
-(48, 1, 1, 7, '2024-06-06 13:12:53'),
-(49, 1, 1, 7, '2024-06-06 13:12:53'),
-(50, 1, 1, 7, '2024-06-06 13:12:53'),
-(51, 1, 1, 7, '2024-06-06 13:12:53'),
-(52, 1, 1, 7, '2024-06-06 13:12:53'),
-(53, 1, 1, 7, '2024-06-06 13:12:53'),
-(54, 1, 1, 7, '2024-06-06 13:12:53'),
-(55, 1, 1, 7, '2024-06-06 13:12:53'),
-(56, 1, 1, 7, '2024-06-06 13:12:53'),
-(57, 1, 1, 7, '2024-06-06 13:12:53'),
-(58, 1, 1, 7, '2024-06-06 13:12:53'),
-(59, 1, 1, 7, '2024-06-06 13:12:53'),
-(60, 1, 1, 7, '2024-06-06 13:12:53'),
-(61, 1, 1, 7, '2024-06-06 13:12:53'),
-(62, 1, 1, 15, '2024-06-06 14:04:00'),
-(63, 1, 1, 15, '2024-06-06 14:04:11'),
-(64, 1, 1, 15, '2024-06-06 14:04:12'),
-(65, 1, 1, 15, '2024-06-06 14:04:12'),
-(66, 1, 1, 15, '2024-06-06 14:04:12'),
-(67, 1, 1, 15, '2024-06-06 14:04:12'),
-(68, 1, 1, 15, '2024-06-06 14:04:12'),
-(69, 1, 1, 15, '2024-06-06 14:04:12'),
-(70, 1, 1, 15, '2024-06-06 14:04:12'),
-(71, 1, 1, 15, '2024-06-06 14:04:12'),
-(72, 1, 1, 15, '2024-06-06 14:04:12'),
-(73, 1, 1, 15, '2024-06-06 14:04:12'),
-(74, 1, 1, 15, '2024-06-06 14:04:12'),
-(75, 1, 1, 15, '2024-06-06 14:04:12'),
-(76, 1, 1, 15, '2024-06-06 14:04:12'),
-(77, 1, 1, 15, '2024-06-06 14:04:12'),
-(78, 1, 1, 15, '2024-06-06 14:04:12'),
-(79, 1, 1, 15, '2024-06-06 14:04:13'),
-(80, 1, 1, 15, '2024-06-06 14:04:13'),
-(81, 1, 1, 15, '2024-06-06 14:04:13'),
-(82, 1, 1, 16, '2024-06-06 14:08:41'),
-(83, 1, 1, 16, '2024-06-06 14:08:41'),
-(84, 1, 1, 16, '2024-06-06 14:08:41'),
-(85, 1, 1, 16, '2024-06-06 14:08:42'),
-(86, 1, 1, 16, '2024-06-06 14:08:42'),
-(87, 1, 1, 16, '2024-06-06 14:08:42'),
-(88, 1, 1, 16, '2024-06-06 14:08:42'),
-(89, 1, 1, 16, '2024-06-06 14:08:42'),
-(90, 1, 1, 16, '2024-06-06 14:08:42'),
-(91, 1, 1, 16, '2024-06-06 14:08:42'),
-(92, 1, 1, 16, '2024-06-06 14:08:42'),
-(93, 1, 1, 16, '2024-06-06 14:08:42'),
-(94, 1, 1, 16, '2024-06-06 14:08:42'),
-(95, 1, 1, 16, '2024-06-06 14:08:42'),
-(96, 1, 1, 16, '2024-06-06 14:08:42'),
-(97, 1, 1, 16, '2024-06-06 14:08:42'),
-(98, 1, 1, 16, '2024-06-06 14:08:42'),
-(99, 1, 1, 16, '2024-06-06 14:08:42'),
-(100, 1, 1, 16, '2024-06-06 14:08:42'),
-(101, 1, 1, 16, '2024-06-06 14:08:42'),
-(102, 1, 1, 17, '2024-06-06 14:10:10'),
-(103, 1, 1, 17, '2024-06-06 14:10:10'),
-(104, 1, 1, 17, '2024-06-06 14:10:11'),
-(105, 1, 1, 17, '2024-06-06 14:10:11'),
-(106, 1, 1, 17, '2024-06-06 14:10:11'),
-(107, 1, 1, 17, '2024-06-06 14:10:11'),
-(108, 1, 1, 17, '2024-06-06 14:10:11'),
-(109, 1, 1, 17, '2024-06-06 14:10:11'),
-(110, 1, 1, 17, '2024-06-06 14:10:11'),
-(111, 1, 1, 17, '2024-06-06 14:10:11'),
-(112, 1, 1, 17, '2024-06-06 14:10:11'),
-(113, 1, 1, 17, '2024-06-06 14:10:11'),
-(114, 1, 1, 17, '2024-06-06 14:10:11'),
-(115, 1, 1, 17, '2024-06-06 14:10:11'),
-(116, 1, 1, 17, '2024-06-06 14:10:11'),
-(117, 1, 1, 17, '2024-06-06 14:10:11'),
-(118, 1, 1, 17, '2024-06-06 14:10:11'),
-(119, 1, 1, 17, '2024-06-06 14:10:11'),
-(120, 1, 1, 17, '2024-06-06 14:10:11'),
-(121, 1, 1, 17, '2024-06-06 14:10:11'),
-(122, 1, 1, 18, '2024-06-06 14:12:10'),
-(123, 1, 1, 18, '2024-06-06 14:12:10'),
-(124, 1, 1, 18, '2024-06-06 14:12:10'),
-(125, 1, 1, 18, '2024-06-06 14:12:10'),
-(126, 1, 1, 18, '2024-06-06 14:12:10'),
-(127, 1, 1, 18, '2024-06-06 14:12:10'),
-(128, 1, 1, 18, '2024-06-06 14:12:10'),
-(129, 1, 1, 18, '2024-06-06 14:12:10'),
-(130, 1, 1, 18, '2024-06-06 14:12:10'),
-(131, 1, 1, 18, '2024-06-06 14:12:10'),
-(132, 1, 1, 18, '2024-06-06 14:12:10'),
-(133, 1, 1, 18, '2024-06-06 14:12:10'),
-(134, 1, 1, 18, '2024-06-06 14:12:10'),
-(135, 1, 1, 18, '2024-06-06 14:12:10'),
-(136, 1, 1, 18, '2024-06-06 14:12:10'),
-(137, 1, 1, 18, '2024-06-06 14:12:10'),
-(138, 1, 1, 18, '2024-06-06 14:12:10'),
-(139, 1, 1, 18, '2024-06-06 14:12:10'),
-(140, 1, 1, 18, '2024-06-06 14:12:10'),
-(141, 1, 1, 18, '2024-06-06 14:12:10'),
-(142, 1, 1, 22, '2024-06-07 13:05:39'),
-(143, 1, 1, 22, '2024-06-07 13:05:39'),
-(144, 1, 1, 22, '2024-06-07 13:05:39'),
-(145, 1, 1, 22, '2024-06-07 13:05:39'),
-(146, 1, 1, 22, '2024-06-07 13:05:39'),
-(147, 1, 1, 22, '2024-06-07 13:05:39'),
-(148, 1, 1, 22, '2024-06-07 13:05:39'),
-(149, 1, 1, 22, '2024-06-07 13:05:40'),
-(150, 1, 1, 22, '2024-06-07 13:05:40'),
-(151, 1, 1, 22, '2024-06-07 13:05:40'),
-(152, 1, 1, 22, '2024-06-07 13:05:40'),
-(153, 1, 1, 22, '2024-06-07 13:05:40'),
-(154, 1, 1, 22, '2024-06-07 13:05:40'),
-(155, 1, 1, 22, '2024-06-07 13:05:40'),
-(156, 1, 1, 22, '2024-06-07 13:05:40'),
-(157, 1, 1, 22, '2024-06-07 13:05:40'),
-(158, 1, 1, 22, '2024-06-07 13:05:40'),
-(159, 1, 1, 22, '2024-06-07 13:05:40'),
-(160, 1, 1, 22, '2024-06-07 13:05:40'),
-(161, 1, 1, 22, '2024-06-07 13:05:40'),
-(162, 1, 1, 23, '2024-06-07 13:07:25'),
-(163, 1, 1, 23, '2024-06-11 06:53:21'),
-(164, 1, 1, 23, '2024-06-07 13:07:26'),
-(165, 1, 1, 23, '2024-06-07 13:07:26'),
-(166, 1, 1, 23, '2024-06-11 06:53:22'),
-(167, 1, 1, 23, '2024-06-11 06:53:25'),
-(168, 1, 1, 23, '2024-06-11 06:53:26'),
-(169, 1, 1, 23, '2024-06-11 06:53:24'),
-(170, 1, 1, 23, '2024-06-11 06:53:24'),
-(171, 1, 1, 23, '2024-06-07 13:07:26'),
-(172, 1, 1, 23, '2024-06-11 06:53:26'),
-(173, 1, 1, 23, '2024-06-07 13:07:26'),
-(174, 1, 1, 23, '2024-06-07 13:07:26'),
-(175, 1, 1, 23, '2024-06-11 06:53:23'),
-(176, 1, 1, 23, '2024-06-11 06:53:27'),
-(177, 1, 1, 23, '2024-06-11 06:53:29'),
-(178, 1, 1, 23, '2024-06-07 13:07:27'),
-(179, 1, 1, 23, '2024-06-11 06:53:27'),
-(180, 1, 1, 23, '2024-06-11 06:53:28'),
-(181, 1, 1, 23, '2024-06-07 13:07:27'),
-(182, 1, 1, 24, '2024-06-07 13:09:01'),
-(183, 1, 1, 24, '2024-06-07 13:09:01'),
-(184, 1, 1, 24, '2024-06-07 13:09:01'),
-(185, 1, 1, 24, '2024-06-07 13:09:01'),
-(186, 1, 1, 24, '2024-06-07 13:09:01'),
-(187, 1, 1, 24, '2024-06-07 13:09:02'),
-(188, 1, 1, 24, '2024-06-07 13:09:02'),
-(189, 1, 1, 24, '2024-06-07 13:09:02'),
-(190, 1, 1, 24, '2024-06-07 13:09:02'),
-(191, 1, 1, 24, '2024-06-07 13:09:02'),
-(192, 1, 1, 24, '2024-06-07 13:09:02'),
-(193, 1, 1, 24, '2024-06-07 13:09:02'),
-(194, 1, 1, 24, '2024-06-07 13:09:02'),
-(195, 1, 1, 24, '2024-06-07 13:09:02'),
-(196, 1, 1, 24, '2024-06-07 13:09:02'),
-(197, 1, 1, 24, '2024-06-07 13:09:02'),
-(198, 1, 1, 24, '2024-06-07 13:09:02'),
-(199, 1, 1, 24, '2024-06-07 13:09:02'),
-(200, 1, 1, 24, '2024-06-07 13:09:02'),
-(201, 1, 1, 24, '2024-06-07 13:09:02'),
-(202, 1, 1, 25, '2024-06-11 06:24:05'),
-(203, 1, 1, 25, '2024-06-11 06:24:06'),
-(204, 1, 1, 25, '2024-06-11 06:24:07'),
-(205, 1, 1, 25, '2024-06-11 06:24:09'),
-(206, 1, 1, 25, '2024-06-11 06:24:08'),
-(207, 1, 1, 25, '2024-06-11 06:24:12'),
-(208, 1, 1, 25, '2024-06-11 06:24:15'),
-(209, 1, 1, 25, '2024-06-11 06:24:12'),
-(210, 1, 1, 25, '2024-06-11 06:24:11'),
-(211, 1, 1, 25, '2024-06-11 06:24:13'),
-(212, 1, 1, 25, '2024-06-11 06:24:14'),
-(213, 1, 1, 25, '2024-06-11 06:24:16'),
-(214, 1, 1, 25, '2024-06-11 06:24:18'),
-(215, 1, 1, 25, '2024-06-11 06:24:10'),
-(216, 1, 1, 25, '2024-06-11 06:24:17'),
-(217, 1, 1, 25, '2024-06-11 06:24:22'),
-(218, 1, 1, 25, '2024-06-11 06:24:20'),
-(219, 1, 1, 25, '2024-06-11 06:24:18'),
-(220, 1, 1, 25, '2024-06-11 06:24:19'),
-(221, 1, 1, 25, '2024-06-07 13:11:41'),
-(222, 1, 1, 26, '2024-06-07 13:14:04'),
-(223, 1, 1, 26, '2024-06-07 13:14:04'),
-(224, 1, 1, 26, '2024-06-07 13:14:04'),
-(225, 1, 1, 26, '2024-06-07 13:14:05'),
-(226, 1, 1, 26, '2024-06-07 13:14:05'),
-(227, 1, 1, 26, '2024-06-07 13:14:05'),
-(228, 1, 1, 26, '2024-06-07 13:14:05'),
-(229, 1, 1, 26, '2024-06-07 13:14:05'),
-(230, 1, 1, 26, '2024-06-07 13:14:05'),
-(231, 1, 1, 26, '2024-06-07 13:14:05'),
-(232, 1, 1, 26, '2024-06-07 13:14:05'),
-(233, 1, 1, 26, '2024-06-07 13:14:05'),
-(234, 1, 1, 26, '2024-06-07 13:14:05'),
-(235, 1, 1, 26, '2024-06-07 13:14:05'),
-(236, 1, 1, 26, '2024-06-07 13:14:05'),
-(237, 1, 1, 26, '2024-06-07 13:14:05'),
-(238, 1, 1, 26, '2024-06-07 13:14:05'),
-(239, 1, 1, 26, '2024-06-07 13:14:05'),
-(240, 1, 1, 26, '2024-06-07 13:14:05'),
-(241, 1, 1, 26, '2024-06-07 13:14:05'),
-(242, 1, 1, 28, '2024-06-07 13:17:10'),
-(243, 1, 1, 28, '2024-06-07 13:17:10'),
-(244, 1, 1, 28, '2024-06-07 13:17:10'),
-(245, 1, 1, 28, '2024-06-07 13:17:10'),
-(246, 1, 1, 28, '2024-06-07 13:17:10'),
-(247, 1, 1, 28, '2024-06-07 13:17:10'),
-(248, 1, 1, 28, '2024-06-07 13:17:10'),
-(249, 1, 1, 28, '2024-06-07 13:17:10'),
-(250, 1, 1, 28, '2024-06-07 13:17:10'),
-(251, 1, 1, 28, '2024-06-07 13:17:10'),
-(252, 1, 1, 28, '2024-06-07 13:17:10'),
-(253, 1, 1, 28, '2024-06-07 13:17:10'),
-(254, 1, 1, 28, '2024-06-07 13:17:10'),
-(255, 1, 1, 28, '2024-06-07 13:17:10'),
-(256, 1, 1, 28, '2024-06-07 13:17:11'),
-(257, 1, 1, 28, '2024-06-07 13:17:11'),
-(258, 1, 1, 28, '2024-06-07 13:17:11'),
-(259, 1, 1, 28, '2024-06-07 13:17:11'),
-(260, 1, 1, 28, '2024-06-07 13:17:11'),
-(261, 1, 1, 28, '2024-06-07 13:17:11'),
-(262, 1, 1, 33, '2024-06-11 06:24:21'),
-(263, 1, 1, 33, '2024-06-10 16:54:21'),
-(264, 1, 1, 38, '2024-06-11 06:53:29');
-
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `item_details`
+-- Table structure for table `item_details`
 --
 
 CREATE TABLE `item_details` (
@@ -558,1596 +240,10 @@ CREATE TABLE `item_details` (
   `is_primary_key` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Đang đổ dữ liệu cho bảng `item_details`
---
-
-INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`) VALUES
-(1, 2, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(2, 2, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(3, 2, 'Giá sản phẩm', '13790000', 0),
-(4, 2, 'Khuyến mãi', '\n          Giảm 27%\n        ', 0),
-(5, 2, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(6, 2, 'Số sao đánh giá', '5', 0),
-(7, 3, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s24-ultra.html', 1),
-(8, 3, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(9, 3, 'Giá sản phẩm', '29990000', 0),
-(10, 3, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(11, 3, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(12, 3, 'Số sao đánh giá', '0', 0),
-(13, 4, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(14, 4, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(15, 4, 'Giá sản phẩm', '19390000', 0),
-(16, 4, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(17, 4, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(18, 4, 'Số sao đánh giá', '5', 0),
-(19, 5, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1),
-(20, 5, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(21, 5, 'Giá sản phẩm', '9990000', 0),
-(22, 5, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(23, 5, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(24, 5, 'Số sao đánh giá', '5', 0),
-(25, 6, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13.html', 1),
-(26, 6, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(27, 6, 'Giá sản phẩm', '4690000', 0),
-(28, 6, 'Khuyến mãi', '\n          Giảm 4%\n        ', 0),
-(29, 6, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(30, 6, 'Số sao đánh giá', '5', 0),
-(31, 7, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-ultra.html', 1),
-(32, 7, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(33, 7, 'Giá sản phẩm', '23990000', 0),
-(34, 7, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(35, 7, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(36, 7, 'Số sao đánh giá', '5', 0),
-(37, 8, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(38, 8, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(39, 8, 'Giá sản phẩm', '29490000', 0),
-(40, 8, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(41, 8, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(42, 8, 'Số sao đánh giá', '5', 0),
-(43, 9, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1),
-(44, 9, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(45, 9, 'Giá sản phẩm', '8490000', 0),
-(46, 9, 'Khuyến mãi', '\n          Giảm 6%\n        ', 0),
-(47, 9, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(48, 9, 'Số sao đánh giá', '5', 0),
-(49, 10, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(50, 10, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(51, 10, 'Giá sản phẩm', '26590000', 0),
-(52, 10, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(53, 10, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(54, 10, 'Số sao đánh giá', '5', 0),
-(55, 11, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro.html', 1),
-(56, 11, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(57, 11, 'Giá sản phẩm', '5990000', 0),
-(58, 11, 'Khuyến mãi', '\n          Giảm 18%\n        ', 0),
-(59, 11, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(60, 11, 'Số sao đánh giá', '5', 0),
-(61, 12, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(62, 12, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(63, 12, 'Giá sản phẩm', '25490000', 0),
-(64, 12, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(65, 12, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(66, 12, 'Số sao đánh giá', '5', 0),
-(67, 13, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(68, 13, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(69, 13, 'Giá sản phẩm', '22190000', 0),
-(70, 13, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(71, 13, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(72, 13, 'Số sao đánh giá', '5', 0),
-(73, 14, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1),
-(74, 14, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(75, 14, 'Giá sản phẩm', '5590000', 0),
-(76, 14, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(77, 14, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(78, 14, 'Số sao đánh giá', '5', 0),
-(79, 15, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//nubia-neo-2.html', 1),
-(80, 15, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(81, 15, 'Giá sản phẩm', '4990000', 0),
-(82, 15, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(83, 15, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(84, 15, 'Số sao đánh giá', '5', 0),
-(85, 16, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(86, 16, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(87, 16, 'Giá sản phẩm', '8590000', 0),
-(88, 16, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(89, 16, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(90, 16, 'Số sao đánh giá', '5', 0),
-(91, 17, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-14-ultra.html', 1),
-(92, 17, 'Tên sản phẩm', 'Xiaomi 14 Ultra 5G (16GB 512GB)', 0),
-(93, 17, 'Giá sản phẩm', '29990000', 0),
-(94, 17, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(95, 17, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_3.png', 0),
-(96, 17, 'Số sao đánh giá', '5', 0),
-(97, 18, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13-pro-max.html', 1),
-(98, 18, 'Tên sản phẩm', 'iPhone 13 Pro Max 128GB | Chính hãng VN/A', 0),
-(99, 18, 'Giá sản phẩm', '22990000', 0),
-(100, 18, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(101, 18, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13-pro-max.png', 0),
-(102, 18, 'Số sao đánh giá', '5', 0),
-(103, 19, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(104, 19, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(105, 19, 'Giá sản phẩm', '8290000', 0),
-(106, 19, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(107, 19, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(108, 19, 'Số sao đánh giá', '5', 0),
-(109, 20, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a15.html', 1),
-(110, 20, 'Tên sản phẩm', 'Samsung Galaxy A15 LTE 8GB 128GB', 0),
-(111, 20, 'Giá sản phẩm', '4490000', 0),
-(112, 20, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(113, 20, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-a15-xanh-01.png', 0),
-(114, 20, 'Số sao đánh giá', '5', 0),
-(115, 21, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a54.html', 1),
-(116, 21, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(117, 21, 'Giá sản phẩm', '8290000', 0),
-(118, 21, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(119, 21, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(120, 21, 'Số sao đánh giá', '5', 0),
-(121, 22, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(122, 22, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(123, 22, 'Giá sản phẩm', '13490000', 0),
-(124, 22, 'Khuyến mãi', '\n          Giảm 29%\n        ', 0),
-(125, 22, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(126, 22, 'Số sao đánh giá', '5', 0),
-(127, 23, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s24-ultra.html', 1),
-(128, 23, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(129, 23, 'Giá sản phẩm', '29990000', 0),
-(130, 23, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(131, 23, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(132, 23, 'Số sao đánh giá', '0', 0),
-(133, 24, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(134, 24, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(135, 24, 'Giá sản phẩm', '19190000', 0),
-(136, 24, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(137, 24, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(138, 24, 'Số sao đánh giá', '5', 0),
-(139, 25, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1),
-(140, 25, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(141, 25, 'Giá sản phẩm', '9990000', 0),
-(142, 25, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(143, 25, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(144, 25, 'Số sao đánh giá', '5', 0),
-(145, 26, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13.html', 1),
-(146, 26, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(147, 26, 'Giá sản phẩm', '4690000', 0),
-(148, 26, 'Khuyến mãi', '\n          Giảm 4%\n        ', 0),
-(149, 26, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(150, 26, 'Số sao đánh giá', '5', 0),
-(151, 27, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-ultra.html', 1),
-(152, 27, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(153, 27, 'Giá sản phẩm', '23990000', 0),
-(154, 27, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(155, 27, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(156, 27, 'Số sao đánh giá', '5', 0),
-(157, 28, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(158, 28, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(159, 28, 'Giá sản phẩm', '29390000', 0),
-(160, 28, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(161, 28, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(162, 28, 'Số sao đánh giá', '5', 0),
-(163, 29, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1),
-(164, 29, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(165, 29, 'Giá sản phẩm', '8490000', 0),
-(166, 29, 'Khuyến mãi', '\n          Giảm 6%\n        ', 0),
-(167, 29, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(168, 29, 'Số sao đánh giá', '5', 0),
-(169, 30, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(170, 30, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(171, 30, 'Giá sản phẩm', '26590000', 0),
-(172, 30, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(173, 30, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(174, 30, 'Số sao đánh giá', '5', 0),
-(175, 31, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro.html', 1),
-(176, 31, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(177, 31, 'Giá sản phẩm', '5990000', 0),
-(178, 31, 'Khuyến mãi', '\n          Giảm 18%\n        ', 0),
-(179, 31, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(180, 31, 'Số sao đánh giá', '5', 0),
-(181, 32, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(182, 32, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(183, 32, 'Giá sản phẩm', '25690000', 0),
-(184, 32, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(185, 32, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(186, 32, 'Số sao đánh giá', '5', 0),
-(187, 33, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(188, 33, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(189, 33, 'Giá sản phẩm', '21990000', 0),
-(190, 33, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(191, 33, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(192, 33, 'Số sao đánh giá', '5', 0),
-(193, 34, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1),
-(194, 34, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(195, 34, 'Giá sản phẩm', '5590000', 0),
-(196, 34, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(197, 34, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(198, 34, 'Số sao đánh giá', '5', 0),
-(199, 35, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//nubia-neo-2.html', 1),
-(200, 35, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(201, 35, 'Giá sản phẩm', '4990000', 0),
-(202, 35, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(203, 35, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(204, 35, 'Số sao đánh giá', '5', 0),
-(205, 36, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(206, 36, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(207, 36, 'Giá sản phẩm', '8690000', 0),
-(208, 36, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(209, 36, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(210, 36, 'Số sao đánh giá', '5', 0),
-(211, 37, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-14-ultra.html', 1),
-(212, 37, 'Tên sản phẩm', 'Xiaomi 14 Ultra 5G (16GB 512GB)', 0),
-(213, 37, 'Giá sản phẩm', '29990000', 0),
-(214, 37, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(215, 37, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_3.png', 0),
-(216, 37, 'Số sao đánh giá', '5', 0),
-(217, 38, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13-pro-max.html', 1),
-(218, 38, 'Tên sản phẩm', 'iPhone 13 Pro Max 128GB | Chính hãng VN/A', 0),
-(219, 38, 'Giá sản phẩm', '22990000', 0),
-(220, 38, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(221, 38, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13-pro-max.png', 0),
-(222, 38, 'Số sao đánh giá', '5', 0),
-(223, 39, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(224, 39, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(225, 39, 'Giá sản phẩm', '8290000', 0),
-(226, 39, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(227, 39, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(228, 39, 'Số sao đánh giá', '5', 0),
-(229, 40, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a15.html', 1),
-(230, 40, 'Tên sản phẩm', 'Samsung Galaxy A15 LTE 8GB 128GB', 0),
-(231, 40, 'Giá sản phẩm', '4490000', 0),
-(232, 40, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(233, 40, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-a15-xanh-01.png', 0),
-(234, 40, 'Số sao đánh giá', '5', 0),
-(235, 41, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a54.html', 1),
-(236, 41, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(237, 41, 'Giá sản phẩm', '8290000', 0),
-(238, 41, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(239, 41, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(240, 41, 'Số sao đánh giá', '5', 0),
-(241, 42, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(242, 42, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(243, 42, 'Giá sản phẩm', '13590000', 0),
-(244, 42, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(245, 42, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(246, 42, 'Số sao đánh giá', '5', 0),
-(247, 43, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(248, 43, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(249, 43, 'Giá sản phẩm', '29390000', 0),
-(250, 43, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(251, 43, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(252, 43, 'Số sao đánh giá', '5', 0),
-(253, 44, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s24-ultra.html', 1),
-(254, 44, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(255, 44, 'Giá sản phẩm', '29990000', 0),
-(256, 44, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(257, 44, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(258, 44, 'Số sao đánh giá', '0', 0),
-(259, 45, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(260, 45, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(261, 45, 'Giá sản phẩm', '19190000', 0),
-(262, 45, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(263, 45, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(264, 45, 'Số sao đánh giá', '5', 0),
-(265, 46, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1),
-(266, 46, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(267, 46, 'Giá sản phẩm', '9990000', 0),
-(268, 46, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(269, 46, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(270, 46, 'Số sao đánh giá', '5', 0),
-(271, 47, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13.html', 1),
-(272, 47, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(273, 47, 'Giá sản phẩm', '4690000', 0),
-(274, 47, 'Khuyến mãi', '\n          Giảm 4%\n        ', 0),
-(275, 47, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(276, 47, 'Số sao đánh giá', '5', 0),
-(277, 48, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1),
-(278, 48, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(279, 48, 'Giá sản phẩm', '8490000', 0),
-(280, 48, 'Khuyến mãi', '\n          Giảm 6%\n        ', 0),
-(281, 48, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(282, 48, 'Số sao đánh giá', '5', 0),
-(283, 49, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-ultra.html', 1),
-(284, 49, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(285, 49, 'Giá sản phẩm', '23990000', 0),
-(286, 49, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(287, 49, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(288, 49, 'Số sao đánh giá', '0', 0),
-(289, 50, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1),
-(290, 50, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(291, 50, 'Giá sản phẩm', '5590000', 0),
-(292, 50, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(293, 50, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(294, 50, 'Số sao đánh giá', '5', 0),
-(295, 51, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(296, 51, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(297, 51, 'Giá sản phẩm', '26590000', 0),
-(298, 51, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(299, 51, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(300, 51, 'Số sao đánh giá', '5', 0),
-(301, 52, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro.html', 1),
-(302, 52, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(303, 52, 'Giá sản phẩm', '6590000', 0),
-(304, 52, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(305, 52, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(306, 52, 'Số sao đánh giá', '5', 0),
-(307, 53, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(308, 53, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(309, 53, 'Giá sản phẩm', '25490000', 0),
-(310, 53, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(311, 53, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(312, 53, 'Số sao đánh giá', '5', 0),
-(313, 54, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(314, 54, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(315, 54, 'Giá sản phẩm', '21990000', 0),
-(316, 54, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(317, 54, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(318, 54, 'Số sao đánh giá', '5', 0),
-(319, 55, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//nubia-neo-2.html', 1),
-(320, 55, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(321, 55, 'Giá sản phẩm', '4990000', 0),
-(322, 55, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(323, 55, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(324, 55, 'Số sao đánh giá', '5', 0),
-(325, 56, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(326, 56, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(327, 56, 'Giá sản phẩm', '8680000', 0),
-(328, 56, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(329, 56, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(330, 56, 'Số sao đánh giá', '5', 0),
-(331, 57, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(332, 57, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(333, 57, 'Giá sản phẩm', '8290000', 0),
-(334, 57, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(335, 57, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(336, 57, 'Số sao đánh giá', '5', 0),
-(337, 58, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-14-ultra.html', 1),
-(338, 58, 'Tên sản phẩm', 'Xiaomi 14 Ultra 5G (16GB 512GB)', 0),
-(339, 58, 'Giá sản phẩm', '26990000', 0),
-(340, 58, 'Khuyến mãi', '\n          Giảm 18%\n        ', 0),
-(341, 58, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_3.png', 0),
-(342, 58, 'Số sao đánh giá', '5', 0),
-(343, 59, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13-pro-max.html', 1),
-(344, 59, 'Tên sản phẩm', 'iPhone 13 Pro Max 128GB | Chính hãng VN/A', 0),
-(345, 59, 'Giá sản phẩm', '22990000', 0),
-(346, 59, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(347, 59, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13-pro-max.png', 0),
-(348, 59, 'Số sao đánh giá', '5', 0),
-(349, 60, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-128gb.html', 1),
-(350, 60, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(351, 60, 'Giá sản phẩm', '13490000', 0),
-(352, 60, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0),
-(353, 60, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(354, 60, 'Số sao đánh giá', '5', 0),
-(355, 61, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a54.html', 1),
-(356, 61, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(357, 61, 'Giá sản phẩm', '8290000', 0),
-(358, 61, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(359, 61, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(360, 61, 'Số sao đánh giá', '5', 0),
-(361, 62, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(362, 62, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(363, 62, 'Giá sản phẩm', '13590000', 0),
-(364, 62, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(365, 62, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(366, 62, 'Số sao đánh giá', '5', 0),
-(367, 63, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(368, 63, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(369, 63, 'Giá sản phẩm', '29390000', 0),
-(370, 63, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(371, 63, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(372, 63, 'Số sao đánh giá', '5', 0),
-(373, 64, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s24-ultra.html', 1),
-(374, 64, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(375, 64, 'Giá sản phẩm', '29990000', 0),
-(376, 64, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(377, 64, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(378, 64, 'Số sao đánh giá', '0', 0),
-(379, 65, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(380, 65, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(381, 65, 'Giá sản phẩm', '19190000', 0),
-(382, 65, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(383, 65, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(384, 65, 'Số sao đánh giá', '5', 0),
-(385, 66, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1),
-(386, 66, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(387, 66, 'Giá sản phẩm', '9990000', 0),
-(388, 66, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(389, 66, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(390, 66, 'Số sao đánh giá', '5', 0),
-(391, 67, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13.html', 1),
-(392, 67, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(393, 67, 'Giá sản phẩm', '4690000', 0),
-(394, 67, 'Khuyến mãi', '\n          Giảm 4%\n        ', 0),
-(395, 67, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(396, 67, 'Số sao đánh giá', '5', 0),
-(397, 68, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1),
-(398, 68, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(399, 68, 'Giá sản phẩm', '8490000', 0),
-(400, 68, 'Khuyến mãi', '\n          Giảm 6%\n        ', 0),
-(401, 68, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(402, 68, 'Số sao đánh giá', '5', 0),
-(403, 69, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-ultra.html', 1),
-(404, 69, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(405, 69, 'Giá sản phẩm', '23990000', 0),
-(406, 69, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(407, 69, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(408, 69, 'Số sao đánh giá', '0', 0),
-(409, 70, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1),
-(410, 70, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(411, 70, 'Giá sản phẩm', '5590000', 0),
-(412, 70, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(413, 70, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(414, 70, 'Số sao đánh giá', '5', 0),
-(415, 71, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(416, 71, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(417, 71, 'Giá sản phẩm', '26590000', 0),
-(418, 71, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(419, 71, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(420, 71, 'Số sao đánh giá', '5', 0),
-(421, 72, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro.html', 1),
-(422, 72, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(423, 72, 'Giá sản phẩm', '6590000', 0),
-(424, 72, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(425, 72, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(426, 72, 'Số sao đánh giá', '5', 0),
-(427, 73, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(428, 73, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(429, 73, 'Giá sản phẩm', '25490000', 0),
-(430, 73, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(431, 73, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(432, 73, 'Số sao đánh giá', '5', 0),
-(433, 74, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(434, 74, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(435, 74, 'Giá sản phẩm', '21990000', 0),
-(436, 74, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(437, 74, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(438, 74, 'Số sao đánh giá', '5', 0),
-(439, 75, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//nubia-neo-2.html', 1),
-(440, 75, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(441, 75, 'Giá sản phẩm', '4990000', 0),
-(442, 75, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(443, 75, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(444, 75, 'Số sao đánh giá', '5', 0),
-(445, 76, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(446, 76, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(447, 76, 'Giá sản phẩm', '8680000', 0),
-(448, 76, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(449, 76, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(450, 76, 'Số sao đánh giá', '5', 0),
-(451, 77, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(452, 77, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(453, 77, 'Giá sản phẩm', '8290000', 0),
-(454, 77, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(455, 77, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(456, 77, 'Số sao đánh giá', '5', 0),
-(457, 78, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-14-ultra.html', 1),
-(458, 78, 'Tên sản phẩm', 'Xiaomi 14 Ultra 5G (16GB 512GB)', 0),
-(459, 78, 'Giá sản phẩm', '26990000', 0),
-(460, 78, 'Khuyến mãi', '\n          Giảm 18%\n        ', 0),
-(461, 78, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_3.png', 0),
-(462, 78, 'Số sao đánh giá', '5', 0),
-(463, 79, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-128gb.html', 1),
-(464, 79, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(465, 79, 'Giá sản phẩm', '13490000', 0),
-(466, 79, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0),
-(467, 79, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(468, 79, 'Số sao đánh giá', '5', 0),
-(469, 80, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a54.html', 1),
-(470, 80, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(471, 80, 'Giá sản phẩm', '8290000', 0),
-(472, 80, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(473, 80, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(474, 80, 'Số sao đánh giá', '5', 0),
-(475, 81, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//tecno-spark-20-pro-plus.html', 1),
-(476, 81, 'Tên sản phẩm', 'TECNO SPARK 20PRO+', 0),
-(477, 81, 'Giá sản phẩm', '5000000', 0),
-(478, 81, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(479, 81, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/tecno-spark-20-pro-plus_1__2.png', 0),
-(480, 81, 'Số sao đánh giá', '5', 0),
-(481, 82, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(482, 82, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(483, 82, 'Giá sản phẩm', '13590000', 0),
-(484, 82, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(485, 82, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(486, 82, 'Số sao đánh giá', '5', 0),
-(487, 83, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(488, 83, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(489, 83, 'Giá sản phẩm', '29390000', 0),
-(490, 83, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(491, 83, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(492, 83, 'Số sao đánh giá', '5', 0),
-(493, 84, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s24-ultra.html', 1),
-(494, 84, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(495, 84, 'Giá sản phẩm', '29990000', 0),
-(496, 84, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(497, 84, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(498, 84, 'Số sao đánh giá', '0', 0),
-(499, 85, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(500, 85, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(501, 85, 'Giá sản phẩm', '19190000', 0),
-(502, 85, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(503, 85, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(504, 85, 'Số sao đánh giá', '5', 0),
-(505, 86, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1),
-(506, 86, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(507, 86, 'Giá sản phẩm', '9990000', 0),
-(508, 86, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(509, 86, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(510, 86, 'Số sao đánh giá', '5', 0),
-(511, 87, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13.html', 1),
-(512, 87, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(513, 87, 'Giá sản phẩm', '4690000', 0),
-(514, 87, 'Khuyến mãi', '\n          Giảm 4%\n        ', 0),
-(515, 87, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(516, 87, 'Số sao đánh giá', '5', 0),
-(517, 88, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1),
-(518, 88, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(519, 88, 'Giá sản phẩm', '8490000', 0),
-(520, 88, 'Khuyến mãi', '\n          Giảm 6%\n        ', 0),
-(521, 88, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(522, 88, 'Số sao đánh giá', '5', 0),
-(523, 89, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-ultra.html', 1),
-(524, 89, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(525, 89, 'Giá sản phẩm', '23990000', 0),
-(526, 89, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(527, 89, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(528, 89, 'Số sao đánh giá', '0', 0),
-(529, 90, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1),
-(530, 90, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(531, 90, 'Giá sản phẩm', '5590000', 0),
-(532, 90, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(533, 90, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(534, 90, 'Số sao đánh giá', '5', 0),
-(535, 91, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(536, 91, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(537, 91, 'Giá sản phẩm', '26590000', 0),
-(538, 91, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(539, 91, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(540, 91, 'Số sao đánh giá', '5', 0),
-(541, 92, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro.html', 1),
-(542, 92, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(543, 92, 'Giá sản phẩm', '6590000', 0),
-(544, 92, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(545, 92, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(546, 92, 'Số sao đánh giá', '5', 0),
-(547, 93, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(548, 93, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(549, 93, 'Giá sản phẩm', '25490000', 0),
-(550, 93, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(551, 93, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(552, 93, 'Số sao đánh giá', '5', 0),
-(553, 94, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(554, 94, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(555, 94, 'Giá sản phẩm', '21990000', 0),
-(556, 94, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(557, 94, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(558, 94, 'Số sao đánh giá', '5', 0),
-(559, 95, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//nubia-neo-2.html', 1),
-(560, 95, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(561, 95, 'Giá sản phẩm', '4990000', 0),
-(562, 95, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(563, 95, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(564, 95, 'Số sao đánh giá', '5', 0),
-(565, 96, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(566, 96, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(567, 96, 'Giá sản phẩm', '8680000', 0),
-(568, 96, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(569, 96, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(570, 96, 'Số sao đánh giá', '5', 0),
-(571, 97, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(572, 97, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(573, 97, 'Giá sản phẩm', '8290000', 0),
-(574, 97, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(575, 97, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(576, 97, 'Số sao đánh giá', '5', 0),
-(577, 98, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-14-ultra.html', 1),
-(578, 98, 'Tên sản phẩm', 'Xiaomi 14 Ultra 5G (16GB 512GB)', 0),
-(579, 98, 'Giá sản phẩm', '26990000', 0),
-(580, 98, 'Khuyến mãi', '\n          Giảm 18%\n        ', 0),
-(581, 98, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_3.png', 0),
-(582, 98, 'Số sao đánh giá', '5', 0),
-(583, 99, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-128gb.html', 1),
-(584, 99, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(585, 99, 'Giá sản phẩm', '13490000', 0),
-(586, 99, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0),
-(587, 99, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(588, 99, 'Số sao đánh giá', '5', 0),
-(589, 100, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a54.html', 1),
-(590, 100, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(591, 100, 'Giá sản phẩm', '8290000', 0),
-(592, 100, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(593, 100, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(594, 100, 'Số sao đánh giá', '5', 0),
-(595, 101, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//tecno-spark-20-pro-plus.html', 1),
-(596, 101, 'Tên sản phẩm', 'TECNO SPARK 20PRO+', 0),
-(597, 101, 'Giá sản phẩm', '5000000', 0),
-(598, 101, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(599, 101, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/tecno-spark-20-pro-plus_1__2.png', 0),
-(600, 101, 'Số sao đánh giá', '5', 0),
-(601, 102, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(602, 102, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(603, 102, 'Giá sản phẩm', '13590000', 0),
-(604, 102, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(605, 102, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(606, 102, 'Số sao đánh giá', '5', 0),
-(607, 103, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(608, 103, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(609, 103, 'Giá sản phẩm', '29390000', 0),
-(610, 103, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(611, 103, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(612, 103, 'Số sao đánh giá', '5', 0),
-(613, 104, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s24-ultra.html', 1),
-(614, 104, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(615, 104, 'Giá sản phẩm', '29990000', 0),
-(616, 104, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(617, 104, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(618, 104, 'Số sao đánh giá', '0', 0),
-(619, 105, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(620, 105, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(621, 105, 'Giá sản phẩm', '19190000', 0),
-(622, 105, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(623, 105, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(624, 105, 'Số sao đánh giá', '5', 0),
-(625, 106, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1),
-(626, 106, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(627, 106, 'Giá sản phẩm', '9990000', 0),
-(628, 106, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(629, 106, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(630, 106, 'Số sao đánh giá', '5', 0),
-(631, 107, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13.html', 1),
-(632, 107, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(633, 107, 'Giá sản phẩm', '4690000', 0),
-(634, 107, 'Khuyến mãi', '\n          Giảm 4%\n        ', 0),
-(635, 107, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(636, 107, 'Số sao đánh giá', '5', 0),
-(637, 108, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1),
-(638, 108, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(639, 108, 'Giá sản phẩm', '8490000', 0),
-(640, 108, 'Khuyến mãi', '\n          Giảm 6%\n        ', 0),
-(641, 108, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(642, 108, 'Số sao đánh giá', '5', 0),
-(643, 109, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-ultra.html', 1),
-(644, 109, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(645, 109, 'Giá sản phẩm', '23990000', 0);
-INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`) VALUES
-(646, 109, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(647, 109, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(648, 109, 'Số sao đánh giá', '0', 0),
-(649, 110, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1),
-(650, 110, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(651, 110, 'Giá sản phẩm', '5590000', 0),
-(652, 110, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(653, 110, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(654, 110, 'Số sao đánh giá', '5', 0),
-(655, 111, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(656, 111, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(657, 111, 'Giá sản phẩm', '26590000', 0),
-(658, 111, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(659, 111, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(660, 111, 'Số sao đánh giá', '5', 0),
-(661, 112, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro.html', 1),
-(662, 112, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(663, 112, 'Giá sản phẩm', '6590000', 0),
-(664, 112, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(665, 112, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(666, 112, 'Số sao đánh giá', '5', 0),
-(667, 113, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(668, 113, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(669, 113, 'Giá sản phẩm', '25490000', 0),
-(670, 113, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(671, 113, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(672, 113, 'Số sao đánh giá', '5', 0),
-(673, 114, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(674, 114, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(675, 114, 'Giá sản phẩm', '21990000', 0),
-(676, 114, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(677, 114, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(678, 114, 'Số sao đánh giá', '5', 0),
-(679, 115, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//nubia-neo-2.html', 1),
-(680, 115, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(681, 115, 'Giá sản phẩm', '4990000', 0),
-(682, 115, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(683, 115, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(684, 115, 'Số sao đánh giá', '5', 0),
-(685, 116, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(686, 116, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(687, 116, 'Giá sản phẩm', '8680000', 0),
-(688, 116, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(689, 116, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(690, 116, 'Số sao đánh giá', '5', 0),
-(691, 117, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(692, 117, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(693, 117, 'Giá sản phẩm', '8290000', 0),
-(694, 117, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(695, 117, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(696, 117, 'Số sao đánh giá', '5', 0),
-(697, 118, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-14-ultra.html', 1),
-(698, 118, 'Tên sản phẩm', 'Xiaomi 14 Ultra 5G (16GB 512GB)', 0),
-(699, 118, 'Giá sản phẩm', '26990000', 0),
-(700, 118, 'Khuyến mãi', '\n          Giảm 18%\n        ', 0),
-(701, 118, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_3.png', 0),
-(702, 118, 'Số sao đánh giá', '5', 0),
-(703, 119, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-128gb.html', 1),
-(704, 119, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(705, 119, 'Giá sản phẩm', '13490000', 0),
-(706, 119, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0),
-(707, 119, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(708, 119, 'Số sao đánh giá', '5', 0),
-(709, 120, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a54.html', 1),
-(710, 120, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(711, 120, 'Giá sản phẩm', '8290000', 0),
-(712, 120, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(713, 120, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(714, 120, 'Số sao đánh giá', '5', 0),
-(715, 121, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//tecno-spark-20-pro-plus.html', 1),
-(716, 121, 'Tên sản phẩm', 'TECNO SPARK 20PRO+', 0),
-(717, 121, 'Giá sản phẩm', '5000000', 0),
-(718, 121, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(719, 121, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/tecno-spark-20-pro-plus_1__2.png', 0),
-(720, 121, 'Số sao đánh giá', '5', 0),
-(721, 122, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(722, 122, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(723, 122, 'Giá sản phẩm', '13590000', 0),
-(724, 122, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(725, 122, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(726, 122, 'Số sao đánh giá', '5', 0),
-(727, 123, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(728, 123, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(729, 123, 'Giá sản phẩm', '29390000', 0),
-(730, 123, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(731, 123, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(732, 123, 'Số sao đánh giá', '5', 0),
-(733, 124, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s24-ultra.html', 1),
-(734, 124, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(735, 124, 'Giá sản phẩm', '29990000', 0),
-(736, 124, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(737, 124, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(738, 124, 'Số sao đánh giá', '0', 0),
-(739, 125, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(740, 125, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(741, 125, 'Giá sản phẩm', '19190000', 0),
-(742, 125, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(743, 125, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(744, 125, 'Số sao đánh giá', '5', 0),
-(745, 126, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1),
-(746, 126, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(747, 126, 'Giá sản phẩm', '9990000', 0),
-(748, 126, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(749, 126, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(750, 126, 'Số sao đánh giá', '5', 0),
-(751, 127, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13.html', 1),
-(752, 127, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(753, 127, 'Giá sản phẩm', '4690000', 0),
-(754, 127, 'Khuyến mãi', '\n          Giảm 4%\n        ', 0),
-(755, 127, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(756, 127, 'Số sao đánh giá', '5', 0),
-(757, 128, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1),
-(758, 128, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(759, 128, 'Giá sản phẩm', '8490000', 0),
-(760, 128, 'Khuyến mãi', '\n          Giảm 6%\n        ', 0),
-(761, 128, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(762, 128, 'Số sao đánh giá', '5', 0),
-(763, 129, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-ultra.html', 1),
-(764, 129, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(765, 129, 'Giá sản phẩm', '23990000', 0),
-(766, 129, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(767, 129, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(768, 129, 'Số sao đánh giá', '0', 0),
-(769, 130, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1),
-(770, 130, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(771, 130, 'Giá sản phẩm', '5590000', 0),
-(772, 130, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(773, 130, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(774, 130, 'Số sao đánh giá', '5', 0),
-(775, 131, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(776, 131, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(777, 131, 'Giá sản phẩm', '26590000', 0),
-(778, 131, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(779, 131, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(780, 131, 'Số sao đánh giá', '5', 0),
-(781, 132, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro.html', 1),
-(782, 132, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(783, 132, 'Giá sản phẩm', '6590000', 0),
-(784, 132, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(785, 132, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(786, 132, 'Số sao đánh giá', '5', 0),
-(787, 133, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(788, 133, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(789, 133, 'Giá sản phẩm', '25490000', 0),
-(790, 133, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(791, 133, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(792, 133, 'Số sao đánh giá', '5', 0),
-(793, 134, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(794, 134, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(795, 134, 'Giá sản phẩm', '21990000', 0),
-(796, 134, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(797, 134, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(798, 134, 'Số sao đánh giá', '5', 0),
-(799, 135, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//nubia-neo-2.html', 1),
-(800, 135, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(801, 135, 'Giá sản phẩm', '4990000', 0),
-(802, 135, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(803, 135, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(804, 135, 'Số sao đánh giá', '5', 0),
-(805, 136, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(806, 136, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(807, 136, 'Giá sản phẩm', '8680000', 0),
-(808, 136, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(809, 136, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(810, 136, 'Số sao đánh giá', '5', 0),
-(811, 137, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(812, 137, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(813, 137, 'Giá sản phẩm', '8290000', 0),
-(814, 137, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(815, 137, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(816, 137, 'Số sao đánh giá', '5', 0),
-(817, 138, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-14-ultra.html', 1),
-(818, 138, 'Tên sản phẩm', 'Xiaomi 14 Ultra 5G (16GB 512GB)', 0),
-(819, 138, 'Giá sản phẩm', '26990000', 0),
-(820, 138, 'Khuyến mãi', '\n          Giảm 18%\n        ', 0),
-(821, 138, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_3.png', 0),
-(822, 138, 'Số sao đánh giá', '5', 0),
-(823, 139, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-128gb.html', 1),
-(824, 139, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(825, 139, 'Giá sản phẩm', '13490000', 0),
-(826, 139, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0),
-(827, 139, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(828, 139, 'Số sao đánh giá', '5', 0),
-(829, 140, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a54.html', 1),
-(830, 140, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(831, 140, 'Giá sản phẩm', '8290000', 0),
-(832, 140, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(833, 140, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(834, 140, 'Số sao đánh giá', '5', 0),
-(835, 141, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//tecno-spark-20-pro-plus.html', 1),
-(836, 141, 'Tên sản phẩm', 'TECNO SPARK 20PRO+', 0),
-(837, 141, 'Giá sản phẩm', '5000000', 0),
-(838, 141, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(839, 141, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/tecno-spark-20-pro-plus_1__2.png', 0),
-(840, 141, 'Số sao đánh giá', '5', 0),
-(841, 142, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(842, 142, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(843, 142, 'Giá sản phẩm', '13590000', 0),
-(844, 142, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(845, 142, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(846, 142, 'Số sao đánh giá', '5', 0),
-(847, 143, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s24-ultra.html', 1),
-(848, 143, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(849, 143, 'Giá sản phẩm', '29990000', 0),
-(850, 143, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(851, 143, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(852, 143, 'Số sao đánh giá', '0', 0),
-(853, 144, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(854, 144, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(855, 144, 'Giá sản phẩm', '29390000', 0),
-(856, 144, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(857, 144, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(858, 144, 'Số sao đánh giá', '5', 0),
-(859, 145, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(860, 145, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(861, 145, 'Giá sản phẩm', '19190000', 0),
-(862, 145, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(863, 145, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(864, 145, 'Số sao đánh giá', '5', 0),
-(865, 146, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1),
-(866, 146, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(867, 146, 'Giá sản phẩm', '9490000', 0),
-(868, 146, 'Khuyến mãi', '\n          Giảm 14%\n        ', 0),
-(869, 146, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(870, 146, 'Số sao đánh giá', '5', 0),
-(871, 147, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-ultra.html', 1),
-(872, 147, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(873, 147, 'Giá sản phẩm', '23990000', 0),
-(874, 147, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(875, 147, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(876, 147, 'Số sao đánh giá', '0', 0),
-(877, 148, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13.html', 1),
-(878, 148, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(879, 148, 'Giá sản phẩm', '4390000', 0),
-(880, 148, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(881, 148, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(882, 148, 'Số sao đánh giá', '5', 0),
-(883, 149, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1),
-(884, 149, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(885, 149, 'Giá sản phẩm', '8190000', 0),
-(886, 149, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(887, 149, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(888, 149, 'Số sao đánh giá', '5', 0),
-(889, 150, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1),
-(890, 150, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(891, 150, 'Giá sản phẩm', '5590000', 0),
-(892, 150, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(893, 150, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(894, 150, 'Số sao đánh giá', '5', 0),
-(895, 151, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(896, 151, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(897, 151, 'Giá sản phẩm', '26590000', 0),
-(898, 151, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(899, 151, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(900, 151, 'Số sao đánh giá', '5', 0),
-(901, 152, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro.html', 1),
-(902, 152, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(903, 152, 'Giá sản phẩm', '6290000', 0),
-(904, 152, 'Khuyến mãi', '\n          Giảm 14%\n        ', 0),
-(905, 152, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(906, 152, 'Số sao đánh giá', '5', 0),
-(907, 153, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(908, 153, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(909, 153, 'Giá sản phẩm', '21990000', 0),
-(910, 153, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(911, 153, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(912, 153, 'Số sao đánh giá', '5', 0),
-(913, 154, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(914, 154, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(915, 154, 'Giá sản phẩm', '25490000', 0),
-(916, 154, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(917, 154, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(918, 154, 'Số sao đánh giá', '5', 0),
-(919, 155, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-128gb.html', 1),
-(920, 155, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(921, 155, 'Giá sản phẩm', '13490000', 0),
-(922, 155, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0),
-(923, 155, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(924, 155, 'Số sao đánh giá', '5', 0),
-(925, 156, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(926, 156, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(927, 156, 'Giá sản phẩm', '8290000', 0),
-(928, 156, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(929, 156, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(930, 156, 'Số sao đánh giá', '5', 0),
-(931, 157, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//nubia-neo-2.html', 1),
-(932, 157, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(933, 157, 'Giá sản phẩm', '4990000', 0),
-(934, 157, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(935, 157, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(936, 157, 'Số sao đánh giá', '5', 0),
-(937, 158, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(938, 158, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(939, 158, 'Giá sản phẩm', '8680000', 0),
-(940, 158, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(941, 158, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(942, 158, 'Số sao đánh giá', '5', 0),
-(943, 159, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a54.html', 1),
-(944, 159, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(945, 159, 'Giá sản phẩm', '8290000', 0),
-(946, 159, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(947, 159, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(948, 159, 'Số sao đánh giá', '5', 0),
-(949, 160, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a15.html', 1),
-(950, 160, 'Tên sản phẩm', 'Samsung Galaxy A15 LTE 8GB 128GB', 0),
-(951, 160, 'Giá sản phẩm', '4490000', 0),
-(952, 160, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(953, 160, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-a15-xanh-01.png', 0),
-(954, 160, 'Số sao đánh giá', '5', 0),
-(955, 161, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14.html', 1),
-(956, 161, 'Tên sản phẩm', 'iPhone 14 128GB  | Chính hãng VN/A', 0),
-(957, 161, 'Giá sản phẩm', '17190000', 0),
-(958, 161, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(959, 161, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png', 0),
-(960, 161, 'Số sao đánh giá', '5', 0),
-(961, 162, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(962, 162, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(963, 162, 'Giá sản phẩm', '13590000', 0),
-(964, 162, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(965, 162, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(966, 162, 'Số sao đánh giá', '5', 0),
-(967, 163, 'Link chi tiết sản phẩm', '/samsung-galaxy-s24-ultra.html', 1),
-(968, 163, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(969, 163, 'Giá sản phẩm', '29990000', 0),
-(970, 163, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(971, 163, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(972, 163, 'Số sao đánh giá', '5', 0),
-(973, 164, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(974, 164, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(975, 164, 'Giá sản phẩm', '29390000', 0),
-(976, 164, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(977, 164, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(978, 164, 'Số sao đánh giá', '5', 0),
-(979, 165, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(980, 165, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(981, 165, 'Giá sản phẩm', '19190000', 0),
-(982, 165, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(983, 165, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(984, 165, 'Số sao đánh giá', '5', 0),
-(985, 166, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13-pro-plus.html', 1),
-(986, 166, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(987, 166, 'Giá sản phẩm', '9290000', 0),
-(988, 166, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(989, 166, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(990, 166, 'Số sao đánh giá', '5', 0),
-(991, 167, 'Link chi tiết sản phẩm', '/samsung-galaxy-s23-ultra.html', 1),
-(992, 167, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(993, 167, 'Giá sản phẩm', '23990000', 0),
-(994, 167, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(995, 167, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(996, 167, 'Số sao đánh giá', '0', 0),
-(997, 168, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13.html', 1),
-(998, 168, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(999, 168, 'Giá sản phẩm', '4690000', 0),
-(1000, 168, 'Khuyến mãi', '\n          Giảm 4%\n        ', 0),
-(1001, 168, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(1002, 168, 'Số sao đánh giá', '5', 0),
-(1003, 169, 'Link chi tiết sản phẩm', '/dien-thoai-oppo-reno-11-f.html', 1),
-(1004, 169, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(1005, 169, 'Giá sản phẩm', '8490000', 0),
-(1006, 169, 'Khuyến mãi', '\n          Giảm 6%\n        ', 0),
-(1007, 169, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(1008, 169, 'Số sao đánh giá', '5', 0),
-(1009, 170, 'Link chi tiết sản phẩm', '/samsung-galaxy-m34-5g.html', 1),
-(1010, 170, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(1011, 170, 'Giá sản phẩm', '5790000', 0),
-(1012, 170, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(1013, 170, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(1014, 170, 'Số sao đánh giá', '5', 0),
-(1015, 171, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(1016, 171, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(1017, 171, 'Giá sản phẩm', '26590000', 0),
-(1018, 171, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(1019, 171, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(1020, 171, 'Số sao đánh giá', '5', 0),
-(1021, 172, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13-pro.html', 1),
-(1022, 172, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(1023, 172, 'Giá sản phẩm', '6590000', 0),
-(1024, 172, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(1025, 172, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(1026, 172, 'Số sao đánh giá', '5', 0),
-(1027, 173, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(1028, 173, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(1029, 173, 'Giá sản phẩm', '21990000', 0),
-(1030, 173, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(1031, 173, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(1032, 173, 'Số sao đánh giá', '5', 0),
-(1033, 174, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(1034, 174, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(1035, 174, 'Giá sản phẩm', '25490000', 0),
-(1036, 174, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(1037, 174, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(1038, 174, 'Số sao đánh giá', '5', 0),
-(1039, 175, 'Link chi tiết sản phẩm', '/samsung-galaxy-s23-128gb.html', 1),
-(1040, 175, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(1041, 175, 'Giá sản phẩm', '13790000', 0),
-(1042, 175, 'Khuyến mãi', '\n          Giảm 40%\n        ', 0),
-(1043, 175, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(1044, 175, 'Số sao đánh giá', '5', 0),
-(1045, 176, 'Link chi tiết sản phẩm', '/dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(1046, 176, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(1047, 176, 'Giá sản phẩm', '8290000', 0),
-(1048, 176, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(1049, 176, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(1050, 176, 'Số sao đánh giá', '5', 0),
-(1051, 177, 'Link chi tiết sản phẩm', '/nubia-neo-2.html', 1),
-(1052, 177, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(1053, 177, 'Giá sản phẩm', '4990000', 0),
-(1054, 177, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(1055, 177, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(1056, 177, 'Số sao đánh giá', '5', 0),
-(1057, 178, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(1058, 178, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(1059, 178, 'Giá sản phẩm', '8680000', 0),
-(1060, 178, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(1061, 178, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(1062, 178, 'Số sao đánh giá', '5', 0),
-(1063, 179, 'Link chi tiết sản phẩm', '/samsung-galaxy-a54.html', 1),
-(1064, 179, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(1065, 179, 'Giá sản phẩm', '8290000', 0),
-(1066, 179, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(1067, 179, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(1068, 179, 'Số sao đánh giá', '5', 0),
-(1069, 180, 'Link chi tiết sản phẩm', '/samsung-galaxy-a15.html', 1),
-(1070, 180, 'Tên sản phẩm', 'Samsung Galaxy A15 LTE 8GB 128GB', 0),
-(1071, 180, 'Giá sản phẩm', '4490000', 0),
-(1072, 180, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(1073, 180, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-a15-xanh-01.png', 0),
-(1074, 180, 'Số sao đánh giá', '5', 0),
-(1075, 181, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14.html', 1),
-(1076, 181, 'Tên sản phẩm', 'iPhone 14 128GB  | Chính hãng VN/A', 0),
-(1077, 181, 'Giá sản phẩm', '17190000', 0),
-(1078, 181, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(1079, 181, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png', 0),
-(1080, 181, 'Số sao đánh giá', '5', 0),
-(1081, 182, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1),
-(1082, 182, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(1083, 182, 'Giá sản phẩm', '13590000', 0),
-(1084, 182, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(1085, 182, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(1086, 182, 'Số sao đánh giá', '5', 0),
-(1087, 183, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s24-ultra.html', 1),
-(1088, 183, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(1089, 183, 'Giá sản phẩm', '29990000', 0),
-(1090, 183, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(1091, 183, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(1092, 183, 'Số sao đánh giá', '0', 0),
-(1093, 184, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.html', 1),
-(1094, 184, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(1095, 184, 'Giá sản phẩm', '29390000', 0),
-(1096, 184, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(1097, 184, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(1098, 184, 'Số sao đánh giá', '5', 0),
-(1099, 185, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1),
-(1100, 185, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(1101, 185, 'Giá sản phẩm', '19190000', 0),
-(1102, 185, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(1103, 185, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(1104, 185, 'Số sao đánh giá', '5', 0),
-(1105, 186, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1),
-(1106, 186, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(1107, 186, 'Giá sản phẩm', '9490000', 0),
-(1108, 186, 'Khuyến mãi', '\n          Giảm 14%\n        ', 0),
-(1109, 186, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(1110, 186, 'Số sao đánh giá', '5', 0),
-(1111, 187, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-ultra.html', 1),
-(1112, 187, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(1113, 187, 'Giá sản phẩm', '23990000', 0),
-(1114, 187, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(1115, 187, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(1116, 187, 'Số sao đánh giá', '0', 0),
-(1117, 188, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13.html', 1),
-(1118, 188, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(1119, 188, 'Giá sản phẩm', '4390000', 0),
-(1120, 188, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(1121, 188, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(1122, 188, 'Số sao đánh giá', '5', 0),
-(1123, 189, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1),
-(1124, 189, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(1125, 189, 'Giá sản phẩm', '8190000', 0),
-(1126, 189, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(1127, 189, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(1128, 189, 'Số sao đánh giá', '5', 0),
-(1129, 190, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1),
-(1130, 190, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(1131, 190, 'Giá sản phẩm', '5590000', 0),
-(1132, 190, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(1133, 190, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(1134, 190, 'Số sao đánh giá', '5', 0),
-(1135, 191, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.html', 1),
-(1136, 191, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(1137, 191, 'Giá sản phẩm', '26590000', 0),
-(1138, 191, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(1139, 191, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(1140, 191, 'Số sao đánh giá', '5', 0),
-(1141, 192, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro.html', 1),
-(1142, 192, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(1143, 192, 'Giá sản phẩm', '6290000', 0),
-(1144, 192, 'Khuyến mãi', '\n          Giảm 14%\n        ', 0),
-(1145, 192, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(1146, 192, 'Số sao đánh giá', '5', 0),
-(1147, 193, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.html', 1),
-(1148, 193, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(1149, 193, 'Giá sản phẩm', '21990000', 0),
-(1150, 193, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(1151, 193, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(1152, 193, 'Số sao đánh giá', '5', 0),
-(1153, 194, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1),
-(1154, 194, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(1155, 194, 'Giá sản phẩm', '25490000', 0),
-(1156, 194, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(1157, 194, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(1158, 194, 'Số sao đánh giá', '5', 0),
-(1159, 195, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-128gb.html', 1),
-(1160, 195, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(1161, 195, 'Giá sản phẩm', '13490000', 0),
-(1162, 195, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0),
-(1163, 195, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(1164, 195, 'Số sao đánh giá', '5', 0),
-(1165, 196, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-xiaomi-poco-x6-pro.html', 1),
-(1166, 196, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(1167, 196, 'Giá sản phẩm', '8290000', 0),
-(1168, 196, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(1169, 196, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(1170, 196, 'Số sao đánh giá', '5', 0),
-(1171, 197, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//nubia-neo-2.html', 1),
-(1172, 197, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(1173, 197, 'Giá sản phẩm', '4990000', 0),
-(1174, 197, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(1175, 197, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(1176, 197, 'Số sao đánh giá', '5', 0),
-(1177, 198, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.html', 1),
-(1178, 198, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(1179, 198, 'Giá sản phẩm', '8680000', 0),
-(1180, 198, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(1181, 198, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(1182, 198, 'Số sao đánh giá', '5', 0),
-(1183, 199, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a54.html', 1),
-(1184, 199, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(1185, 199, 'Giá sản phẩm', '8290000', 0),
-(1186, 199, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(1187, 199, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(1188, 199, 'Số sao đánh giá', '5', 0),
-(1189, 200, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a15.html', 1),
-(1190, 200, 'Tên sản phẩm', 'Samsung Galaxy A15 LTE 8GB 128GB', 0),
-(1191, 200, 'Giá sản phẩm', '4490000', 0),
-(1192, 200, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(1193, 200, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-a15-xanh-01.png', 0),
-(1194, 200, 'Số sao đánh giá', '5', 0),
-(1195, 201, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14.html', 1),
-(1196, 201, 'Tên sản phẩm', 'iPhone 14 128GB  | Chính hãng VN/A', 0),
-(1197, 201, 'Giá sản phẩm', '17190000', 0),
-(1198, 201, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(1199, 201, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png', 0),
-(1200, 201, 'Số sao đánh giá', '5', 0),
-(1201, 202, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.htmlhttps://cellphones.com.vn/', 1),
-(1202, 202, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(1203, 202, 'Giá sản phẩm', '13790000', 0),
-(1204, 202, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(1205, 202, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(1206, 202, 'Số sao đánh giá', '5', 0),
-(1207, 203, 'Link chi tiết sản phẩm', '/samsung-galaxy-s24-ultra.htmlhttps://cellphones.com.vn/', 1),
-(1208, 203, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(1209, 203, 'Giá sản phẩm', '29990000', 0),
-(1210, 203, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(1211, 203, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(1212, 203, 'Số sao đánh giá', '5', 0),
-(1213, 204, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.htmlhttps://cellphones.com.vn/', 1),
-(1214, 204, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(1215, 204, 'Giá sản phẩm', '29490000', 0),
-(1216, 204, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(1217, 204, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(1218, 204, 'Số sao đánh giá', '5', 0),
-(1219, 205, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.htmlhttps://cellphones.com.vn/', 1),
-(1220, 205, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(1221, 205, 'Giá sản phẩm', '19390000', 0),
-(1222, 205, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(1223, 205, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(1224, 205, 'Số sao đánh giá', '5', 0),
-(1225, 206, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13-pro-plus.htmlhttps://cellphones.com.vn/', 1),
-(1226, 206, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(1227, 206, 'Giá sản phẩm', '9290000', 0),
-(1228, 206, 'Khuyến mãi', '\n          Giảm 14%\n        ', 0),
-(1229, 206, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(1230, 206, 'Số sao đánh giá', '5', 0),
-(1231, 207, 'Link chi tiết sản phẩm', '/samsung-galaxy-s23-ultra.htmlhttps://cellphones.com.vn/', 1),
-(1232, 207, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(1233, 207, 'Giá sản phẩm', '23990000', 0),
-(1234, 207, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(1235, 207, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(1236, 207, 'Số sao đánh giá', '0', 0),
-(1237, 208, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13.htmlhttps://cellphones.com.vn/', 1),
-(1238, 208, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(1239, 208, 'Giá sản phẩm', '4690000', 0),
-(1240, 208, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(1241, 208, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(1242, 208, 'Số sao đánh giá', '5', 0),
-(1243, 209, 'Link chi tiết sản phẩm', '/dien-thoai-oppo-reno-11-f.htmlhttps://cellphones.com.vn/', 1),
-(1244, 209, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(1245, 209, 'Giá sản phẩm', '8490000', 0),
-(1246, 209, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(1247, 209, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(1248, 209, 'Số sao đánh giá', '5', 0),
-(1249, 210, 'Link chi tiết sản phẩm', '/samsung-galaxy-m34-5g.htmlhttps://cellphones.com.vn/', 1),
-(1250, 210, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(1251, 210, 'Giá sản phẩm', '5790000', 0),
-(1252, 210, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(1253, 210, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(1254, 210, 'Số sao đánh giá', '5', 0),
-(1255, 211, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.htmlhttps://cellphones.com.vn/', 1),
-(1256, 211, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(1257, 211, 'Giá sản phẩm', '26590000', 0),
-(1258, 211, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(1259, 211, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(1260, 211, 'Số sao đánh giá', '5', 0),
-(1261, 212, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13-pro.htmlhttps://cellphones.com.vn/', 1),
-(1262, 212, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(1263, 212, 'Giá sản phẩm', '6590000', 0),
-(1264, 212, 'Khuyến mãi', '\n          Giảm 14%\n        ', 0),
-(1265, 212, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(1266, 212, 'Số sao đánh giá', '5', 0),
-(1267, 213, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.htmlhttps://cellphones.com.vn/', 1),
-(1268, 213, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(1269, 213, 'Giá sản phẩm', '22190000', 0),
-(1270, 213, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(1271, 213, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(1272, 213, 'Số sao đánh giá', '5', 0),
-(1273, 214, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.htmlhttps://cellphones.com.vn/', 1),
-(1274, 214, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(1275, 214, 'Giá sản phẩm', '25490000', 0),
-(1276, 214, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(1277, 214, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(1278, 214, 'Số sao đánh giá', '5', 0);
-INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`) VALUES
-(1279, 215, 'Link chi tiết sản phẩm', '/samsung-galaxy-s23-128gb.htmlhttps://cellphones.com.vn/', 1),
-(1280, 215, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(1281, 215, 'Giá sản phẩm', '13790000', 0),
-(1282, 215, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0),
-(1283, 215, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(1284, 215, 'Số sao đánh giá', '5', 0),
-(1285, 216, 'Link chi tiết sản phẩm', '/dien-thoai-xiaomi-poco-x6-pro.htmlhttps://cellphones.com.vn/', 1),
-(1286, 216, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(1287, 216, 'Giá sản phẩm', '8290000', 0),
-(1288, 216, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(1289, 216, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(1290, 216, 'Số sao đánh giá', '5', 0),
-(1291, 217, 'Link chi tiết sản phẩm', '/nubia-neo-2.htmlhttps://cellphones.com.vn/', 1),
-(1292, 217, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(1293, 217, 'Giá sản phẩm', '4990000', 0),
-(1294, 217, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(1295, 217, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(1296, 217, 'Số sao đánh giá', '5', 0),
-(1297, 218, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.htmlhttps://cellphones.com.vn/', 1),
-(1298, 218, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(1299, 218, 'Giá sản phẩm', '8590000', 0),
-(1300, 218, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(1301, 218, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(1302, 218, 'Số sao đánh giá', '5', 0),
-(1303, 219, 'Link chi tiết sản phẩm', '/samsung-galaxy-a54.htmlhttps://cellphones.com.vn/', 1),
-(1304, 219, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(1305, 219, 'Giá sản phẩm', '8290000', 0),
-(1306, 219, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(1307, 219, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(1308, 219, 'Số sao đánh giá', '5', 0),
-(1309, 220, 'Link chi tiết sản phẩm', '/samsung-galaxy-a15.htmlhttps://cellphones.com.vn/', 1),
-(1310, 220, 'Tên sản phẩm', 'Samsung Galaxy A15 LTE 8GB 128GB', 0),
-(1311, 220, 'Giá sản phẩm', '4490000', 0),
-(1312, 220, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(1313, 220, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-a15-xanh-01.png', 0),
-(1314, 220, 'Số sao đánh giá', '5', 0),
-(1315, 221, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14.htmlhttps://cellphones.com.vn/', 1),
-(1316, 221, 'Tên sản phẩm', 'iPhone 14 128GB  | Chính hãng VN/A', 0),
-(1317, 221, 'Giá sản phẩm', '17190000', 0),
-(1318, 221, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(1319, 221, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png', 0),
-(1320, 221, 'Số sao đánh giá', '5', 0),
-(1321, 222, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.htmlhttps://cellphones.com.vn/', 1),
-(1322, 222, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(1323, 222, 'Giá sản phẩm', '13590000', 0),
-(1324, 222, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(1325, 222, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(1326, 222, 'Số sao đánh giá', '5', 0),
-(1327, 223, 'Link chi tiết sản phẩm', '/samsung-galaxy-s24-ultra.htmlhttps://cellphones.com.vn/', 1),
-(1328, 223, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(1329, 223, 'Giá sản phẩm', '29990000', 0),
-(1330, 223, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(1331, 223, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(1332, 223, 'Số sao đánh giá', '0', 0),
-(1333, 224, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.htmlhttps://cellphones.com.vn/', 1),
-(1334, 224, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(1335, 224, 'Giá sản phẩm', '29390000', 0),
-(1336, 224, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0),
-(1337, 224, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(1338, 224, 'Số sao đánh giá', '5', 0),
-(1339, 225, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.htmlhttps://cellphones.com.vn/', 1),
-(1340, 225, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(1341, 225, 'Giá sản phẩm', '19190000', 0),
-(1342, 225, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(1343, 225, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(1344, 225, 'Số sao đánh giá', '5', 0),
-(1345, 226, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13-pro-plus.htmlhttps://cellphones.com.vn/', 1),
-(1346, 226, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(1347, 226, 'Giá sản phẩm', '9490000', 0),
-(1348, 226, 'Khuyến mãi', '\n          Giảm 14%\n        ', 0),
-(1349, 226, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(1350, 226, 'Số sao đánh giá', '5', 0),
-(1351, 227, 'Link chi tiết sản phẩm', '/samsung-galaxy-s23-ultra.htmlhttps://cellphones.com.vn/', 1),
-(1352, 227, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(1353, 227, 'Giá sản phẩm', '23990000', 0),
-(1354, 227, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(1355, 227, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(1356, 227, 'Số sao đánh giá', '0', 0),
-(1357, 228, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13.htmlhttps://cellphones.com.vn/', 1),
-(1358, 228, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(1359, 228, 'Giá sản phẩm', '4390000', 0),
-(1360, 228, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(1361, 228, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(1362, 228, 'Số sao đánh giá', '5', 0),
-(1363, 229, 'Link chi tiết sản phẩm', '/dien-thoai-oppo-reno-11-f.htmlhttps://cellphones.com.vn/', 1),
-(1364, 229, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(1365, 229, 'Giá sản phẩm', '8190000', 0),
-(1366, 229, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(1367, 229, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(1368, 229, 'Số sao đánh giá', '5', 0),
-(1369, 230, 'Link chi tiết sản phẩm', '/samsung-galaxy-m34-5g.htmlhttps://cellphones.com.vn/', 1),
-(1370, 230, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(1371, 230, 'Giá sản phẩm', '5590000', 0),
-(1372, 230, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0),
-(1373, 230, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(1374, 230, 'Số sao đánh giá', '5', 0),
-(1375, 231, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.htmlhttps://cellphones.com.vn/', 1),
-(1376, 231, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(1377, 231, 'Giá sản phẩm', '26590000', 0),
-(1378, 231, 'Khuyến mãi', '\n          Giảm 11%\n        ', 0),
-(1379, 231, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(1380, 231, 'Số sao đánh giá', '5', 0),
-(1381, 232, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13-pro.htmlhttps://cellphones.com.vn/', 1),
-(1382, 232, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(1383, 232, 'Giá sản phẩm', '6290000', 0),
-(1384, 232, 'Khuyến mãi', '\n          Giảm 14%\n        ', 0),
-(1385, 232, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(1386, 232, 'Số sao đánh giá', '5', 0),
-(1387, 233, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.htmlhttps://cellphones.com.vn/', 1),
-(1388, 233, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(1389, 233, 'Giá sản phẩm', '21990000', 0),
-(1390, 233, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0),
-(1391, 233, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(1392, 233, 'Số sao đánh giá', '5', 0),
-(1393, 234, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.htmlhttps://cellphones.com.vn/', 1),
-(1394, 234, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(1395, 234, 'Giá sản phẩm', '25490000', 0),
-(1396, 234, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0),
-(1397, 234, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(1398, 234, 'Số sao đánh giá', '5', 0),
-(1399, 235, 'Link chi tiết sản phẩm', '/samsung-galaxy-s23-128gb.htmlhttps://cellphones.com.vn/', 1),
-(1400, 235, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(1401, 235, 'Giá sản phẩm', '13490000', 0),
-(1402, 235, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0),
-(1403, 235, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(1404, 235, 'Số sao đánh giá', '5', 0),
-(1405, 236, 'Link chi tiết sản phẩm', '/dien-thoai-xiaomi-poco-x6-pro.htmlhttps://cellphones.com.vn/', 1),
-(1406, 236, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(1407, 236, 'Giá sản phẩm', '8290000', 0),
-(1408, 236, 'Khuyến mãi', '\n          Giảm 17%\n        ', 0),
-(1409, 236, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(1410, 236, 'Số sao đánh giá', '5', 0),
-(1411, 237, 'Link chi tiết sản phẩm', '/nubia-neo-2.htmlhttps://cellphones.com.vn/', 1),
-(1412, 237, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(1413, 237, 'Giá sản phẩm', '4990000', 0),
-(1414, 237, 'Khuyến mãi', '\n          Giảm 9%\n        ', 0),
-(1415, 237, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(1416, 237, 'Số sao đánh giá', '5', 0),
-(1417, 238, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.htmlhttps://cellphones.com.vn/', 1),
-(1418, 238, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(1419, 238, 'Giá sản phẩm', '8680000', 0),
-(1420, 238, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0),
-(1421, 238, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(1422, 238, 'Số sao đánh giá', '5', 0),
-(1423, 239, 'Link chi tiết sản phẩm', '/samsung-galaxy-a54.htmlhttps://cellphones.com.vn/', 1),
-(1424, 239, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(1425, 239, 'Giá sản phẩm', '8290000', 0),
-(1426, 239, 'Khuyến mãi', '\n          Giảm 21%\n        ', 0),
-(1427, 239, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(1428, 239, 'Số sao đánh giá', '5', 0),
-(1429, 240, 'Link chi tiết sản phẩm', '/samsung-galaxy-a15.htmlhttps://cellphones.com.vn/', 1),
-(1430, 240, 'Tên sản phẩm', 'Samsung Galaxy A15 LTE 8GB 128GB', 0),
-(1431, 240, 'Giá sản phẩm', '4490000', 0),
-(1432, 240, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0),
-(1433, 240, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-a15-xanh-01.png', 0),
-(1434, 240, 'Số sao đánh giá', '5', 0),
-(1435, 241, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14.htmlhttps://cellphones.com.vn/', 1),
-(1436, 241, 'Tên sản phẩm', 'iPhone 14 128GB  | Chính hãng VN/A', 0),
-(1437, 241, 'Giá sản phẩm', '17190000', 0),
-(1438, 241, 'Khuyến mãi', '\n          Giảm 25%\n        ', 0),
-(1439, 241, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png', 0),
-(1440, 241, 'Số sao đánh giá', '5', 0),
-(1441, 242, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.htmlhttps://cellphones.com.vn/', 1),
-(1442, 242, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0),
-(1443, 242, 'Giá sản phẩm', '13590000', 0),
-(1444, 242, 'Khuyến mãi', '28', 0),
-(1445, 242, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0),
-(1446, 242, 'Số sao đánh giá', '5', 0),
-(1447, 243, 'Link chi tiết sản phẩm', '/samsung-galaxy-s24-ultra.htmlhttps://cellphones.com.vn/', 1),
-(1448, 243, 'Tên sản phẩm', 'Samsung Galaxy S24 Ultra 12GB 256GB', 0),
-(1449, 243, 'Giá sản phẩm', '29990000', 0),
-(1450, 243, 'Khuyến mãi', '12', 0),
-(1451, 243, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png', 0),
-(1452, 243, 'Số sao đánh giá', '0', 0),
-(1453, 244, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro-max.htmlhttps://cellphones.com.vn/', 1),
-(1454, 244, 'Tên sản phẩm', 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 0),
-(1455, 244, 'Giá sản phẩm', '29390000', 0),
-(1456, 244, 'Khuyến mãi', '16', 0),
-(1457, 244, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png', 0),
-(1458, 244, 'Số sao đánh giá', '5', 0),
-(1459, 245, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.htmlhttps://cellphones.com.vn/', 1),
-(1460, 245, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0),
-(1461, 245, 'Giá sản phẩm', '19190000', 0),
-(1462, 245, 'Khuyến mãi', '17', 0),
-(1463, 245, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0),
-(1464, 245, 'Số sao đánh giá', '5', 0),
-(1465, 246, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13-pro-plus.htmlhttps://cellphones.com.vn/', 1),
-(1466, 246, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro Plus 5G 8GB 256GB', 0),
-(1467, 246, 'Giá sản phẩm', '9490000', 0),
-(1468, 246, 'Khuyến mãi', '14', 0),
-(1469, 246, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-plus_9_.png', 0),
-(1470, 246, 'Số sao đánh giá', '5', 0),
-(1471, 247, 'Link chi tiết sản phẩm', '/samsung-galaxy-s23-ultra.htmlhttps://cellphones.com.vn/', 1),
-(1472, 247, 'Tên sản phẩm', 'Samsung Galaxy S23 Ultra 256GB', 0),
-(1473, 247, 'Giá sản phẩm', '23990000', 0),
-(1474, 247, 'Khuyến mãi', '25', 0),
-(1475, 247, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23-ulatra_2__1.png', 0),
-(1476, 247, 'Số sao đánh giá', '0', 0),
-(1477, 248, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13.htmlhttps://cellphones.com.vn/', 1),
-(1478, 248, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 6GB 128GB', 0),
-(1479, 248, 'Giá sản phẩm', '4390000', 0),
-(1480, 248, 'Khuyến mãi', '10', 0),
-(1481, 248, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13_1__1_1.png', 0),
-(1482, 248, 'Số sao đánh giá', '5', 0),
-(1483, 249, 'Link chi tiết sản phẩm', '/dien-thoai-oppo-reno-11-f.htmlhttps://cellphones.com.vn/', 1),
-(1484, 249, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0),
-(1485, 249, 'Giá sản phẩm', '8190000', 0),
-(1486, 249, 'Khuyến mãi', '9', 0),
-(1487, 249, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0),
-(1488, 249, 'Số sao đánh giá', '5', 0),
-(1489, 250, 'Link chi tiết sản phẩm', '/samsung-galaxy-m34-5g.htmlhttps://cellphones.com.vn/', 1),
-(1490, 250, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0),
-(1491, 250, 'Giá sản phẩm', '5590000', 0),
-(1492, 250, 'Khuyến mãi', '30', 0),
-(1493, 250, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0),
-(1494, 250, 'Số sao đánh giá', '5', 0),
-(1495, 251, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14-pro-max.htmlhttps://cellphones.com.vn/', 1),
-(1496, 251, 'Tên sản phẩm', 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 0),
-(1497, 251, 'Giá sản phẩm', '26590000', 0),
-(1498, 251, 'Khuyến mãi', '11', 0),
-(1499, 251, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png', 0),
-(1500, 251, 'Số sao đánh giá', '5', 0),
-(1501, 252, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13-pro.htmlhttps://cellphones.com.vn/', 1),
-(1502, 252, 'Tên sản phẩm', 'Xiaomi Redmi Note 13 Pro 4G', 0),
-(1503, 252, 'Giá sản phẩm', '6290000', 0),
-(1504, 252, 'Khuyến mãi', '14', 0),
-(1505, 252, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-13-pro-4g_13__1.png', 0),
-(1506, 252, 'Số sao đánh giá', '5', 0),
-(1507, 253, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-plus.htmlhttps://cellphones.com.vn/', 1),
-(1508, 253, 'Tên sản phẩm', 'iPhone 15 Plus 128GB | Chính hãng VN/A', 0),
-(1509, 253, 'Giá sản phẩm', '21990000', 0),
-(1510, 253, 'Khuyến mãi', '15', 0),
-(1511, 253, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png', 0),
-(1512, 253, 'Số sao đánh giá', '5', 0),
-(1513, 254, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.htmlhttps://cellphones.com.vn/', 1),
-(1514, 254, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0),
-(1515, 254, 'Giá sản phẩm', '25490000', 0),
-(1516, 254, 'Khuyến mãi', '12', 0),
-(1517, 254, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0),
-(1518, 254, 'Số sao đánh giá', '5', 0),
-(1519, 255, 'Link chi tiết sản phẩm', '/samsung-galaxy-s23-128gb.htmlhttps://cellphones.com.vn/', 1),
-(1520, 255, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0),
-(1521, 255, 'Giá sản phẩm', '13490000', 0),
-(1522, 255, 'Khuyến mãi', '41', 0),
-(1523, 255, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0),
-(1524, 255, 'Số sao đánh giá', '5', 0),
-(1525, 256, 'Link chi tiết sản phẩm', '/dien-thoai-xiaomi-poco-x6-pro.htmlhttps://cellphones.com.vn/', 1),
-(1526, 256, 'Tên sản phẩm', 'Xiaomi POCO X6 Pro 5G 8GB 256GB - Chỉ có tại CellphoneS', 0),
-(1527, 256, 'Giá sản phẩm', '8290000', 0),
-(1528, 256, 'Khuyến mãi', '17', 0),
-(1529, 256, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_i_xu_ng_22__6.png', 0),
-(1530, 256, 'Số sao đánh giá', '5', 0),
-(1531, 257, 'Link chi tiết sản phẩm', '/nubia-neo-2.htmlhttps://cellphones.com.vn/', 1),
-(1532, 257, 'Tên sản phẩm', 'Điện thoại Nubia Neo 2', 0),
-(1533, 257, 'Giá sản phẩm', '4990000', 0),
-(1534, 257, 'Khuyến mãi', '9', 0),
-(1535, 257, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/u/nubia-neo-2_1_.png', 0),
-(1536, 257, 'Số sao đánh giá', '5', 0),
-(1537, 258, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-11.htmlhttps://cellphones.com.vn/', 1),
-(1538, 258, 'Tên sản phẩm', 'iPhone 11 64GB | Chính hãng VN/A ', 0),
-(1539, 258, 'Giá sản phẩm', '8680000', 0),
-(1540, 258, 'Khuyến mãi', '28', 0),
-(1541, 258, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-11.png', 0),
-(1542, 258, 'Số sao đánh giá', '5', 0),
-(1543, 259, 'Link chi tiết sản phẩm', '/samsung-galaxy-a54.htmlhttps://cellphones.com.vn/', 1),
-(1544, 259, 'Tên sản phẩm', 'Samsung Galaxy A54 5G 8GB 128GB', 0),
-(1545, 259, 'Giá sản phẩm', '8290000', 0),
-(1546, 259, 'Khuyến mãi', '21', 0),
-(1547, 259, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a54.png', 0),
-(1548, 259, 'Số sao đánh giá', '5', 0),
-(1549, 260, 'Link chi tiết sản phẩm', '/samsung-galaxy-a15.htmlhttps://cellphones.com.vn/', 1),
-(1550, 260, 'Tên sản phẩm', 'Samsung Galaxy A15 LTE 8GB 128GB', 0),
-(1551, 260, 'Giá sản phẩm', '4490000', 0),
-(1552, 260, 'Khuyến mãi', '10', 0),
-(1553, 260, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-a15-xanh-01.png', 0),
-(1554, 260, 'Số sao đánh giá', '5', 0),
-(1555, 261, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-14.htmlhttps://cellphones.com.vn/', 1),
-(1556, 261, 'Tên sản phẩm', 'iPhone 14 128GB  | Chính hãng VN/A', 0),
-(1557, 261, 'Giá sản phẩm', '17190000', 0),
-(1558, 261, 'Khuyến mãi', '25', 0),
-(1559, 261, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png', 0),
-(1560, 261, 'Số sao đánh giá', '5', 0),
-(1561, 262, 'Link chi tiết sản phẩm', '/samsung-galaxy-z-flip-5-256gb.htmlhttps://cellphones.com.vn/', 1),
-(1562, 262, 'Tên sản phẩm', 'Samsung Galaxy Z Flip5 256GB', 0),
-(1563, 262, 'Giá sản phẩm', '16990000', 0),
-(1564, 262, 'Khuyến mãi', '35', 0),
-(1565, 262, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-z-lip5_3_.png', 0),
-(1566, 262, 'Số sao đánh giá', '0', 0),
-(1567, 263, 'Link chi tiết sản phẩm', '/samsung-galaxy-z-fold-5-256gb.htmlhttps://cellphones.com.vn/', 1),
-(1568, 263, 'Tên sản phẩm', 'Samsung Galaxy Z Fold5 12GB 256GB', 0),
-(1569, 263, 'Giá sản phẩm', '28990000', 0),
-(1570, 263, 'Khuyến mãi', '29', 0),
-(1571, 263, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-z-fold5_2_.png', 0),
-(1572, 263, 'Số sao đánh giá', '0', 0),
-(1573, 264, 'Link chi tiết sản phẩm', '/samsung-galaxy-z-flip-5-256gb.html', 1),
-(1574, 264, 'Tên sản phẩm', 'Samsung Galaxy Z Flip5 256GB', 0),
-(1575, 264, 'Giá sản phẩm', '16990000', 0),
-(1576, 264, 'Khuyến mãi', '\n          Giảm 35%\n        ', 0),
-(1577, 264, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-z-lip5_3_.png', 0),
-(1578, 264, 'Số sao đánh giá', '0', 0);
-
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `item_types`
+-- Table structure for table `item_types`
 --
 
 CREATE TABLE `item_types` (
@@ -2157,7 +253,7 @@ CREATE TABLE `item_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `item_types`
+-- Dumping data for table `item_types`
 --
 
 INSERT INTO `item_types` (`id`, `type`, `description`) VALUES
@@ -2166,7 +262,7 @@ INSERT INTO `item_types` (`id`, `type`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `websites`
+-- Table structure for table `websites`
 --
 
 CREATE TABLE `websites` (
@@ -2176,7 +272,7 @@ CREATE TABLE `websites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `websites`
+-- Dumping data for table `websites`
 --
 
 INSERT INTO `websites` (`id`, `name`, `url`) VALUES
@@ -2184,177 +280,177 @@ INSERT INTO `websites` (`id`, `name`, `url`) VALUES
 (2, 'Tiki', 'https://tiki.vn/');
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `crawl_action_details`
+-- Indexes for table `crawl_action_details`
 --
 ALTER TABLE `crawl_action_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_action_types`
+-- Indexes for table `crawl_action_types`
 --
 ALTER TABLE `crawl_action_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_configs`
+-- Indexes for table `crawl_configs`
 --
 ALTER TABLE `crawl_configs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_data_types`
+-- Indexes for table `crawl_data_types`
 --
 ALTER TABLE `crawl_data_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_details`
+-- Indexes for table `crawl_details`
 --
 ALTER TABLE `crawl_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_option_condition_types`
+-- Indexes for table `crawl_option_condition_types`
 --
 ALTER TABLE `crawl_option_condition_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_option_details`
+-- Indexes for table `crawl_option_details`
 --
 ALTER TABLE `crawl_option_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_option_types`
+-- Indexes for table `crawl_option_types`
 --
 ALTER TABLE `crawl_option_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_result_types`
+-- Indexes for table `crawl_result_types`
 --
 ALTER TABLE `crawl_result_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_types`
+-- Indexes for table `crawl_types`
 --
 ALTER TABLE `crawl_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `items`
+-- Indexes for table `items`
 --
 ALTER TABLE `items`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `item_details`
+-- Indexes for table `item_details`
 --
 ALTER TABLE `item_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `item_types`
+-- Indexes for table `item_types`
 --
 ALTER TABLE `item_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `websites`
+-- Indexes for table `websites`
 --
 ALTER TABLE `websites`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `crawl_action_details`
+-- AUTO_INCREMENT for table `crawl_action_details`
 --
 ALTER TABLE `crawl_action_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_action_types`
+-- AUTO_INCREMENT for table `crawl_action_types`
 --
 ALTER TABLE `crawl_action_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_configs`
+-- AUTO_INCREMENT for table `crawl_configs`
 --
 ALTER TABLE `crawl_configs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_data_types`
+-- AUTO_INCREMENT for table `crawl_data_types`
 --
 ALTER TABLE `crawl_data_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_details`
+-- AUTO_INCREMENT for table `crawl_details`
 --
 ALTER TABLE `crawl_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_option_condition_types`
+-- AUTO_INCREMENT for table `crawl_option_condition_types`
 --
 ALTER TABLE `crawl_option_condition_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_option_details`
+-- AUTO_INCREMENT for table `crawl_option_details`
 --
 ALTER TABLE `crawl_option_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_option_types`
+-- AUTO_INCREMENT for table `crawl_option_types`
 --
 ALTER TABLE `crawl_option_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_result_types`
+-- AUTO_INCREMENT for table `crawl_result_types`
 --
 ALTER TABLE `crawl_result_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_types`
+-- AUTO_INCREMENT for table `crawl_types`
 --
 ALTER TABLE `crawl_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT cho bảng `items`
+-- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=265;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=285;
 
 --
--- AUTO_INCREMENT cho bảng `item_details`
+-- AUTO_INCREMENT for table `item_details`
 --
 ALTER TABLE `item_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1579;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1699;
 
 --
--- AUTO_INCREMENT cho bảng `item_types`
+-- AUTO_INCREMENT for table `item_types`
 --
 ALTER TABLE `item_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `websites`
+-- AUTO_INCREMENT for table `websites`
 --
 ALTER TABLE `websites`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;

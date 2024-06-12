@@ -14,6 +14,10 @@ const CrawlResultTypes = sequelize.define('CrawlResultTypes', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  is_textfield: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
 }, {
   tableName: 'crawl_result_types',
   timestamps: false,

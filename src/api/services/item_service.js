@@ -130,7 +130,7 @@ exports.save = async (itemData, itemDetailDatas) => {
         }
 
         // Kiểm tra item đã tồn tại
-        const itemId =  await getIdItemExist(url);
+        const itemId =  await getIdItemExist(itemData.crawl_config_id, url);
 
         // Nếu đã tồn tại, cập nhật
         if (itemId) {
@@ -231,10 +231,10 @@ exports.updateItemDetails = async (itemId, newItemDetails) => {
 }
 
 // Lấy id item đã tồn tại hay chưa
-const getIdItemExist = async (url) => {
+const getIdItemExist = async (crawl_config_id, url) => {
     try {
         // Lấy danh sách tất cả id trong bảng items
-        const itemIds  = await getAllItemId();
+        const itemIds  = await getAllItemIdByCrawlConfigId(crawl_config_id);
 
         for (const itemId of itemIds) {
             // Lấy chi tiết item chứa url trang chi tiết của từng item
@@ -257,6 +257,23 @@ const getIdItemExist = async (url) => {
 const getAllItemId = async () => {
     try {
         const itemIds = await items.findAll({
+            attributes: ['id']
+        });
+
+        return itemIds.map(item => item.id);
+    } catch (error) {
+        console.error('Lỗi khi Lấy danh sách tất cả id trong bảng items:', error);
+        return [];
+    }
+};
+
+// Lấy danh sách tất cả id trong bảng items
+const getAllItemIdByCrawlConfigId = async (id) => {
+    try {
+        const itemIds = await items.findAll({
+            where: {
+                crawl_config_id: id,
+            },
             attributes: ['id']
         });
 
