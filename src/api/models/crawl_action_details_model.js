@@ -16,7 +16,7 @@ const CrawlActionDetails = sequelize.define('CrawlActionDetails', {
   },
   selector: {
     type: DataTypes.TEXT,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   tableName: 'crawl_action_details',

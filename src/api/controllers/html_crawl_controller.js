@@ -9,12 +9,12 @@ exports.crawlingData = async (req, res) => {
         const body = req.body;
 
         // Lưu lại cấu hình của lần thu thập (bất đồng bộ)
-            // Lưu thêm các thuộc tính khác vào bảng crawl_configs
-            await crawlConfigService.update(body.crawl_config.id, body.crawl_config);
-
-            // Lưu vào bảng crawl_action_details
-            // Lưu vào bảng crawl_details
-            // Lưu vào bảng crawl_option_details
+        const crawlConfigInfor = await htmlCrawlService.saveConfigInfor(
+            body.crawl_config,
+            body.crawl_action_details, 
+            body.crawl_details, 
+            body.crawl_option_details
+        );
 
         // Lấy danh sách item
             // Lấy loại thu thập (trang danh sách hay trang chi tiết)
@@ -47,7 +47,7 @@ exports.crawlingData = async (req, res) => {
             );
 
         // Gửi kết quả về client
-        res.status(200).json( items );
+        res.status(200).json({ crawl_config_infor: crawlConfigInfor, items });
     } catch (error) {
         res.status(500).json({ error: 'Đã xảy ra lỗi khi thu thập dữ liệu'});
         console.log(error);

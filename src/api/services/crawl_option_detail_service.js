@@ -1,30 +1,35 @@
-const optionDetails = require('../models/crawl_action_details_model');
+const optionDetails = require('../models/crawl_option_details_model');
 
 // Lưu lại
-exports.save = async (optionDetailData) => {
+exports.save = async (crawlDetailId, optionDetailDatas) => {
     try {
-        // Kiểm tra tồn tại
-        const exists = await checkExist(optionDetailData.crawl_detail_id);
-
-        // nếu tồn tại thì xóa các option cũ
-        if (exists) await deleteAll(optionDetailData.crawl_detail_id);
+        // Kiểm tra null
+        if(optionDetailDatas.length <= 0) {
+            return [];
+        }
         
-        // thêm mới
-        const newOptionDetail = await add(optionDetailData);
+        const newOptionDetails = []
 
-        return newOptionDetail;
+        // thêm mới
+        for (const optionDetailData of optionDetailDatas) {
+            const newOptionDetail = await add(crawlDetailId, optionDetailData);
+
+            newOptionDetails.push(newOptionDetail);
+        }
+
+        return newOptionDetails;
     } catch (error) {
         console.error('Lỗi khi lưu lựa chọn của một chi tiết item:', error);
-        return null;
+        return [];
     }
 }
 
 // Kiểm tra tồn tại
-const checkExist = async (itemDetailId) => {
+exports.checkExist = async (crawlDetailId) => {
     try {
         const optionDetailList = await optionDetails.findAll({
             where: {
-                crawl_detail_id: itemDetailId,
+                crawl_detail_id: crawlDetailId,
             }
         });
 
@@ -40,10 +45,10 @@ const checkExist = async (itemDetailId) => {
 }
 
 // Thêm mới
-const add = async (optionDetailData) => {
+const add = async (crawlDetailId, optionDetailData) => {
     try {
         return await optionDetails.create({
-            crawl_detail_id: optionDetailData.crawl_detail_id,
+            crawl_detail_id: crawlDetailId,
             option_type_id: optionDetailData.option_type_id,
             option_condition_type_id: optionDetailData.option_condition_type_id,
             condition_value: optionDetailData.condition_value
@@ -55,9 +60,8 @@ const add = async (optionDetailData) => {
 }
 
 // Xóa tất cả option của 1 chi tiết item
-const deleteAll = async (itemDetailId) => {
+exports.deleteAll = async (itemDetailId) => {
     try {
-        // Xóa tất cả option bằng itemDetailId
         await optionDetails.destroy({
             where: {
                 crawl_detail_id: itemDetailId,

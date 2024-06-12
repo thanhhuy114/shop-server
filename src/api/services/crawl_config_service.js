@@ -34,9 +34,7 @@ exports.checkNameExists = async (name) => {
 exports.update = async (id, crawlConfigData) => {
     try {
         const crawlConfig = await crawlConfigs.findByPk(id);
-        
-        crawlConfig.name = crawlConfigData.name;
-        crawlConfig.description = crawlConfigData.description;
+
         crawlConfig.crawl_type_id = crawlConfigData.crawl_type_id;
         crawlConfig.result_type_id = crawlConfigData.result_type_id;
         crawlConfig.item_selector = crawlConfigData.item_selector;
