@@ -1,5 +1,19 @@
 const crawlConfigService = require('../services/crawl_config_service');
 
+// Lấy thông tin một phiên cấu hình thu thập
+exports.get = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const crawlConfigInfor = await crawlConfigService.getConfigInfor(id);
+        
+        res.status(200).json(crawlConfigInfor);
+    } catch (error) {
+        console.error(`Lỗi khi lấy cấu hình:`, error);
+        res.status(500).json({ error: `Lỗi khi lấy cấu hình` });
+    }
+}
+
 // Kiểm tra tên cấu hình đã tồn tại chưa
 exports.checkNameExists = async (req, res) => {
     try {

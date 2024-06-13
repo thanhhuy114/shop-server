@@ -16,7 +16,7 @@ const CrawlDetails = sequelize.define('CrawlDetails', {
   },
   selector: {
     type: DataTypes.TEXT,
-    allowNull: false,
+    allowNull: true,
   },
   attribute: {
     type: DataTypes.TEXT,
@@ -24,7 +24,7 @@ const CrawlDetails = sequelize.define('CrawlDetails', {
   },
   data_type_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   tableName: 'crawl_details',

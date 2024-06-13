@@ -20,7 +20,7 @@ const ItemDetails = sequelize.define('ItemDetails', {
   },
   is_primary_key: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   tableName: 'item_details',

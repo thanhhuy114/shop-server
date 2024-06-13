@@ -8,7 +8,7 @@ const Items = sequelize.define('Items', {
   },
   item_type_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   website_id: {
     type: DataTypes.INTEGER,

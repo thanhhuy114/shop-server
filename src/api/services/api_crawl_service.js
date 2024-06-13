@@ -31,25 +31,32 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
         // Thực hiện các hành động trong quá trình lấy dữ liệu
         if (crawlActionDetails) await handleActions(page, crawlActionDetails);
 
+        // Lấy nội dung trang (là chuỗi json)
+        const pageContent = await page.evaluate(() => {
+            return document.querySelector('pre').innerText; // Thay thế 'pre' bằng selector phù hợp
+        });
+
+        // Parse chuỗi JSON thành đối tượng JavaScript
+        const jsonData = JSON.parse(pageContent);
+
         // Mảng lưu kết quả trả về
         const data = [];
 
-        // Lưu lại url
-        data.push({ id, name : 'url', value: crawlConfig.url, is_primary_key: true });
-
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
-            const { id, name, selector, attribute, data_type_id, is_primary_key } = crawlDetail;
-            const type = (await typeService.getCrawlDataType(data_type_id)).type;
-            
-            let value;
-            if (type === 'attribute') {
-                value = await page.$eval(selector, (el, attr) => el.getAttribute(attr), attribute);
-            } else if (type === 'content') {
-                value = await page.$eval(selector, el => el.textContent.trim());
-            } else if (type === 'count') {
-                value = await page.$$eval(selector, elements => elements.length);
-            }
+            const { id, name, attribute, is_primary_key } = crawlDetail;
+
+            // Lấy giá trị của thuộc tính cần lấy
+                // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
+                const attributes = attribute.split('.');
+
+                // Lấy giá trị của thuộc tính cần lấy
+                let value = jsonData;
+                for (const attr of attributes) {
+                    if (value) {
+                        value = value[attr];
+                    }
+                }
 
             // Thực hiện các option
             if (crawlOptionDetails) value = await handleOptions(crawlOptionDetails, id, value);
@@ -97,8 +104,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
 
             // Duyệt qua các selector
             for (const crawlDetail of crawlDetails) {
-                const { id, name, selector, attribute, data_type_id, is_primary_key } = crawlDetail;
-                const type = (await typeService.getCrawlDataType(data_type_id)).type;
+                const { id, name, selector, attribute, is_primary_key } = crawlDetail;
 
                 let value;
                 if (type === 'attribute') {

@@ -20,9 +20,8 @@ exports.getList = async (crawlConfigId) => {
 exports.save = async (crawlConfigId, actionDetailDatas) => {
     try {
         // Kiểm tra null
-        if(actionDetailDatas.length <= 0) {
-            return null;
-        }
+        if(!actionDetailDatas) return null;
+        if(actionDetailDatas.length <= 0) return null;
 
         const actionDetailResults = [];
 

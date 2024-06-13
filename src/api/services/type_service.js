@@ -202,7 +202,7 @@ exports.getAllCrawlActionTypes = async () => {
 }
 
 // Bảng loại lấy dữ liệu
-exports.getCrawlDataType = async (id) => {
+exports.getCrawlDataType = async (id) => {///////////////////////
     try {
         const crawlDataType = await crawlDataTypes.findByPk(id);
         return crawlDataType ? crawlDataType : null;

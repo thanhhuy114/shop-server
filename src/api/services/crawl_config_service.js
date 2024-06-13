@@ -33,6 +33,8 @@ exports.getConfigInfor = async (crawlConfigId) => {
         // Lấy thông tin từ bảng crawl_configs
         const crawlConfigResult = await get(crawlConfigId);
 
+        if(!crawlConfigResult) return null;
+
         // Lấy thông tin từ bảng bảng crawl_action_details
         const actionDetailResults = await actionDetailService.getList(crawlConfigId);
 
