@@ -1,5 +1,21 @@
 const actionDetails = require('../models/crawl_action_details_model');
 
+// Lấy danh sách hành động của một thu thập
+exports.getList = async (crawlConfigId) => {
+    try {
+        const actionDetailList = await actionDetails.findAll({
+            where: {
+                crawl_config_id: crawlConfigId,
+            }
+        })
+
+        return actionDetailList;
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách lựa chọn của một chi tiết thu thập:', error);
+        return [];
+    }
+}
+
 // Lưu lại
 exports.save = async (crawlConfigId, actionDetailDatas) => {
     try {

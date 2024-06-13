@@ -14,6 +14,10 @@ const CrawlOptionDetails = sequelize.define('CrawlOptionDetails', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  option_value: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
   option_condition_type_id: {
     type: DataTypes.INTEGER,
     allowNull: true,

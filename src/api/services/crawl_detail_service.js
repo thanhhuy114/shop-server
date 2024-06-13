@@ -1,6 +1,32 @@
 const crawlDetails = require('../models/crawl_details_model');
 const optionDetailService = require('./crawl_option_detail_service');
 
+// Lấy danh sách chi tiết cấu hình của 1 phiên thu thập
+exports.getList = async (crawlConfigId) => {
+    try {
+        // Lấy danh sách chi tiết cấu hình
+        const crawlDetailList = await crawlDetails.findAll({
+            where: {
+                crawl_config_id: crawlConfigId,
+            }
+        });
+
+        const crawlOptionDetailResults = [];
+
+        // Lấy danh sách lựa chọn của từ chi tiết cấu hình
+        for (const crawlDetail of crawlDetailList) {
+            const crawl_option_details = await optionDetailService.getList(crawlDetail.id);
+
+            crawlOptionDetailResults.push(...crawl_option_details);
+        }
+
+        return { crawl_details: crawlDetailList, crawl_option_details: crawlOptionDetailResults };
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách chi tiết cấu hình của 1 phiên thu thập:', error);
+        return null;
+    }
+};
+
 // Lưu lại
 exports.save = async (crawlConfigId, crawlDetailDatas, crawlOptionDetails) => {
     try {

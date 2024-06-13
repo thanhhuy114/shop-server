@@ -1,5 +1,21 @@
 const optionDetails = require('../models/crawl_option_details_model');
 
+// Lấy danh sách lựa chọn của một chi tiết thu thập
+exports.getList = async (crawlDetailId) => {
+    try {
+        const optionDetailList = await optionDetails.findAll({
+            where: {
+                crawl_detail_id: crawlDetailId,
+            }
+        })
+
+        return optionDetailList;
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách lựa chọn của một chi tiết thu thập:', error);
+        return [];
+    }
+}
+
 // Lưu lại
 exports.save = async (crawlDetailId, optionDetailDatas) => {
     try {
@@ -50,6 +66,7 @@ const add = async (crawlDetailId, optionDetailData) => {
         return await optionDetails.create({
             crawl_detail_id: crawlDetailId,
             option_type_id: optionDetailData.option_type_id,
+            option_value: optionDetailData.option_value,
             option_condition_type_id: optionDetailData.option_condition_type_id,
             condition_value: optionDetailData.condition_value
         });
