@@ -33,7 +33,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
 
         // Lấy nội dung trang (là chuỗi json)
         const pageContent = await page.evaluate(() => {
-            return document.querySelector('pre').innerText; // Thay thế 'pre' bằng selector phù hợp
+            return document.querySelector('pre').innerText;
         });
 
         // Parse chuỗi JSON thành đối tượng JavaScript
@@ -89,30 +89,36 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
         // Thực hiện các hành động trong lúc thu thập 
         if (crawlActionDetails) await handleActions(page, crawlActionDetails)
         
-        // Lấy nội dung HTML của danh sách sản phẩm lưu vào mảng
-        const datasHtml = await page.$$eval(crawlConfig.item_selector, elements => {
-            return elements.map(element => element.outerHTML);
+        // Lấy nội dung trang (là chuỗi json)
+        const pageContent = await page.evaluate(() => {
+            return document.querySelector('pre').innerText;
         });
 
-        // Truy xuất mảng, lấy thông tin từng item
-        for (let dataHtml of datasHtml) {
-            // Chuyển đổi chuỗi HTML thành một đối tượng DOM ảo
-            const $ = cheerio.load(dataHtml);
+        // Parse chuỗi JSON thành đối tượng JavaScript
+        const jsonData = JSON.parse(pageContent);
 
-            // khai báo mảng chứa 1 item
-            let data = [];
+        // Lấy danh sách item dạng json trong trang
+        const itemDatas = jsonData[crawlConfig.item_selector];
+
+        // khai báo mảng chứa kết quả 
+        let data = [];
+
+        // duyệt qua từ item
+        for (const itemData of itemDatas) {
 
             // Duyệt qua các selector
             for (const crawlDetail of crawlDetails) {
-                const { id, name, selector, attribute, is_primary_key } = crawlDetail;
+                const { id, name, attribute, is_primary_key } = crawlDetail;
 
-                let value;
-                if (type === 'attribute') {
-                    value = $(selector).attr(attribute);
-                } else if (type === 'count') {
-                    value = $(selector).length;
-                } else if (type === 'content') {
-                    value = $(selector).text();
+                // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
+                const attributes = attribute.split('.');
+
+                // Lấy giá trị của thuộc tính cần lấy
+                let value = itemData;
+                for (const attr of attributes) {
+                    if (value) {
+                        value = value[attr];
+                    }
                 }
 
                 // Thực hiện các option

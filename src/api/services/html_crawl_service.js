@@ -35,7 +35,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
         const data = [];
 
         // Lưu lại url
-        data.push({ id, name : 'url', value: crawlConfig.url, is_primary_key: true });
+        data.push({ name : 'url', value: crawlConfig.url, is_primary_key: true });
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
