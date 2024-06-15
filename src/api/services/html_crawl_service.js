@@ -80,7 +80,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
         await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
         
         // Thực hiện các hành động trong lúc thu thập 
-        if (crawlActionDetails) await handleActions(page, crawlActionDetails)
+        if (crawlActionDetails) await handleActions(page, crawlActionDetails);
         
         // Lấy nội dung HTML của danh sách sản phẩm lưu vào mảng
         const datasHtml = await page.$$eval(crawlConfig.item_selector, elements => {

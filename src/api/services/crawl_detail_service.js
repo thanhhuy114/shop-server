@@ -110,11 +110,12 @@ const add = async (crawlConfigId, crawlDetailData, crawlOptionDetails) => {
         const options = [];
         
         // Lấy option của từng crawlDetail
-        for (const crawlOptionDetail of crawlOptionDetails) {
-            if(crawlDetailData.id == crawlOptionDetail.crawl_detail_id) {
-                options.push(crawlOptionDetail);
+        if(crawlOptionDetails)
+            for (const crawlOptionDetail of crawlOptionDetails) {
+                if(crawlDetailData.id == crawlOptionDetail.crawl_detail_id) {
+                    options.push(crawlOptionDetail);
+                }
             }
-        }
 
         // Lưu vào bảng crawl_option_details
         const newOptionDetails = await optionDetailService.save(newCrawlDetail.id, options);

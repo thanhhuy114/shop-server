@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const xml2js = require('xml2js');
 const typeService = require('./type_service');
 const itemService = require('./item_service');
 
@@ -27,43 +28,45 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
         const { browser, page } = await initPage();
         await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
 
-        // Lấy nội dung trang (là chuỗi json)
-        const pageContent = await page.evaluate(() => {
-            return document.querySelector('pre').innerText;
-        });
+        // Lấy nội dung XML từ trang
+        const xmlContent = await page.$eval(crawlConfig.item_selector, el => el.textContent.trim());
 
-        // Parse chuỗi JSON thành đối tượng JavaScript
-        const jsonData = JSON.parse(pageContent);
+        // Phân tích cú pháp XML sang đối tượng JavaScript
+        const parser = new xml2js.Parser({ explicitArray: false });
+        const parsedData = await parser.parseStringPromise(xmlContent);
+
+        // Lấy danh sách item
+        const itemData = parsedData.rss.channel;
 
         // Mảng lưu kết quả trả về
-        const data = [];
+        const itemDetails = [];
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
-            const { id, name, attribute, is_primary_key } = crawlDetail;
+            const { id, name, selector, is_primary_key } = crawlDetail;
 
             // Lấy giá trị của thuộc tính cần lấy
                 // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
-                const attributes = attribute.split('.');
+                const attributes = selector.split('.');
 
                 // Lấy giá trị của thuộc tính cần lấy
-                let value = jsonData;
+                let value = itemData;
                 for (const attr of attributes) {
-                    if (value) {
-                        value = value[attr];
-                    }
+                    value = value[attr];
                 }
+                    
+                if (!value) value = '';
 
             // Thực hiện các option
             if (crawlOptionDetails) value = await handleOptions(crawlOptionDetails, id, value);
 
-            // Thêm vào mảng kết quả
-            data.push({ id, name, value, is_primary_key });
+            // Thêm vào kết quả
+            itemDetails.push({ id, name, value, is_primary_key });
         }
 
         browser.close();
 
-        return [data];
+        return [itemDetails];
     } catch (error) {
         console.error('Đã xảy ra lỗi khi lấy dữ liệu của 1 item:', error);
         return [];
@@ -79,47 +82,47 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
         // Khởi tạo trình duyệt
         const { browser, page } = await initPage();
 
-        // Chuyển đến trang 
+        // Chuyển đến trang
         await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
-        
-        // Lấy nội dung trang (là chuỗi json)
-        const pageContent = await page.evaluate(() => {
-            return document.querySelector('pre').innerText;
-        });
 
-        // Parse chuỗi JSON thành đối tượng JavaScript
-        const jsonData = JSON.parse(pageContent);
+        // Lấy nội dung XML từ trang
+        const xmlContent = await page.$eval(crawlConfig.item_selector, el => el.textContent.trim());
 
-        // Lấy danh sách item dạng json trong trang
-        const itemDatas = jsonData[crawlConfig.item_selector];
+        // Phân tích cú pháp XML sang đối tượng JavaScript
+        const parser = new xml2js.Parser({ explicitArray: false });
+        const parsedData = await parser.parseStringPromise(xmlContent);
 
-        // duyệt qua từ item
+        // Lấy danh sách item
+        const itemDatas = parsedData.rss.channel.item;
+
+        // Duyệt qua từ item
         for (const itemData of itemDatas) {
-            const data = [];
+            const itemDetails = [];
 
             // Duyệt qua các selector
             for (const crawlDetail of crawlDetails) {
-                const { id, name, attribute, is_primary_key } = crawlDetail;
-
-                // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
-                const attributes = attribute.split('.');
+                const { id, name, selector, is_primary_key } = crawlDetail;
 
                 // Lấy giá trị của thuộc tính cần lấy
-                let value = itemData;
-                for (const attr of attributes) {
-                    if (value) {
-                        value = value[attr];
+                    // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
+                    const attributes = selector.split('.');
+
+                    // Lấy giá trị của thuộc tính cần lấy
+                    let value = itemData;
+                    for (const attr of attributes) {
+                        value = itemData[attr];
                     }
-                }
+
+                    if (!value) value = '';
 
                 // Thực hiện các option
                 if (crawlOptionDetails) value = await handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
-                data.push({ id, name, value, is_primary_key });
+                itemDetails.push({ id, name, value, is_primary_key });
             }
 
-            results.push(data);
+            results.push(itemDetails);
         }
 
         browser.close();
