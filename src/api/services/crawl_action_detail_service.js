@@ -1,4 +1,5 @@
 const actionDetails = require('../models/crawl_action_details_model');
+const typeService = require('../services/type_service');
 
 // Lấy danh sách hành động của một thu thập
 exports.getList = async (crawlConfigId) => {
@@ -94,3 +95,54 @@ const deleteAll = async (crawlConfigId) => {
         return false;
     }
 }
+
+// Hàm thực hiện xử lý các hành động
+exports.handleActions = async (page, actions) => {
+    for (const action of actions) {
+        const actionType = (await typeService.getCrawlActionType(action.action_type_id)).type;
+
+        if (actionType === 'Click when appear') {
+            clickWhenAppear(page, action.selector);
+        } else if (actionType === 'Show all') {
+            await showAll(page, action.selector);
+        }
+    }
+};
+
+// Xử lý sự kiện Show all
+const showAll = async (page, selector) => {	
+    while (true) {	
+        try {	
+            await page.click(selector);	
+            await page.waitForSelector(selector, { visible: true, timeout: 5000 });	
+
+            // Chờ 0.5 giây	
+            await new Promise(resolve => setTimeout(resolve, 500));	
+        } catch (error) {	
+            break;	
+        }
+    }
+};
+
+// Xử lý sự kiện clickWhenAppear
+const clickWhenAppear = async (page, selector) => {
+    while (!page.isClosed()) {
+        try {
+            // Kiểm tra phần tử có tồn tại
+            const isElementVisible = await page.evaluate((selector) => {
+                const element = document.querySelector(selector);
+                return element != null;
+            }, selector);
+
+            // Click phần tử nếu có
+            if (isElementVisible) {
+                await page.click(selector);
+                await new Promise(resolve => setTimeout(resolve, 500));
+            } else {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        } catch (error) {	
+            break;
+        }
+    }
+};

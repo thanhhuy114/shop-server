@@ -1,5 +1,4 @@
-const rssCrawlService = require('../services/rss_crawl_service');
-const typeService = require('../services/type_service');
+const crawlService = require('../services/crawl_service');
 const crawlConfigService = require('../services/crawl_config_service');
 
 // Hàm thực hiện thu thập dữ liệu, với cấu hình thu tập được gửi từ client
@@ -17,7 +16,7 @@ exports.crawlingData = async (req, res) => {
         );
 
         // Thực hiện thu thập
-        const items = await handleCrawlingData(crawlConfigInfor);
+        const items = await crawlService.handleCrawlingData(crawlConfigInfor);
 
         // Gửi kết quả về client
         res.status(200).json({ crawl_config_infor: newCrawlConfigInfor, items });
@@ -37,7 +36,7 @@ exports.reCrawlingData = async (req, res) => {
         const crawlConfigInfor = await crawlConfigService.getConfigInfor(id);
 
         //  Thực hiện thu thập
-        const items = await handleCrawlingData(crawlConfigInfor);
+        const items = await crawlService.handleCrawlingData(crawlConfigInfor);
 
         // Gửi kết quả về client
         res.status(200).json({ crawl_config_infor: crawlConfigInfor, items });
@@ -45,38 +44,4 @@ exports.reCrawlingData = async (req, res) => {
         res.status(500).json({ error: 'Đã xảy ra lỗi khi cập nhật lại dữ liệu thu thập'});
         console.log(error);
     }
-};
-
-// Hàm thực hiện thu thập dữ liệu
-const handleCrawlingData = async (crawlConfigInfor) => {
-    // Lấy loại thu thập (trang danh sách hay trang chi tiết)
-    const result_type = (await typeService.getCrawlResultType(crawlConfigInfor.crawl_config.result_type_id)).type;
-
-    // Thực hiện thu thập theo từng loại
-    let crawlResult;
-    if(result_type === 'single') {
-        crawlResult = await rssCrawlService.singleCrawl(
-            crawlConfigInfor.crawl_config, 
-            crawlConfigInfor.crawl_action_details, 
-            crawlConfigInfor.crawl_details, 
-            crawlConfigInfor.crawl_option_details
-        );
-    } else if (result_type === 'multi') {
-        crawlResult = await rssCrawlService.multiCrawl(
-            crawlConfigInfor.crawl_config, 
-            crawlConfigInfor.crawl_action_details, 
-            crawlConfigInfor.crawl_details, 
-            crawlConfigInfor.crawl_option_details
-        );
-    }
-
-    // Lưu lại danh sách items
-    const items = await rssCrawlService.saveCrawlResult(
-        crawlResult,
-        crawlConfigInfor.crawl_config.item_type_id,
-        crawlConfigInfor.crawl_config.website_id,
-        crawlConfigInfor.crawl_config.id
-    );
-
-    return items;
 };

@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
-const typeService = require('./type_service');
-const itemService = require('./item_service');
+const optionDetailService = require('../services/crawl_option_detail_service');
 
 // Hàm khởi tạo trình duyệt
 const initPage = async () => {
@@ -21,7 +20,7 @@ const initPage = async () => {
 };
 
 // Lấy dữ liệu 1 đối tượng
-exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
+exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
     try {
         // Khởi tạo trình duyệt và chuyển đến trang chứa dữ liệu
         const { browser, page } = await initPage();
@@ -55,7 +54,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
                 }
 
             // Thực hiện các option
-            if (crawlOptionDetails) value = await handleOptions(crawlOptionDetails, id, value);
+            if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào mảng kết quả
             data.push({ id, name, value, is_primary_key });
@@ -71,7 +70,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
 };
 
 // Lấy dữ liệu tất cả đối tượng
-exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
+exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
     // Khai báo mảng kết quả
     const results = [];
 
@@ -113,7 +112,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
                 }
 
                 // Thực hiện các option
-                if (crawlOptionDetails) value = await handleOptions(crawlOptionDetails, id, value);
+                if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
                 data.push({ id, name, value, is_primary_key });
@@ -128,104 +127,5 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
     } catch (error) {
         console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả item:', error);
         throw error;
-    }
-};
-
-// Hàm lưu kết quả thu thập được vào database
-exports.saveCrawlResult = async (crawlResult, itemTypeId, websiteId, crawlConfigId) => {
-    // Khai báo
-    const results = [];
-
-    // Duyệt qua kết quả thu được (crawlResult - danh sách item)
-    for (const item of crawlResult) {
-        const itemDetails = [];
-
-        // Duyệt qua từng phần tử JSON trong mảng con
-        for (const itemDetail of item) {
-            // Lưu vào mảng để trả về
-            itemDetails.push({
-                name: itemDetail.name, 
-                value: itemDetail.value, 
-                is_primary_key: itemDetail.is_primary_key
-            });
-        }
-
-        const saveResult = await itemService.save(
-            {item_type_id: itemTypeId, website_id: websiteId, crawl_config_id: crawlConfigId},
-            itemDetails
-        )
-        
-        // Lưu vào mảng để trả về
-        results.push(saveResult);
-    }
-
-    return results;
-}
-
-// Hàm thực hiện xử lý các lựa chọn để chuyển đổi kết quả về dạng mong muốn
-const handleOptions = async (options, crawl_detail_id, value) => {
-    for (const option of options) {
-        if(option.crawl_detail_id === crawl_detail_id) {
-            const { option_type_id, option_value, type_option_condition_id, condition_value } = option;
-
-            const type_option = (await typeService.getCrawlOptionType(option_type_id)).type;
-
-            // Thêm vào đầu chuỗi
-            if (type_option === 'prepend') {
-                // Kiểm tra điều kiện thực hiện
-                const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
-
-                // Thực hiện option nếu điều kiện đúng
-                if (checkConditionResult) {
-                    value = option_value + value;
-                }
-            }
-
-            // Thêm vào cuối chuỗi
-            if (type_option === 'append') {
-                // Kiểm tra điều kiện thực hiện
-                const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
-
-                // Thực hiện option nếu điều kiện đúng
-                if (checkConditionResult) {
-                    value = value + option_value;
-                }
-            }
-
-            // Loại bỏ ký tự không phải số
-            if (type_option === 'to number') {
-                // Kiểm tra điều kiện thực hiện
-                const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
-
-                // Thực hiện option nếu điều kiện đúng
-                if (checkConditionResult) {
-                    value = value.replace(/\D/g, '');
-                }
-            }
-        }
-    }
-
-    return value;
-};
-
-// Hàm kiểm tra điều kiện
-const checkCondition = async (conditionId, conditionValue, value) => {
-    // TRUE nếu không có điều kiện cần kiểm tra
-    if(!conditionId) return true;
-    if(!conditionValue) return true;
-
-    // Lấy tên loại điều kiện
-    const conditionType = (await typeService.getCrawlOptionConditionType(conditionId)).type;
-
-    // Kiểm tra cho từng loại điều kiện
-    if (conditionType === 'Start with') {
-        return value.toLowerCase().startsWith(conditionValue.toLowerCase());
-    } else if (conditionType === 'End with') {
-        return value.toLowerCase().endsWith(conditionValue.toLowerCase());
-    } else if (conditionType === 'Contain') {
-        return value.toLowerCase().includes(conditionValue.toLowerCase());
-    } else {
-        console.error('Loại điều kiện chưa được định nghĩa:', conditionType);
-        return false;
     }
 };

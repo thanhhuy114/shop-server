@@ -1,4 +1,5 @@
 const optionDetails = require('../models/crawl_option_details_model');
+const typeService = require('../services/type_service');
 
 // Lấy danh sách lựa chọn của một chi tiết thu thập
 exports.getList = async (crawlDetailId) => {
@@ -91,3 +92,66 @@ exports.deleteAll = async (itemDetailId) => {
         return false;
     }
 }
+
+// Hàm thực hiện xử lý các lựa chọn để chuyển đổi kết quả về dạng mong muốn
+exports.handleOptions = async (options, crawl_detail_id, value) => {
+    for (const option of options) {
+        if(option.crawl_detail_id === crawl_detail_id) {
+            const { option_type_id, option_value, type_option_condition_id, condition_value } = option;
+
+            // Lấy loại option
+            const type_option = (await typeService.getCrawlOptionType(option_type_id)).type;
+
+            // Kiểm tra điều kiện thực hiện
+            const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
+
+            // Thêm vào đầu chuỗi
+            if (type_option === 'prepend') {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
+                    value = option_value + value;
+                }
+            }
+
+            // Thêm vào cuối chuỗi
+            if (type_option === 'append') {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
+                    value = value + option_value;
+                }
+            }
+
+            // Loại bỏ ký tự không phải số
+            if (type_option === 'to number') {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
+                    value = value.replace(/\D/g, '');
+                }
+            }
+        }
+    }
+
+    return value;
+};
+
+// Hàm kiểm tra điều kiện
+const checkCondition = async (conditionId, conditionValue, value) => {
+    // TRUE nếu không có điều kiện cần kiểm tra
+    if(!conditionId) return true;
+    if(!conditionValue) return true;
+
+    // Lấy tên loại điều kiện
+    const conditionType = (await typeService.getCrawlOptionConditionType(conditionId)).type;
+
+    // Kiểm tra cho từng loại điều kiện
+    if (conditionType === 'Start with') {
+        return value.toLowerCase().startsWith(conditionValue.toLowerCase());
+    } else if (conditionType === 'End with') {
+        return value.toLowerCase().endsWith(conditionValue.toLowerCase());
+    } else if (conditionType === 'Contain') {
+        return value.toLowerCase().includes(conditionValue.toLowerCase());
+    } else {
+        console.error('Loại điều kiện chưa được định nghĩa:', conditionType);
+        return false;
+    }
+};

@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const typeService = require('./type_service');
-const itemService = require('./item_service');
+const optionDetailService = require('./crawl_option_detail_service');
+const actionDetailService = require('./crawl_action_detail_service');
 
 // Hàm khởi tạo trình duyệt
 const initPage = async () => {
@@ -29,7 +30,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
         await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
 
         // Thực hiện các hành động trong quá trình lấy dữ liệu
-        if (crawlActionDetails) await handleActions(page, crawlActionDetails);
+        if (crawlActionDetails) await actionDetailService.handleActions(page, crawlActionDetails);
 
         // Mảng lưu kết quả trả về
         const data = [];
@@ -52,7 +53,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
             }
 
             // Thực hiện các option
-            if (crawlOptionDetails) value = await handleOptions(crawlOptionDetails, id, value);
+            if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào mảng kết quả
             data.push({ id, name, value, is_primary_key });
@@ -80,7 +81,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
         await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
         
         // Thực hiện các hành động trong lúc thu thập 
-        if (crawlActionDetails) await handleActions(page, crawlActionDetails);
+        if (crawlActionDetails) await actionDetailService.handleActions(page, crawlActionDetails);
         
         // Lấy nội dung HTML của danh sách sản phẩm lưu vào mảng
         const datasHtml = await page.$$eval(crawlConfig.item_selector, elements => {
@@ -110,7 +111,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
                 }
 
                 // Thực hiện các option
-                if (crawlOptionDetails) value = await handleOptions(crawlOptionDetails, id, value);
+                if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
                 data.push({ id, name, value, is_primary_key });
@@ -125,156 +126,5 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
     } catch (error) {
         console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả item:', error);
         throw error;
-    }
-};
-
-// Hàm lưu kết quả thu thập được vào database
-exports.saveCrawlResult = async (crawlResult, itemTypeId, websiteId, crawlConfigId) => {
-    // Khai báo
-    const results = [];
-
-    // Duyệt qua kết quả thu được (crawlResult - danh sách item)
-    for (const item of crawlResult) {
-        const itemDetails = [];
-
-        // Duyệt qua từng phần tử JSON trong mảng con
-        for (const itemDetail of item) {
-            // Lưu vào mảng để trả về
-            itemDetails.push({
-                name: itemDetail.name, 
-                value: itemDetail.value, 
-                is_primary_key: itemDetail.is_primary_key
-            });
-        }
-
-        const saveResult = await itemService.save(
-            {item_type_id: itemTypeId, website_id: websiteId, crawl_config_id: crawlConfigId},
-            itemDetails
-        )
-        
-        // Lưu vào mảng để trả về
-        results.push(saveResult);
-    }
-
-    return results;
-}
-
-// Hàm thực hiện xử lý các hành động
-const handleActions = async (page, actions) => {
-    for (const event of actions) {
-        const event_type = (await typeService.getCrawlActionType(event.action_type_id)).type;
-        const { selector } = event;
-
-        if (event_type === 'Click when appear') {
-            clickWhenAppear(page, selector);
-        } else if (event_type === 'Show all') {
-            await showAll(page, selector);
-        }
-    }
-};
-
-// Xử lý sự kiện Show all
-const showAll = async (page, selector) => {	
-    while (true) {	
-        try {	
-            await page.click(selector);	
-            await page.waitForSelector(selector, { visible: true, timeout: 5000 });	
-
-            // Chờ 0.5 giây	
-            await new Promise(resolve => setTimeout(resolve, 500));	
-        } catch (error) {	
-            break;	
-        }
-    }
-};
-
-// Xử lý sự kiện clickWhenAppear
-const clickWhenAppear = async (page, selector) => {
-    while (!page.isClosed()) {
-        try {
-            // Kiểm tra phần tử có tồn tại
-            const isElementVisible = await page.evaluate((selector) => {
-                const element = document.querySelector(selector);
-                return element != null;
-            }, selector);
-
-            // Click phần tử nếu có
-            if (isElementVisible) {
-                await page.click(selector);
-                await new Promise(resolve => setTimeout(resolve, 500));
-            } else {
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
-        } catch (error) {	
-            break;
-        }
-    }
-};
-
-// Hàm thực hiện xử lý các lựa chọn để chuyển đổi kết quả về dạng mong muốn
-const handleOptions = async (options, crawl_detail_id, value) => {
-    for (const option of options) {
-        if(option.crawl_detail_id === crawl_detail_id) {
-            const { option_type_id, option_value, type_option_condition_id, condition_value } = option;
-
-            const type_option = (await typeService.getCrawlOptionType(option_type_id)).type;
-
-            // Thêm vào đầu chuỗi
-            if (type_option === 'prepend') {
-                // Kiểm tra điều kiện thực hiện
-                const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
-
-                // Thực hiện option nếu điều kiện đúng
-                if (checkConditionResult) {
-                    value = option_value + value;
-                }
-            }
-
-            // Thêm vào cuối chuỗi
-            if (type_option === 'append') {
-                // Kiểm tra điều kiện thực hiện
-                const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
-
-                // Thực hiện option nếu điều kiện đúng
-                if (checkConditionResult) {
-                    value = value + option_value;
-                }
-            }
-
-            // Loại bỏ ký tự không phải số
-            if (type_option === 'to number') {
-                // Kiểm tra điều kiện thực hiện
-                const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
-
-                // Thực hiện option nếu điều kiện đúng
-                if (checkConditionResult) {
-                    value = value.replace(/\D/g, '');
-                }
-            }
-        }
-    }
-
-    return value;
-};
-
-// Hàm kiểm tra điều kiện
-const checkCondition = async (conditionId, conditionValue, value) => {
-    // TRUE nếu không có điều kiện cần kiểm tra
-    if(!conditionId) return true;
-    if(!conditionValue) return true;
-
-    // Lấy tên loại điều kiện
-    const conditionType = (await typeService.getCrawlOptionConditionType(conditionId)).type;
-
-    // Kiểm tra cho từng loại điều kiện
-    if (conditionType === 'Start with') {
-        return value.toLowerCase().startsWith(conditionValue.toLowerCase());
-    } else if (conditionType === 'End with') {
-        return value.toLowerCase().endsWith(conditionValue.toLowerCase());
-    } else if (conditionType === 'Contain') {
-        return value.toLowerCase().includes(conditionValue.toLowerCase());
-    } else {
-        console.error('Loại điều kiện chưa được định nghĩa:', conditionType);
-        return false;
     }
 };
