@@ -28,6 +28,7 @@ router.get('/get-all-crawl-action-types', typeController.getAllCrawlActionTypes)
 
 // Routes cho loại dữ liệu
 router.get('/get-all-crawl-data-types', typeController.getAllCrawlDataTypes);
+router.get('/get-all-crawl-data-types-by-crawl-type-id/:id', typeController.getAllCrawlDataTypesByCrawlTypeId);
 
 // Routes cho loại lựa chọn
 router.get('/get-all-crawl-option-types', typeController.getAllCrawlOptionTypes);

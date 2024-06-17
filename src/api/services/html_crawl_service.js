@@ -35,12 +35,9 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
         // Mảng lưu kết quả trả về
         const data = [];
 
-        // Lưu lại url
-        data.push({ name : 'url', value: crawlConfig.url, is_primary_key: true });
-
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
-            const { id, name, selector, attribute, data_type_id, is_primary_key } = crawlDetail;
+            const { id, name, selector, attribute, data_type_id, is_contain_keywords, is_primary_key } = crawlDetail;
             const type = (await typeService.getCrawlDataType(data_type_id)).type;
             
             let value;
@@ -56,7 +53,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào mảng kết quả
-            data.push({ id, name, value, is_primary_key });
+            data.push({ id, name, value, is_contain_keywords, is_primary_key });
         }
 
         browser.close();
@@ -98,7 +95,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
 
             // Duyệt qua các selector
             for (const crawlDetail of crawlDetails) {
-                const { id, name, selector, attribute, data_type_id, is_primary_key } = crawlDetail;
+                const { id, name, selector, attribute, data_type_id, is_contain_keywords, is_primary_key } = crawlDetail;
                 const type = (await typeService.getCrawlDataType(data_type_id)).type;
 
                 let value;
@@ -114,7 +111,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
-                data.push({ id, name, value, is_primary_key });
+                data.push({ id, name, value, is_contain_keywords, is_primary_key });
             }
 
             results.push(data);

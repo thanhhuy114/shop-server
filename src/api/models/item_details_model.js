@@ -22,6 +22,10 @@ const ItemDetails = sequelize.define('ItemDetails', {
     type: DataTypes.BOOLEAN,
     allowNull: true,
   },
+  is_contain_keywords: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
 }, {
   tableName: 'item_details',
   timestamps: false,

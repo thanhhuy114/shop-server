@@ -27,26 +27,24 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
         await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
 
         // Lấy nội dung trang (là chuỗi json)
-        const pageContent = await page.evaluate(() => {
-            return document.querySelector('pre').innerText;
-        });
+        const apiContent = await page.$eval(crawlConfig.data_selector, el => el.textContent);
 
         // Parse chuỗi JSON thành đối tượng JavaScript
-        const jsonData = JSON.parse(pageContent);
+        const apiJsonData = JSON.parse(apiContent);
 
         // Mảng lưu kết quả trả về
         const data = [];
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
-            const { id, name, attribute, is_primary_key } = crawlDetail;
+            const { id, name, attribute, is_contain_keywords, is_primary_key } = crawlDetail;
 
             // Lấy giá trị của thuộc tính cần lấy
                 // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
                 const attributes = attribute.split('.');
 
                 // Lấy giá trị của thuộc tính cần lấy
-                let value = jsonData;
+                let value = apiJsonData;
                 for (const attr of attributes) {
                     if (value) {
                         value = value[attr];
@@ -57,7 +55,7 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào mảng kết quả
-            data.push({ id, name, value, is_primary_key });
+            data.push({ id, name, value, is_contain_keywords, is_primary_key });
         }
 
         browser.close();
@@ -82,15 +80,13 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
         await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
         
         // Lấy nội dung trang (là chuỗi json)
-        const pageContent = await page.evaluate(() => {
-            return document.querySelector('pre').innerText;
-        });
+        const apiContent = await page.$eval(crawlConfig.data_selector, el => el.textContent);
 
         // Parse chuỗi JSON thành đối tượng JavaScript
-        const jsonData = JSON.parse(pageContent);
+        const apiJsonData = JSON.parse(apiContent);
 
         // Lấy danh sách item dạng json trong trang
-        const itemDatas = jsonData[crawlConfig.item_selector];
+        const itemDatas = apiJsonData[crawlConfig.item_selector];
 
         // duyệt qua từ item
         for (const itemData of itemDatas) {
@@ -98,7 +94,7 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 
             // Duyệt qua các selector
             for (const crawlDetail of crawlDetails) {
-                const { id, name, attribute, is_primary_key } = crawlDetail;
+                const { id, name, attribute, is_contain_keywords, is_primary_key } = crawlDetail;
 
                 // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
                 const attributes = attribute.split('.');
@@ -115,7 +111,7 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
-                data.push({ id, name, value, is_primary_key });
+                data.push({ id, name, value, is_contain_keywords, is_primary_key });
             }
 
             results.push(data);

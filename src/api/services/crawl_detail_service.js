@@ -97,7 +97,9 @@ const add = async (crawlConfigId, crawlDetailData, crawlOptionDetails) => {
             name: crawlDetailData.name,
             selector: crawlDetailData.selector,
             attribute: crawlDetailData.attribute,
-            data_type_id: crawlDetailData.data_type_id
+            data_type_id: crawlDetailData.data_type_id,
+            is_primary_key: crawlDetailData.is_primary_key || false,
+            is_contain_keywords: crawlDetailData.is_contain_keywords || false
         });
 
         // Xóa các OptionDetail cũ

@@ -46,6 +46,7 @@ exports.add = async (itemId, itemDetailData) => {
             item_id: itemId,
             name: itemDetailData.name,
             value: itemDetailData.value,
+            is_contain_keywords: itemDetailData.is_contain_keywords || false,
             is_primary_key: itemDetailData.is_primary_key || false,
         });
     } catch (error) {

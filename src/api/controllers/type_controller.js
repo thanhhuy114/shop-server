@@ -66,6 +66,11 @@ exports.getAllCrawlActionTypes = async (req, res) => {
 exports.getAllCrawlDataTypes = async (req, res) => {
     res.json(await typeService.getAllCrawlDataTypes());
 }
+exports.getAllCrawlDataTypesByCrawlTypeId = async (req, res) => {
+    const {id} = req.params;
+
+    res.json(await typeService.getAllCrawlDataTypesByCrawlTypeId(id));
+}
 
 // Bảng loại lựa chọn (dùng chỉnh sửa dữ liệu thu thập được)
 exports.getAllCrawlOptionTypes = async (req, res) => {

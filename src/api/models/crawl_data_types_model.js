@@ -18,6 +18,10 @@ const CrawlDataTypes = sequelize.define('CrawlDataTypes', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },
+  crawl_type_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 }, {
   tableName: 'crawl_data_types',
   timestamps: false,

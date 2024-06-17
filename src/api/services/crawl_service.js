@@ -85,6 +85,7 @@ const saveCrawlResult = async (crawlResult, itemTypeId, websiteId, crawlConfigId
             itemDetails.push({
                 name: itemDetail.name, 
                 value: itemDetail.value, 
+                is_contain_keywords: itemDetail.is_contain_keywords,
                 is_primary_key: itemDetail.is_primary_key
             });
         }

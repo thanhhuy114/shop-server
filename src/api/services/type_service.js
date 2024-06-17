@@ -202,12 +202,25 @@ exports.getAllCrawlActionTypes = async () => {
 }
 
 // Bảng loại lấy dữ liệu
-exports.getCrawlDataType = async (id) => {///////////////////////
+exports.getCrawlDataType = async (id) => {
     try {
         const crawlDataType = await crawlDataTypes.findByPk(id);
         return crawlDataType ? crawlDataType : null;
     } catch (error) {
         console.error('Lỗi khi lấy loại dữ liệu:', error);
+        throw error;
+    }
+}
+
+exports.getAllCrawlDataTypesByCrawlTypeId = async (crawlTypeId) => {
+    try {
+        return await crawlDataTypes.findAll({
+            where: {
+                crawl_type_id: crawlTypeId,
+            }
+        });
+    } catch (error) {
+        console.error('Lỗi khi lấy tất cả loại dữ liệu của một loại thu thập:', error);
         throw error;
     }
 }

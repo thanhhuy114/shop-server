@@ -28,28 +28,35 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
         await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
 
         // Lấy nội dung XML từ trang
-        const xmlContent = await page.$eval(crawlConfig.item_selector, el => el.textContent.trim());
+        const xmlContent = await page.$eval(crawlConfig.data_selector, el => el.textContent);
 
         // Phân tích cú pháp XML sang đối tượng JavaScript
         const parser = new xml2js.Parser({ explicitArray: false });
         const parsedData = await parser.parseStringPromise(xmlContent);
 
         // Lấy danh sách item
-        const itemData = parsedData.rss.channel;
+            // Tách các thuộc tính lồng nhau
+            const attributes = crawlConfig.item_selector.split('.');
+
+            // Truy cập vào nơi chứa item
+            let itemDatas = parsedData;
+            for (const attr of attributes) {
+                itemDatas = itemDatas[attr];
+            }
 
         // Mảng lưu kết quả trả về
         const itemDetails = [];
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
-            const { id, name, selector, is_primary_key } = crawlDetail;
+            const { id, name, selector, is_contain_keywords, is_primary_key } = crawlDetail;
 
             // Lấy giá trị của thuộc tính cần lấy
                 // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
                 const attributes = selector.split('.');
 
                 // Lấy giá trị của thuộc tính cần lấy
-                let value = itemData;
+                let value = itemDatas;
                 for (const attr of attributes) {
                     value = value[attr];
                 }
@@ -60,7 +67,7 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào kết quả
-            itemDetails.push({ id, name, value, is_primary_key });
+            itemDetails.push({ id, name, value, is_contain_keywords, is_primary_key });
         }
 
         browser.close();
@@ -85,14 +92,21 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
         await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
 
         // Lấy nội dung XML từ trang
-        const xmlContent = await page.$eval(crawlConfig.item_selector, el => el.textContent.trim());
+        const xmlContent = await page.$eval(crawlConfig.data_selector, el => el.textContent);
 
         // Phân tích cú pháp XML sang đối tượng JavaScript
         const parser = new xml2js.Parser({ explicitArray: false });
         const parsedData = await parser.parseStringPromise(xmlContent);
 
         // Lấy danh sách item
-        const itemDatas = parsedData.rss.channel.item;
+            // Tách các thuộc tính lồng nhau
+            const attributes = crawlConfig.item_selector.split('.');
+
+            // Truy cập vào nơi chứa item
+            let itemDatas = parsedData;
+            for (const attr of attributes) {
+                itemDatas = itemDatas[attr];
+            }
 
         // Duyệt qua từ item
         for (const itemData of itemDatas) {
@@ -100,7 +114,7 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 
             // Duyệt qua các selector
             for (const crawlDetail of crawlDetails) {
-                const { id, name, selector, is_primary_key } = crawlDetail;
+                const { id, name, selector, is_contain_keywords, is_primary_key } = crawlDetail;
 
                 // Lấy giá trị của thuộc tính cần lấy
                     // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
@@ -118,7 +132,7 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
-                itemDetails.push({ id, name, value, is_primary_key });
+                itemDetails.push({ id, name, value, is_contain_keywords, is_primary_key });
             }
 
             results.push(itemDetails);
@@ -129,6 +143,6 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
         return results;
     } catch (error) {
         console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả item:', error);
-        throw error;
+        return [];
     }
 };

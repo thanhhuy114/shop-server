@@ -26,6 +26,14 @@ const CrawlDetails = sequelize.define('CrawlDetails', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  is_primary_key: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
+  is_contain_keywords: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
 }, {
   tableName: 'crawl_details',
   timestamps: false,
