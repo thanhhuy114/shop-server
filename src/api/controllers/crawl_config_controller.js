@@ -14,6 +14,18 @@ exports.get = async (req, res) => {
     }
 }
 
+// Lấy thông tin một phiên cấu hình thu thập
+exports.getAll = async (req, res) => {
+    try {
+        const allCrawlConfigInfor = await crawlConfigService.getAllConfigInfor();
+        
+        res.status(200).json(allCrawlConfigInfor);
+    } catch (error) {
+        console.error(`Lỗi khi tất cả lấy cấu hình:`, error);
+        res.status(500).json({ error: `Lỗi khi lấy tất cả cấu hình` });
+    }
+}
+
 // Kiểm tra tên cấu hình đã tồn tại chưa
 exports.checkNameExists = async (req, res) => {
     try {
