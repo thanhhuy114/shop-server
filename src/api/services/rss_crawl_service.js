@@ -1,38 +1,17 @@
-const puppeteer = require('puppeteer');
+const axios = require('axios');
 const xml2js = require('xml2js');
 const optionDetailService = require('./crawl_option_detail_service');
-
-// Hàm khởi tạo trình duyệt
-const initPage = async () => {
-    try{
-        // Khởi tạo trình duyệt
-        const browser = await puppeteer.launch({
-            headless:false
-        });
-
-        // Lấy page hiện tại
-        const page = (await browser.pages())[0];
-
-        return { browser, page };
-    }catch(error){
-        console.log("Đã xảy ra lỗi khi khởi tạo browser:", error);
-        throw(error);
-    }
-};
 
 // Lấy dữ liệu 1 đối tượng
 exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
     try {
-        // Khởi tạo trình duyệt và chuyển đến trang chứa dữ liệu
-        const { browser, page } = await initPage();
-        await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
-
-        // Lấy nội dung XML từ trang
-        const xmlContent = await page.$eval(crawlConfig.data_selector, el => el.textContent);
+        // Lấy rss
+        const response = await axios.get(crawlConfig.url);
+        const   apiResults = response.data;
 
         // Phân tích cú pháp XML sang đối tượng JavaScript
         const parser = new xml2js.Parser({ explicitArray: false });
-        const parsedData = await parser.parseStringPromise(xmlContent);
+        const parsedData = await parser.parseStringPromise(apiResults);
 
         // Lấy danh sách item
             // Tách các thuộc tính lồng nhau
@@ -70,8 +49,6 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             itemDetails.push({ id, name, value, is_contain_keywords, is_primary_key });
         }
 
-        browser.close();
-
         return [itemDetails];
     } catch (error) {
         console.error('Đã xảy ra lỗi khi lấy dữ liệu của 1 item:', error);
@@ -85,18 +62,13 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
     const results = [];
 
     try {
-        // Khởi tạo trình duyệt
-        const { browser, page } = await initPage();
-
-        // Chuyển đến trang
-        await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
-
-        // Lấy nội dung XML từ trang
-        const xmlContent = await page.$eval(crawlConfig.data_selector, el => el.textContent);
+        // Lấy rss
+        const response = await axios.get(crawlConfig.url);
+        const   apiResults = response.data;
 
         // Phân tích cú pháp XML sang đối tượng JavaScript
         const parser = new xml2js.Parser({ explicitArray: false });
-        const parsedData = await parser.parseStringPromise(xmlContent);
+        const parsedData = await parser.parseStringPromise(apiResults);
 
         // Lấy danh sách item
             // Tách các thuộc tính lồng nhau
@@ -137,8 +109,6 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 
             results.push(itemDetails);
         }
-
-        browser.close();
         
         return results;
     } catch (error) {

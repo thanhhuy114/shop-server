@@ -1,36 +1,40 @@
-const puppeteer = require('puppeteer');
+const axios = require('axios');
 const optionDetailService = require('../services/crawl_option_detail_service');
-
-// Hàm khởi tạo trình duyệt
-const initPage = async () => {
-    try{
-        // Khởi tạo trình duyệt
-        const browser = await puppeteer.launch({
-            headless:false
-        });
-
-        // Lấy page hiện tại
-        const page = (await browser.pages())[0];
-
-        return { browser, page };
-    }catch(error){
-        console.log("Đã xảy ra lỗi khi khởi tạo browser:", error);
-        throw(error);
-    }
-};
+const typeService = require('./type_service');
+const {HTTP_METHODS} = require('../untils/constans/constans');
 
 // Lấy dữ liệu 1 đối tượng
 exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
     try {
-        // Khởi tạo trình duyệt và chuyển đến trang chứa dữ liệu
-        const { browser, page } = await initPage();
-        await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
+        // Lấy kết quả trả về của API (API = crawlConfig.url)
+            // Khai báo kết quả gọi API
+            let apiResults;
 
-        // Lấy nội dung trang (là chuỗi json)
-        const apiContent = await page.$eval(crawlConfig.data_selector, el => el.textContent);
+            // Lấy các thông tin của API từ client
+            const url = crawlConfig.url;
+            const headers = crawlConfig.headers_api;
+            const body = crawlConfig.body_api;
 
-        // Parse chuỗi JSON thành đối tượng JavaScript
-        const apiJsonData = JSON.parse(apiContent);
+            // Lấy phương thức gọi API
+            const httpMethodType = (await typeService.getHttpMethodType(crawlConfig.http_method_type_id)).type;
+
+            // Lấy kết quả trả về của API
+            if(httpMethodType === HTTP_METHODS.GET) {
+                const response = await axios.get(url, { headers });
+                apiResults = response.data;
+            } else if(httpMethodType === HTTP_METHODS.POST) {
+                const response = await axios.post(crawlConfig.url, body, { headers });
+                apiResults = response.data;
+            } else if (httpMethodType === HTTP_METHODS.PUT) {
+                const response = await axios.put(url, body, { headers });
+                apiResults = response.data;
+            } else if (httpMethodType === HTTP_METHODS.PATCH) {
+                const response = await axios.patch(url, body, { headers });
+                apiResults = response.data;
+            } else if (httpMethodType === HTTP_METHODS.DELETE) {
+                const response = await axios.delete(url, { headers });
+                apiResults = response.data;
+            }
 
         // Mảng lưu kết quả trả về
         const data = [];
@@ -44,7 +48,7 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                 const attributes = attribute.split('.');
 
                 // Lấy giá trị của thuộc tính cần lấy
-                let value = apiJsonData;
+                let value = apiResults;
                 for (const attr of attributes) {
                     if (value) {
                         value = value[attr];
@@ -58,11 +62,9 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             data.push({ id, name, value, is_contain_keywords, is_primary_key });
         }
 
-        browser.close();
-
         return [data];
     } catch (error) {
-        console.error('Đã xảy ra lỗi khi lấy dữ liệu của 1 item:', error);
+        console.error('Đã xảy ra lỗi khi lấy dữ liệu của 1 item bằng API:', error);
         return [];
     }
 };
@@ -73,20 +75,39 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
     const results = [];
 
     try {
-        // Khởi tạo trình duyệt
-        const { browser, page } = await initPage();
+        // Lấy kết quả trả về của API (API = crawlConfig.url)
+            // Khai báo kết quả gọi API
+            let apiResults;
 
-        // Chuyển đến trang 
-        await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
-        
-        // Lấy nội dung trang (là chuỗi json)
-        const apiContent = await page.$eval(crawlConfig.data_selector, el => el.textContent);
+            // Lấy phương thức gọi API
+            const httpMethodType = (await typeService.getHttpMethodType(crawlConfig.http_method_type_id)).type;
 
-        // Parse chuỗi JSON thành đối tượng JavaScript
-        const apiJsonData = JSON.parse(apiContent);
+            // Lấy các thông tin của API từ client
+            const url = crawlConfig.url;
+            const headers = crawlConfig.headers_api;
+            const body = crawlConfig.body_api;
+            
+
+            // Lấy kết quả trả về của API
+            if(httpMethodType === HTTP_METHODS.GET) {
+                const response = await axios.get(url, { headers });
+                apiResults = response.data;
+            } else if(httpMethodType === HTTP_METHODS.POST) {
+                const response = await axios.post(crawlConfig.url, body, { headers });
+                apiResults = response.data;
+            } else if (httpMethodType === HTTP_METHODS.PUT) {
+                const response = await axios.put(url, body, { headers });
+                apiResults = response.data;
+            } else if (httpMethodType === HTTP_METHODS.PATCH) {
+                const response = await axios.patch(url, body, { headers });
+                apiResults = response.data;
+            } else if (httpMethodType === HTTP_METHODS.DELETE) {
+                const response = await axios.delete(url, { headers });
+                apiResults = response.data;
+            }
 
         // Lấy danh sách item dạng json trong trang
-        const itemDatas = apiJsonData[crawlConfig.item_selector];
+        const itemDatas = apiResults[crawlConfig.item_selector];
 
         // duyệt qua từ item
         for (const itemData of itemDatas) {
@@ -116,12 +137,10 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 
             results.push(data);
         }
-
-        browser.close();
         
         return results;
     } catch (error) {
-        console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả item:', error);
+        console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả item bằng API:', error);
         throw error;
     }
 };

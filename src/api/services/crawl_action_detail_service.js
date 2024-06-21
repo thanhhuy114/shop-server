@@ -1,5 +1,6 @@
 const actionDetails = require('../models/crawl_action_details_model');
 const typeService = require('../services/type_service');
+const {ACTIONS} = require('../untils/constans/constans');
 
 // Lấy danh sách hành động của một thu thập
 exports.getList = async (crawlConfigId) => {
@@ -101,9 +102,9 @@ exports.handleActions = async (page, actions) => {
     for (const action of actions) {
         const actionType = (await typeService.getCrawlActionType(action.action_type_id)).type;
 
-        if (actionType === 'Click when appear') {
+        if (actionType == ACTIONS.CLICK_WHEN_APPEA) {
             clickWhenAppear(page, action.selector);
-        } else if (actionType === 'Show all') {
+        } else if (actionType == ACTIONS.SHOW_AL) {
             await showAll(page, action.selector);
         }
     }

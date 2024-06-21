@@ -26,10 +26,6 @@ const CrawlConfigs = sequelize.define('CrawlConfigs', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  data_selector: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
   item_type_id: {
     type: DataTypes.INTEGER,
     allowNull: true,
@@ -40,6 +36,18 @@ const CrawlConfigs = sequelize.define('CrawlConfigs', {
   },
   website_id: {
     type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  http_method_type_id: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  body_api: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  headers_api: {
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   is_complete: {

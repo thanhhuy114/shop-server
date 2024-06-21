@@ -1,4 +1,5 @@
 const crawlConfigService = require('../services/crawl_config_service');
+const {HTTP_STATUS} = require('../untils/constans/constans');
 
 // Lấy thông tin một phiên cấu hình thu thập
 exports.get = async (req, res) => {
@@ -7,10 +8,10 @@ exports.get = async (req, res) => {
 
         const crawlConfigInfor = await crawlConfigService.getConfigInfor(id);
         
-        res.status(200).json(crawlConfigInfor);
+        res.status(HTTP_STATUS.OK).json(crawlConfigInfor);
     } catch (error) {
         console.error(`Lỗi khi lấy cấu hình:`, error);
-        res.status(500).json({ error: `Lỗi khi lấy cấu hình` });
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi lấy cấu hình` });
     }
 }
 
@@ -19,10 +20,10 @@ exports.getAll = async (req, res) => {
     try {
         const allCrawlConfigInfor = await crawlConfigService.getAllConfigInfor();
         
-        res.status(200).json(allCrawlConfigInfor);
+        res.status(HTTP_STATUS.OK).json(allCrawlConfigInfor);
     } catch (error) {
         console.error(`Lỗi khi tất cả lấy cấu hình:`, error);
-        res.status(500).json({ error: `Lỗi khi lấy tất cả cấu hình` });
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi lấy tất cả cấu hình` });
     }
 }
 
@@ -33,10 +34,10 @@ exports.checkNameExists = async (req, res) => {
 
         const checkResult = await crawlConfigService.checkNameExists(name);
 
-        res.status(200).json(checkResult);
+        res.status(HTTP_STATUS.OK).json(checkResult);
     } catch (error) {
         console.error('Lỗi khi kiểm tran tên cấu hình:', error);
-        res.status(500).json({ error: 'Lỗi khi kiểm tra tên cấu hình' });
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi kiểm tra tên cấu hình' });
     }
 }
 
@@ -47,9 +48,9 @@ exports.create = async (req, res) => {
 
         const newCrawlConfig = await crawlConfigService.create(name, description);
         
-        res.status(200).json(newCrawlConfig);
+        res.status(HTTP_STATUS.OK).json(newCrawlConfig);
     } catch (error) {
         console.error(`Lỗi khi tạo mới cấu hình:`, error);
-        res.status(500).json({ error: `Lỗi khi tạo mới cấu hình` });
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi tạo mới cấu hình` });
     }
 }

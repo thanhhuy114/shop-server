@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 17, 2024 lúc 05:41 PM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Jun 21, 2024 at 05:46 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `crawling_db`
+-- Database: `crawling_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_action_details`
+-- Table structure for table `crawl_action_details`
 --
 
 CREATE TABLE `crawl_action_details` (
@@ -35,16 +35,18 @@ CREATE TABLE `crawl_action_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_action_details`
+-- Dumping data for table `crawl_action_details`
 --
 
 INSERT INTO `crawl_action_details` (`id`, `crawl_config_id`, `action_type_id`, `selector`) VALUES
-(29, 58, 1, '.cancel-button-top');
+(29, 58, 1, '.cancel-button-top'),
+(31, 57, 1, '.cancel-button-top'),
+(32, 57, 1, '.cancel-button-top');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_action_types`
+-- Table structure for table `crawl_action_types`
 --
 
 CREATE TABLE `crawl_action_types` (
@@ -55,7 +57,7 @@ CREATE TABLE `crawl_action_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_action_types`
+-- Dumping data for table `crawl_action_types`
 --
 
 INSERT INTO `crawl_action_types` (`id`, `type`, `description`, `is_textfield`) VALUES
@@ -65,7 +67,7 @@ INSERT INTO `crawl_action_types` (`id`, `type`, `description`, `is_textfield`) V
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_configs`
+-- Table structure for table `crawl_configs`
 --
 
 CREATE TABLE `crawl_configs` (
@@ -80,25 +82,30 @@ CREATE TABLE `crawl_configs` (
   `website_id` int(11) DEFAULT NULL,
   `is_complete` tinyint(1) NOT NULL,
   `update_at` datetime DEFAULT current_timestamp(),
-  `data_selector` text DEFAULT NULL
+  `http_method_type_id` text DEFAULT NULL,
+  `body_api` text DEFAULT NULL,
+  `headers_api` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_configs`
+-- Dumping data for table `crawl_configs`
 --
 
-INSERT INTO `crawl_configs` (`id`, `name`, `description`, `crawl_type_id`, `result_type_id`, `item_selector`, `item_type_id`, `url`, `website_id`, `is_complete`, `update_at`, `data_selector`) VALUES
-(57, 'tên phiên cấu hình', 'mô tả', 1, 1, NULL, 1, 'https://cellphones.com.vn/iphone-13.html', 1, 0, '2024-06-17 15:29:54', NULL),
-(58, 'tên phiên cấu hình', 'mô tả', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-17 15:32:17', NULL),
-(59, 'tên phiên cấu hình', 'mô tả', 2, 1, NULL, 1, 'https://tiki.vn/api/v2/products/184036446?platform=web&spid=32033721&version=3', 2, 0, '2024-06-17 15:33:16', 'pre'),
-(60, 'tên phiên cấu hình', 'mô tả', 2, 2, 'data', 1, 'https://tiki.vn/api/personalish/v1/blocks/listings?limit=40&include=advertisement&aggregations=2&version=home-persionalized&trackity_id=de9c7848-5276-89fb-a8cb-fd07fbc0b86b&category=1795&page=1&urlKey=dien-thoai-smartphone', 2, 0, '2024-06-17 15:33:40', 'pre'),
-(61, 'tên phiên cấu hình', 'mô tả', 3, 2, 'rss.channel.item', 2, 'https://tuoitre.vn/rss/thoi-su.rss', 3, 0, '2024-06-17 15:26:52', '.pretty-print'),
-(62, 'tên phiên cấu hình', 'mô tả', 3, 2, 'rss.channel.item', 2, 'https://cdn.24h.com.vn/upload/rss/anninhhinhsu.rss', 3, 0, '2024-06-17 15:34:13', 'pre');
+INSERT INTO `crawl_configs` (`id`, `name`, `description`, `crawl_type_id`, `result_type_id`, `item_selector`, `item_type_id`, `url`, `website_id`, `is_complete`, `update_at`, `http_method_type_id`, `body_api`, `headers_api`) VALUES
+(57, 'tên phiên cấu hình', 'mô tả', 1, 1, NULL, 1, 'https://cellphones.com.vn/iphone-13.html', 1, 0, '2024-06-20 07:52:35', NULL, NULL, NULL),
+(58, 'tên phiên cấu hình', 'mô tả', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-17 15:32:17', NULL, NULL, NULL),
+(59, 'tên phiên cấu hình', 'mô tả', 2, 1, NULL, 1, 'https://tiki.vn/api/v2/products/184036446?platform=web&spid=32033721&version=3', 2, 0, '2024-06-21 14:00:22', '1', 'body', 'headers'),
+(60, 'tên phiên cấu hình', 'mô tả', 2, 2, 'data', 1, 'https://tiki.vn/api/personalish/v1/blocks/listings?limit=40&include=advertisement&aggregations=2&version=home-persionalized&trackity_id=de9c7848-5276-89fb-a8cb-fd07fbc0b86b&category=1795&page=1&urlKey=dien-thoai-smartphone', 2, 0, '2024-06-21 15:25:27', '1', 'body', 'headers'),
+(61, 'tên phiên cấu hình', 'mô tả', 3, 2, 'rss.channel.item', 2, 'https://tuoitre.vn/rss/thoi-su.rss', 3, 0, '2024-06-20 09:02:42', NULL, NULL, NULL),
+(62, 'tên phiên cấu hình', 'mô tả', 3, 2, 'rss.channel.item', 2, 'https://cdn.24h.com.vn/upload/rss/anninhhinhsu.rss', 3, 0, '2024-06-20 08:28:35', NULL, NULL, NULL),
+(63, 'tên phiên cấu hình', 'mô tả', NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-06-20 06:31:18', NULL, NULL, NULL),
+(64, '', '', NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-06-20 06:38:59', NULL, NULL, NULL),
+(65, '', '', NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-06-20 06:38:59', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_data_types`
+-- Table structure for table `crawl_data_types`
 --
 
 CREATE TABLE `crawl_data_types` (
@@ -110,7 +117,7 @@ CREATE TABLE `crawl_data_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_data_types`
+-- Dumping data for table `crawl_data_types`
 --
 
 INSERT INTO `crawl_data_types` (`id`, `type`, `description`, `is_textfield`, `crawl_type_id`) VALUES
@@ -123,7 +130,7 @@ INSERT INTO `crawl_data_types` (`id`, `type`, `description`, `is_textfield`, `cr
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_details`
+-- Table structure for table `crawl_details`
 --
 
 CREATE TABLE `crawl_details` (
@@ -138,36 +145,36 @@ CREATE TABLE `crawl_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_details`
+-- Dumping data for table `crawl_details`
 --
 
 INSERT INTO `crawl_details` (`id`, `crawl_config_id`, `name`, `selector`, `attribute`, `data_type_id`, `is_primary_key`, `is_contain_keywords`) VALUES
-(388, 61, 'Tiêu đề tin tức', 'title', NULL, 0, NULL, 1),
-(389, 61, 'Mô tả', 'description', NULL, 0, NULL, 1),
-(409, 57, 'Tên sản phẩm', 'h1', NULL, 1, 0, 1),
-(410, 57, 'Giá sản phẩm', 'div.tpt-box.active p.tpt---sale-price', NULL, 1, 0, 0),
-(411, 57, 'url ảnh', 'div.swiper-slide.button__view-gallery.swiper-slide-visible img', 'src', 3, 0, 0),
 (412, 58, 'Link chi tiết sản phẩm', 'a.product__link', 'href', 3, 1, 0),
 (413, 58, 'Tên sản phẩm', 'h3', NULL, 1, 0, 1),
 (414, 58, 'Giá sản phẩm', '.product__price--show', NULL, 1, 0, 0),
 (415, 58, 'Khuyến mãi', '.product__price--percent-detail', NULL, 1, 0, 0),
 (416, 58, 'url ảnh', 'img.product__img', 'src', 3, 0, 0),
 (417, 58, 'Số sao đánh giá', '.icon-star.is-active', NULL, 2, 0, 0),
-(418, 59, 'Link chi tiết sản phẩm', '', 'url_path', 0, 1, 0),
-(419, 59, 'Tên sản phẩm', '', 'name', 0, 0, 1),
-(420, 59, 'Giá sản phẩm', '', 'price', 0, 0, 0),
-(421, 59, 'url ảnh', '', 'thumbnail_url', 0, 0, 0),
-(422, 60, 'Link chi tiết sản phẩm', '', 'url_path', 0, 1, 0),
-(423, 60, 'Tên sản phẩm', '', 'name', 0, 0, 1),
-(424, 60, 'Giá sản phẩm', '', 'price', 0, 0, 0),
-(425, 60, 'url ảnh', '', 'thumbnail_url', 0, 0, 0),
-(426, 62, 'Tiêu đề tin tức', 'title', NULL, 0, 0, 1),
-(427, 62, 'Mô tả', 'description', NULL, 0, 0, 1);
+(490, 57, 'Tên sản phẩm', 'h1', NULL, 1, 0, 1),
+(491, 57, 'Giá sản phẩm', 'div.tpt-box.active p.tpt---sale-price', NULL, 1, 0, 0),
+(492, 57, 'url ảnh', 'div.swiper-slide.button__view-gallery.swiper-slide-visible img', 'src', 3, 0, 0),
+(519, 62, 'Tiêu đề tin tức', 'title', NULL, 0, 0, 1),
+(520, 62, 'Mô tả', 'description', NULL, 0, 0, 1),
+(525, 61, 'Tiêu đề tin tức', 'title', NULL, 0, 0, 1),
+(526, 61, 'Mô tả', 'description', NULL, 0, 0, 1),
+(535, 59, 'Link chi tiết sản phẩm', '', 'url_path', 0, 1, 0),
+(536, 59, 'Tên sản phẩm', '', 'name', 0, 0, 1),
+(537, 59, 'Giá sản phẩm', '', 'price', 0, 0, 0),
+(538, 59, 'url ảnh', '', 'thumbnail_url', 0, 0, 0),
+(563, 60, 'Link chi tiết sản phẩm', '', 'url_path', 0, 1, 0),
+(564, 60, 'Tên sản phẩm', '', 'name', 0, 0, 1),
+(565, 60, 'Giá sản phẩm', '', 'price', 0, 0, 0),
+(566, 60, 'url ảnh', '', 'thumbnail_url', 0, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_option_condition_types`
+-- Table structure for table `crawl_option_condition_types`
 --
 
 CREATE TABLE `crawl_option_condition_types` (
@@ -178,18 +185,18 @@ CREATE TABLE `crawl_option_condition_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_option_condition_types`
+-- Dumping data for table `crawl_option_condition_types`
 --
 
 INSERT INTO `crawl_option_condition_types` (`id`, `type`, `description`, `is_textfield`) VALUES
 (1, 'Start with', 'Kiểm tra xem kết quả có bắt đầu bằng <chuỗi đầu vào>', 1),
 (2, 'End with', 'Kiểm tra xem kết quả có kết thúc bằng <chuỗi đầu vào>', 1),
-(3, 'Contain', 'Kiểm tra xem kết quả có chứa<chuỗi đầu vào>', 1);
+(3, 'Contains', 'Kiểm tra xem kết quả có chứa<chuỗi đầu vào>', 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_option_details`
+-- Table structure for table `crawl_option_details`
 --
 
 CREATE TABLE `crawl_option_details` (
@@ -202,20 +209,20 @@ CREATE TABLE `crawl_option_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_option_details`
+-- Dumping data for table `crawl_option_details`
 --
 
 INSERT INTO `crawl_option_details` (`id`, `crawl_detail_id`, `option_type_id`, `option_condition_type_id`, `condition_value`, `option_value`) VALUES
-(151, 410, 3, NULL, NULL, NULL),
 (152, 412, 1, NULL, '/iphone', 'https://cellphones.com.vn/'),
 (153, 414, 3, NULL, NULL, NULL),
-(154, 418, 1, NULL, NULL, 'https://tiki.vn/'),
-(155, 422, 1, NULL, NULL, 'https://tiki.vn/');
+(171, 491, 3, NULL, NULL, NULL),
+(174, 535, 1, NULL, NULL, 'https://tiki.vn/'),
+(181, 563, 1, NULL, NULL, 'https://tiki.vn/');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_option_types`
+-- Table structure for table `crawl_option_types`
 --
 
 CREATE TABLE `crawl_option_types` (
@@ -226,7 +233,7 @@ CREATE TABLE `crawl_option_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_option_types`
+-- Dumping data for table `crawl_option_types`
 --
 
 INSERT INTO `crawl_option_types` (`id`, `type`, `description`, `is_textfield`) VALUES
@@ -237,7 +244,7 @@ INSERT INTO `crawl_option_types` (`id`, `type`, `description`, `is_textfield`) V
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_result_types`
+-- Table structure for table `crawl_result_types`
 --
 
 CREATE TABLE `crawl_result_types` (
@@ -248,40 +255,62 @@ CREATE TABLE `crawl_result_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_result_types`
+-- Dumping data for table `crawl_result_types`
 --
 
 INSERT INTO `crawl_result_types` (`id`, `type`, `description`, `is_textfield`) VALUES
-(1, 'single', 'Lựa chọn này sẽ trả về kết quả kiểu 1 item', 0),
-(2, 'multi', 'Lựa chọn này sẽ trả về kết quả là danh sách các item', 1);
+(1, 'Single', 'Lựa chọn này sẽ trả về kết quả kiểu 1 item', 0),
+(2, 'Multiple', 'Lựa chọn này sẽ trả về kết quả là danh sách các item', 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `crawl_types`
+-- Table structure for table `crawl_types`
 --
 
 CREATE TABLE `crawl_types` (
   `id` int(11) NOT NULL,
   `type` text NOT NULL,
   `description` text NOT NULL,
-  `is_textfield` tinyint(1) DEFAULT NULL,
-  `have_actions` tinyint(1) DEFAULT NULL
+  `have_actions` tinyint(1) DEFAULT NULL,
+  `have_http_method` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `crawl_types`
+-- Dumping data for table `crawl_types`
 --
 
-INSERT INTO `crawl_types` (`id`, `type`, `description`, `is_textfield`, `have_actions`) VALUES
-(1, 'HTML', 'Thu thập dữ liệu bằng cách truy xuất các selector trong trang HTML', 1, 1),
-(2, 'API', 'Thu thập dữ liệu bằng cách truy xuất các API được  trang web cung cấp', 1, 0),
-(3, 'RSS', 'Thu thập dữ liệu bằng RSS', 1, 0);
+INSERT INTO `crawl_types` (`id`, `type`, `description`, `have_actions`, `have_http_method`) VALUES
+(1, 'HTML', 'Thu thập dữ liệu bằng cách truy xuất các selector trong trang HTML', 1, 0),
+(2, 'API', 'Thu thập dữ liệu bằng cách truy xuất các API được  trang web cung cấp', 0, 0),
+(3, 'RSS', 'Thu thập dữ liệu bằng RSS', 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `items`
+-- Table structure for table `http_method_types`
+--
+
+CREATE TABLE `http_method_types` (
+  `id` int(11) NOT NULL,
+  `type` text NOT NULL,
+  `description` text NOT NULL,
+  `have_body` tinyint(1) DEFAULT NULL,
+  `have_headers` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `http_method_types`
+--
+
+INSERT INTO `http_method_types` (`id`, `type`, `description`, `have_body`, `have_headers`) VALUES
+(1, 'GET', 'phương thức lấy dữ liệu', 0, 1),
+(2, 'POST', 'Phương thức gửi dữ liệu tới máy chủ', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `items`
 --
 
 CREATE TABLE `items` (
@@ -293,76 +322,76 @@ CREATE TABLE `items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `items`
+-- Dumping data for table `items`
 --
 
 INSERT INTO `items` (`id`, `item_type_id`, `website_id`, `crawl_config_id`, `update_at`) VALUES
 (806, 1, 1, 57, '2024-06-17 14:52:11'),
-(807, 1, 1, 58, '2024-06-17 15:32:45'),
+(807, 1, 1, 58, '2024-06-21 15:45:12'),
 (808, 1, 1, 58, '2024-06-17 15:32:27'),
-(809, 1, 1, 58, '2024-06-17 15:32:46'),
-(810, 1, 1, 58, '2024-06-17 15:32:46'),
+(809, 1, 1, 58, '2024-06-21 15:45:13'),
+(810, 1, 1, 58, '2024-06-21 15:45:12'),
 (811, 1, 1, 58, '2024-06-17 15:32:27'),
 (812, 1, 1, 58, '2024-06-17 15:32:27'),
 (813, 1, 1, 58, '2024-06-17 15:32:27'),
 (814, 1, 1, 58, '2024-06-17 15:32:27'),
-(815, 1, 1, 58, '2024-06-17 15:32:47'),
+(815, 1, 1, 58, '2024-06-21 15:45:14'),
 (816, 1, 1, 58, '2024-06-17 15:32:27'),
-(817, 1, 1, 58, '2024-06-17 15:32:47'),
+(817, 1, 1, 58, '2024-06-21 15:45:14'),
 (818, 1, 1, 58, '2024-06-17 15:32:27'),
 (819, 1, 1, 58, '2024-06-17 15:32:27'),
 (820, 1, 1, 58, '2024-06-17 15:32:28'),
-(821, 1, 1, 58, '2024-06-17 15:32:48'),
+(821, 1, 1, 58, '2024-06-21 15:45:15'),
 (822, 1, 1, 58, '2024-06-17 15:32:28'),
 (823, 1, 1, 58, '2024-06-17 15:32:28'),
 (824, 1, 1, 58, '2024-06-17 15:32:28'),
 (825, 1, 1, 58, '2024-06-17 15:32:28'),
-(826, 1, 1, 58, '2024-06-17 15:32:49'),
-(827, 1, 2, 59, '2024-06-17 15:33:23'),
-(828, 1, 2, 60, '2024-06-17 15:33:54'),
-(829, 1, 2, 60, '2024-06-17 15:33:54'),
-(830, 1, 2, 60, '2024-06-17 15:33:54'),
+(826, 1, 1, 58, '2024-06-21 15:45:16'),
+(827, 1, 2, 59, '2024-06-21 14:00:23'),
+(828, 1, 2, 60, '2024-06-21 15:25:29'),
+(829, 1, 2, 60, '2024-06-21 15:25:29'),
+(830, 1, 2, 60, '2024-06-21 15:25:29'),
 (831, 1, 2, 60, '2024-06-17 15:33:54'),
-(832, 1, 2, 60, '2024-06-17 15:33:54'),
-(833, 1, 2, 60, '2024-06-17 15:33:54'),
-(834, 1, 2, 60, '2024-06-17 15:33:54'),
-(835, 1, 2, 60, '2024-06-17 15:33:54'),
-(836, 1, 2, 60, '2024-06-17 15:33:54'),
-(837, 1, 2, 60, '2024-06-17 15:33:54'),
-(838, 1, 2, 60, '2024-06-17 15:33:54'),
-(839, 1, 2, 60, '2024-06-17 15:33:54'),
-(840, 1, 2, 60, '2024-06-17 15:33:54'),
-(841, 1, 2, 60, '2024-06-17 15:33:54'),
-(842, 1, 2, 60, '2024-06-17 15:33:55'),
-(843, 1, 2, 60, '2024-06-17 15:33:55'),
-(844, 1, 2, 60, '2024-06-17 15:33:55'),
-(845, 1, 2, 60, '2024-06-17 15:33:55'),
-(846, 1, 2, 60, '2024-06-17 15:33:55'),
-(847, 1, 2, 60, '2024-06-17 15:33:55'),
-(848, 1, 2, 60, '2024-06-17 15:33:55'),
-(849, 1, 2, 60, '2024-06-17 15:33:55'),
-(850, 1, 2, 60, '2024-06-17 15:33:55'),
-(851, 1, 2, 60, '2024-06-17 15:33:55'),
-(852, 1, 2, 60, '2024-06-17 15:33:55'),
-(853, 1, 2, 60, '2024-06-17 15:33:55'),
-(854, 1, 2, 60, '2024-06-17 15:33:55'),
-(855, 1, 2, 60, '2024-06-17 15:33:55'),
+(832, 1, 2, 60, '2024-06-21 15:25:29'),
+(833, 1, 2, 60, '2024-06-21 15:25:29'),
+(834, 1, 2, 60, '2024-06-21 15:25:29'),
+(835, 1, 2, 60, '2024-06-21 15:25:29'),
+(836, 1, 2, 60, '2024-06-21 15:25:29'),
+(837, 1, 2, 60, '2024-06-21 15:25:29'),
+(838, 1, 2, 60, '2024-06-21 15:25:29'),
+(839, 1, 2, 60, '2024-06-21 15:25:29'),
+(840, 1, 2, 60, '2024-06-21 15:25:29'),
+(841, 1, 2, 60, '2024-06-21 15:25:29'),
+(842, 1, 2, 60, '2024-06-21 15:25:29'),
+(843, 1, 2, 60, '2024-06-21 15:25:29'),
+(844, 1, 2, 60, '2024-06-20 04:07:08'),
+(845, 1, 2, 60, '2024-06-21 15:25:30'),
+(846, 1, 2, 60, '2024-06-21 15:25:30'),
+(847, 1, 2, 60, '2024-06-21 15:25:30'),
+(848, 1, 2, 60, '2024-06-21 15:25:30'),
+(849, 1, 2, 60, '2024-06-21 15:25:30'),
+(850, 1, 2, 60, '2024-06-21 15:25:30'),
+(851, 1, 2, 60, '2024-06-21 15:25:30'),
+(852, 1, 2, 60, '2024-06-21 15:25:30'),
+(853, 1, 2, 60, '2024-06-21 15:25:30'),
+(854, 1, 2, 60, '2024-06-21 15:25:30'),
+(855, 1, 2, 60, '2024-06-21 15:25:30'),
 (856, 1, 2, 60, '2024-06-17 15:33:56'),
-(857, 1, 2, 60, '2024-06-17 15:33:56'),
-(858, 1, 2, 60, '2024-06-17 15:33:56'),
-(859, 1, 2, 60, '2024-06-17 15:33:56'),
-(860, 1, 2, 60, '2024-06-17 15:33:56'),
+(857, 1, 2, 60, '2024-06-21 15:25:31'),
+(858, 1, 2, 60, '2024-06-21 15:25:31'),
+(859, 1, 2, 60, '2024-06-21 15:25:31'),
+(860, 1, 2, 60, '2024-06-21 15:25:31'),
 (861, 1, 2, 60, '2024-06-17 15:33:56'),
-(862, 1, 2, 60, '2024-06-17 15:33:56'),
-(863, 1, 2, 60, '2024-06-17 15:33:56'),
+(862, 1, 2, 60, '2024-06-21 15:25:31'),
+(863, 1, 2, 60, '2024-06-21 15:25:31'),
 (864, 1, 2, 60, '2024-06-17 15:33:56'),
-(865, 1, 2, 60, '2024-06-17 15:33:56'),
+(865, 1, 2, 60, '2024-06-21 15:25:31'),
 (866, 1, 2, 60, '2024-06-17 15:33:56'),
 (867, 1, 2, 60, '2024-06-17 15:33:57'),
 (868, 1, 2, 60, '2024-06-17 15:33:57'),
-(869, 1, 2, 60, '2024-06-17 15:33:57'),
+(869, 1, 2, 60, '2024-06-21 15:25:31'),
 (870, 1, 2, 60, '2024-06-17 15:33:57'),
-(871, 1, 2, 60, '2024-06-17 15:33:57'),
+(871, 1, 2, 60, '2024-06-21 15:25:32'),
 (872, 2, 3, 61, '2024-06-17 15:04:40'),
 (873, 2, 3, 61, '2024-06-17 15:04:40'),
 (874, 2, 3, 61, '2024-06-17 15:04:40'),
@@ -637,19 +666,19 @@ INSERT INTO `items` (`id`, `item_type_id`, `website_id`, `crawl_config_id`, `upd
 (1143, 1, 1, 57, '2024-06-17 15:29:21'),
 (1144, 1, 1, 57, '2024-06-17 15:30:03'),
 (1145, 1, 1, 57, '2024-06-17 15:30:21'),
-(1146, 1, 1, 58, '2024-06-17 15:32:46'),
-(1147, 1, 1, 58, '2024-06-17 15:32:46'),
-(1148, 1, 1, 58, '2024-06-17 15:32:46'),
-(1149, 1, 1, 58, '2024-06-17 15:32:46'),
-(1150, 1, 1, 58, '2024-06-17 15:32:47'),
-(1151, 1, 1, 58, '2024-06-17 15:32:47'),
-(1152, 1, 1, 58, '2024-06-17 15:32:47'),
-(1153, 1, 1, 58, '2024-06-17 15:32:48'),
+(1146, 1, 1, 58, '2024-06-21 15:45:12'),
+(1147, 1, 1, 58, '2024-06-21 15:45:13'),
+(1148, 1, 1, 58, '2024-06-21 15:45:13'),
+(1149, 1, 1, 58, '2024-06-21 15:45:13'),
+(1150, 1, 1, 58, '2024-06-21 15:45:14'),
+(1151, 1, 1, 58, '2024-06-21 15:45:14'),
+(1152, 1, 1, 58, '2024-06-21 15:45:14'),
+(1153, 1, 1, 58, '2024-06-21 15:45:15'),
 (1154, 1, 1, 58, '2024-06-17 15:32:48'),
-(1155, 1, 1, 58, '2024-06-17 15:32:48'),
-(1156, 1, 1, 58, '2024-06-17 15:32:49'),
-(1157, 1, 1, 58, '2024-06-17 15:32:49'),
-(1158, 1, 1, 58, '2024-06-17 15:32:49'),
+(1155, 1, 1, 58, '2024-06-21 15:45:15'),
+(1156, 1, 1, 58, '2024-06-21 15:45:16'),
+(1157, 1, 1, 58, '2024-06-21 15:45:15'),
+(1158, 1, 1, 58, '2024-06-21 15:45:16'),
 (1159, 2, 3, 62, '2024-06-17 15:34:15'),
 (1160, 2, 3, 62, '2024-06-17 15:34:15'),
 (1161, 2, 3, 62, '2024-06-17 15:34:15'),
@@ -697,12 +726,255 @@ INSERT INTO `items` (`id`, `item_type_id`, `website_id`, `crawl_config_id`, `upd
 (1203, 2, 3, 62, '2024-06-17 15:34:50'),
 (1204, 2, 3, 62, '2024-06-17 15:34:50'),
 (1205, 2, 3, 62, '2024-06-17 15:34:51'),
-(1206, 2, 3, 62, '2024-06-17 15:34:51');
+(1206, 2, 3, 62, '2024-06-17 15:34:51'),
+(1207, 1, 1, 57, '2024-06-20 03:13:35'),
+(1208, 1, 1, 57, '2024-06-20 03:14:52'),
+(1209, 1, 1, 57, '2024-06-20 03:33:19'),
+(1210, 1, 1, 57, '2024-06-20 03:33:46'),
+(1211, 1, 2, 60, '2024-06-20 04:07:07'),
+(1212, 1, 2, 60, '2024-06-20 04:06:23'),
+(1213, 1, 2, 60, '2024-06-20 04:07:07'),
+(1214, 1, 2, 60, '2024-06-20 04:07:07'),
+(1215, 1, 2, 60, '2024-06-21 15:25:32'),
+(1216, 1, 2, 60, '2024-06-21 15:25:32'),
+(1217, 1, 2, 60, '2024-06-20 04:07:10'),
+(1218, 1, 2, 60, '2024-06-21 15:25:32'),
+(1219, 1, 2, 60, '2024-06-21 15:25:32'),
+(1220, 1, 2, 60, '2024-06-20 04:07:11'),
+(1221, 1, 2, 60, '2024-06-21 15:25:32'),
+(1222, 1, 2, 60, '2024-06-20 04:07:07'),
+(1223, 2, 3, 61, '2024-06-20 08:13:52'),
+(1224, 2, 3, 61, '2024-06-20 08:13:52'),
+(1225, 2, 3, 61, '2024-06-20 08:13:53'),
+(1226, 2, 3, 61, '2024-06-20 08:13:53'),
+(1227, 2, 3, 61, '2024-06-20 08:13:53'),
+(1228, 2, 3, 61, '2024-06-20 08:13:54'),
+(1229, 2, 3, 61, '2024-06-20 08:13:54'),
+(1230, 2, 3, 61, '2024-06-20 08:13:55'),
+(1231, 2, 3, 61, '2024-06-20 08:13:55'),
+(1232, 2, 3, 61, '2024-06-20 08:13:56'),
+(1233, 2, 3, 61, '2024-06-20 08:13:56'),
+(1234, 2, 3, 61, '2024-06-20 08:13:56'),
+(1235, 2, 3, 61, '2024-06-20 08:13:57'),
+(1236, 2, 3, 61, '2024-06-20 08:13:57'),
+(1237, 2, 3, 61, '2024-06-20 08:13:58'),
+(1238, 2, 3, 61, '2024-06-20 08:13:58'),
+(1239, 2, 3, 61, '2024-06-20 08:13:58'),
+(1240, 2, 3, 61, '2024-06-20 08:13:59'),
+(1241, 2, 3, 61, '2024-06-20 08:13:59'),
+(1242, 2, 3, 61, '2024-06-20 08:13:59'),
+(1243, 2, 3, 61, '2024-06-20 08:14:00'),
+(1244, 2, 3, 61, '2024-06-20 08:14:00'),
+(1245, 2, 3, 61, '2024-06-20 08:14:01'),
+(1246, 2, 3, 61, '2024-06-20 08:14:01'),
+(1247, 2, 3, 61, '2024-06-20 08:14:01'),
+(1248, 2, 3, 61, '2024-06-20 08:14:02'),
+(1249, 2, 3, 61, '2024-06-20 08:14:02'),
+(1250, 2, 3, 61, '2024-06-20 08:14:02'),
+(1251, 2, 3, 61, '2024-06-20 08:14:03'),
+(1252, 2, 3, 61, '2024-06-20 08:14:03'),
+(1253, 2, 3, 62, '2024-06-20 08:16:50'),
+(1254, 2, 3, 62, '2024-06-20 08:16:50'),
+(1255, 2, 3, 62, '2024-06-20 08:16:51'),
+(1256, 2, 3, 62, '2024-06-20 08:16:52'),
+(1257, 2, 3, 62, '2024-06-20 08:16:52'),
+(1258, 2, 3, 62, '2024-06-20 08:16:53'),
+(1259, 2, 3, 62, '2024-06-20 08:16:53'),
+(1260, 2, 3, 62, '2024-06-20 08:16:54'),
+(1261, 2, 3, 62, '2024-06-20 08:16:54'),
+(1262, 2, 3, 62, '2024-06-20 08:16:55'),
+(1263, 2, 3, 62, '2024-06-20 08:16:55'),
+(1264, 2, 3, 62, '2024-06-20 08:16:56'),
+(1265, 2, 3, 62, '2024-06-20 08:16:56'),
+(1266, 2, 3, 62, '2024-06-20 08:16:57'),
+(1267, 2, 3, 62, '2024-06-20 08:16:57'),
+(1268, 2, 3, 62, '2024-06-20 08:16:58'),
+(1269, 2, 3, 62, '2024-06-20 08:16:58'),
+(1270, 2, 3, 62, '2024-06-20 08:16:59'),
+(1271, 2, 3, 62, '2024-06-20 08:16:59'),
+(1272, 2, 3, 62, '2024-06-20 08:17:00'),
+(1273, 2, 3, 62, '2024-06-20 08:17:00'),
+(1274, 2, 3, 62, '2024-06-20 08:17:01'),
+(1275, 2, 3, 62, '2024-06-20 08:17:01'),
+(1276, 2, 3, 62, '2024-06-20 08:17:02'),
+(1277, 2, 3, 62, '2024-06-20 08:19:09'),
+(1278, 2, 3, 62, '2024-06-20 08:22:08'),
+(1279, 2, 3, 62, '2024-06-20 08:22:09'),
+(1280, 2, 3, 62, '2024-06-20 08:22:09'),
+(1281, 2, 3, 62, '2024-06-20 08:22:10'),
+(1282, 2, 3, 62, '2024-06-20 08:22:11'),
+(1283, 2, 3, 62, '2024-06-20 08:22:11'),
+(1284, 2, 3, 62, '2024-06-20 08:22:12'),
+(1285, 2, 3, 62, '2024-06-20 08:22:12'),
+(1286, 2, 3, 62, '2024-06-20 08:22:13'),
+(1287, 2, 3, 62, '2024-06-20 08:22:14'),
+(1288, 2, 3, 62, '2024-06-20 08:22:14'),
+(1289, 2, 3, 62, '2024-06-20 08:22:15'),
+(1290, 2, 3, 62, '2024-06-20 08:22:15'),
+(1291, 2, 3, 62, '2024-06-20 08:22:16'),
+(1292, 2, 3, 62, '2024-06-20 08:22:16'),
+(1293, 2, 3, 62, '2024-06-20 08:22:17'),
+(1294, 2, 3, 62, '2024-06-20 08:22:18'),
+(1295, 2, 3, 62, '2024-06-20 08:22:18'),
+(1296, 2, 3, 62, '2024-06-20 08:22:19'),
+(1297, 2, 3, 62, '2024-06-20 08:22:19'),
+(1298, 2, 3, 62, '2024-06-20 08:22:20'),
+(1299, 2, 3, 62, '2024-06-20 08:22:21'),
+(1300, 2, 3, 62, '2024-06-20 08:22:21'),
+(1301, 2, 3, 62, '2024-06-20 08:22:22'),
+(1302, 2, 3, 62, '2024-06-20 08:23:05'),
+(1303, 2, 3, 62, '2024-06-20 08:28:58'),
+(1304, 2, 3, 62, '2024-06-20 08:28:58'),
+(1305, 2, 3, 62, '2024-06-20 08:28:59'),
+(1306, 2, 3, 62, '2024-06-20 08:28:59'),
+(1307, 2, 3, 62, '2024-06-20 08:29:00'),
+(1308, 2, 3, 62, '2024-06-20 08:29:00'),
+(1309, 2, 3, 62, '2024-06-20 08:29:00'),
+(1310, 2, 3, 62, '2024-06-20 08:29:00'),
+(1311, 2, 3, 62, '2024-06-20 08:29:01'),
+(1312, 2, 3, 62, '2024-06-20 08:29:01'),
+(1313, 2, 3, 62, '2024-06-20 08:29:02'),
+(1314, 2, 3, 62, '2024-06-20 08:29:02'),
+(1315, 2, 3, 62, '2024-06-20 08:29:03'),
+(1316, 2, 3, 62, '2024-06-20 08:29:03'),
+(1317, 2, 3, 62, '2024-06-20 08:29:03'),
+(1318, 2, 3, 62, '2024-06-20 08:29:04'),
+(1319, 2, 3, 62, '2024-06-20 08:29:04'),
+(1320, 2, 3, 62, '2024-06-20 08:29:05'),
+(1321, 2, 3, 62, '2024-06-20 08:29:05'),
+(1322, 2, 3, 62, '2024-06-20 08:29:05'),
+(1323, 2, 3, 62, '2024-06-20 08:29:06'),
+(1324, 2, 3, 62, '2024-06-20 08:29:06'),
+(1325, 2, 3, 62, '2024-06-20 08:29:07'),
+(1326, 2, 3, 62, '2024-06-20 08:29:07'),
+(1327, 2, 3, 62, '2024-06-20 08:29:08'),
+(1328, 2, 3, 62, '2024-06-20 08:29:08'),
+(1329, 2, 3, 62, '2024-06-20 08:29:09'),
+(1330, 2, 3, 62, '2024-06-20 08:29:09'),
+(1331, 2, 3, 62, '2024-06-20 08:29:09'),
+(1332, 2, 3, 62, '2024-06-20 08:29:10'),
+(1333, 2, 3, 62, '2024-06-20 08:29:10'),
+(1334, 2, 3, 62, '2024-06-20 08:29:11'),
+(1335, 2, 3, 62, '2024-06-20 08:29:12'),
+(1336, 2, 3, 62, '2024-06-20 08:29:12'),
+(1337, 2, 3, 62, '2024-06-20 08:29:13'),
+(1338, 2, 3, 62, '2024-06-20 08:29:13'),
+(1339, 2, 3, 62, '2024-06-20 08:29:14'),
+(1340, 2, 3, 62, '2024-06-20 08:29:15'),
+(1341, 2, 3, 62, '2024-06-20 08:29:16'),
+(1342, 2, 3, 62, '2024-06-20 08:29:16'),
+(1343, 2, 3, 62, '2024-06-20 08:29:17'),
+(1344, 2, 3, 62, '2024-06-20 08:29:17'),
+(1345, 2, 3, 62, '2024-06-20 08:29:18'),
+(1346, 2, 3, 62, '2024-06-20 08:29:19'),
+(1347, 2, 3, 62, '2024-06-20 08:29:19'),
+(1348, 2, 3, 62, '2024-06-20 08:29:20'),
+(1349, 2, 3, 62, '2024-06-20 08:29:21'),
+(1350, 2, 3, 62, '2024-06-20 08:29:21'),
+(1351, 2, 3, 61, '2024-06-20 08:29:56'),
+(1352, 2, 3, 61, '2024-06-20 08:29:57'),
+(1353, 2, 3, 61, '2024-06-20 08:29:57'),
+(1354, 2, 3, 61, '2024-06-20 08:29:58'),
+(1355, 2, 3, 61, '2024-06-20 08:49:43'),
+(1356, 2, 3, 61, '2024-06-20 08:49:44'),
+(1357, 2, 3, 61, '2024-06-20 08:49:44'),
+(1358, 2, 3, 61, '2024-06-20 08:49:45'),
+(1359, 2, 3, 61, '2024-06-20 08:49:45'),
+(1360, 2, 3, 61, '2024-06-20 08:49:46'),
+(1361, 2, 3, 61, '2024-06-20 08:49:47'),
+(1362, 2, 3, 61, '2024-06-20 08:49:47'),
+(1363, 2, 3, 61, '2024-06-20 08:49:48'),
+(1364, 2, 3, 61, '2024-06-20 08:49:48'),
+(1365, 2, 3, 61, '2024-06-20 08:49:49'),
+(1366, 2, 3, 61, '2024-06-20 08:49:49'),
+(1367, 2, 3, 61, '2024-06-20 08:49:50'),
+(1368, 2, 3, 61, '2024-06-20 08:49:50'),
+(1369, 2, 3, 61, '2024-06-20 08:49:51'),
+(1370, 2, 3, 61, '2024-06-20 08:49:51'),
+(1371, 2, 3, 61, '2024-06-20 08:49:52'),
+(1372, 2, 3, 61, '2024-06-20 08:49:52'),
+(1373, 2, 3, 61, '2024-06-20 08:49:53'),
+(1374, 2, 3, 61, '2024-06-20 08:49:54'),
+(1375, 2, 3, 61, '2024-06-20 08:49:54'),
+(1376, 2, 3, 61, '2024-06-20 08:49:55'),
+(1377, 2, 3, 61, '2024-06-20 08:49:55'),
+(1378, 2, 3, 61, '2024-06-20 08:49:56'),
+(1379, 2, 3, 61, '2024-06-20 08:49:57'),
+(1380, 2, 3, 61, '2024-06-20 08:49:58'),
+(1381, 2, 3, 61, '2024-06-20 08:49:58'),
+(1382, 2, 3, 61, '2024-06-20 08:49:59'),
+(1383, 2, 3, 61, '2024-06-20 08:50:00'),
+(1384, 2, 3, 61, '2024-06-20 08:50:00'),
+(1385, 1, 1, 57, '2024-06-20 08:51:48'),
+(1386, 1, 1, 58, '2024-06-21 15:45:16'),
+(1387, 2, 3, 61, '2024-06-20 09:02:43'),
+(1388, 2, 3, 61, '2024-06-20 09:02:43'),
+(1389, 2, 3, 61, '2024-06-20 09:02:44'),
+(1390, 2, 3, 61, '2024-06-20 09:02:44'),
+(1391, 2, 3, 61, '2024-06-20 09:02:45'),
+(1392, 2, 3, 61, '2024-06-20 09:02:45'),
+(1393, 2, 3, 61, '2024-06-20 09:02:46'),
+(1394, 2, 3, 61, '2024-06-20 09:02:46'),
+(1395, 2, 3, 61, '2024-06-20 09:02:47'),
+(1396, 2, 3, 61, '2024-06-20 09:02:47'),
+(1397, 2, 3, 61, '2024-06-20 09:02:48'),
+(1398, 2, 3, 61, '2024-06-20 09:02:48'),
+(1399, 2, 3, 61, '2024-06-20 09:02:49'),
+(1400, 2, 3, 61, '2024-06-20 09:02:49'),
+(1401, 2, 3, 61, '2024-06-20 09:02:50'),
+(1402, 2, 3, 61, '2024-06-20 09:02:50'),
+(1403, 2, 3, 61, '2024-06-20 09:02:51'),
+(1404, 2, 3, 61, '2024-06-20 09:02:52'),
+(1405, 2, 3, 61, '2024-06-20 09:02:53'),
+(1406, 2, 3, 61, '2024-06-20 09:02:53'),
+(1407, 2, 3, 61, '2024-06-20 09:02:54'),
+(1408, 2, 3, 61, '2024-06-20 09:02:55'),
+(1409, 2, 3, 61, '2024-06-20 09:02:55'),
+(1410, 2, 3, 61, '2024-06-20 09:02:56'),
+(1411, 2, 3, 61, '2024-06-20 09:02:56'),
+(1412, 2, 3, 61, '2024-06-20 09:02:57'),
+(1413, 2, 3, 61, '2024-06-20 09:02:58'),
+(1414, 2, 3, 61, '2024-06-20 09:02:58'),
+(1415, 2, 3, 61, '2024-06-20 09:02:59'),
+(1416, 2, 3, 61, '2024-06-20 09:03:00'),
+(1417, 2, 3, 61, '2024-06-20 09:03:26'),
+(1418, 2, 3, 61, '2024-06-20 09:03:26'),
+(1419, 2, 3, 61, '2024-06-20 09:03:27'),
+(1420, 2, 3, 61, '2024-06-20 09:03:28'),
+(1421, 2, 3, 61, '2024-06-20 09:03:28'),
+(1422, 2, 3, 61, '2024-06-20 09:03:29'),
+(1423, 2, 3, 61, '2024-06-20 09:03:29'),
+(1424, 2, 3, 61, '2024-06-20 09:03:30'),
+(1425, 2, 3, 61, '2024-06-20 09:03:31'),
+(1426, 2, 3, 61, '2024-06-20 09:03:31'),
+(1427, 2, 3, 61, '2024-06-20 09:03:32'),
+(1428, 2, 3, 61, '2024-06-20 09:03:32'),
+(1429, 2, 3, 61, '2024-06-20 09:03:33'),
+(1430, 2, 3, 61, '2024-06-20 09:03:34'),
+(1431, 2, 3, 61, '2024-06-20 09:03:34'),
+(1432, 2, 3, 61, '2024-06-20 09:03:35'),
+(1433, 2, 3, 61, '2024-06-20 09:03:35'),
+(1434, 2, 3, 61, '2024-06-20 09:03:36'),
+(1435, 2, 3, 61, '2024-06-20 09:03:37'),
+(1436, 2, 3, 61, '2024-06-20 09:03:37'),
+(1437, 2, 3, 61, '2024-06-20 09:03:38'),
+(1438, 2, 3, 61, '2024-06-20 09:03:38'),
+(1439, 2, 3, 61, '2024-06-20 09:03:39'),
+(1440, 2, 3, 61, '2024-06-20 09:03:40'),
+(1441, 2, 3, 61, '2024-06-20 09:03:40'),
+(1442, 2, 3, 61, '2024-06-20 09:03:41'),
+(1443, 2, 3, 61, '2024-06-20 09:03:42'),
+(1444, 2, 3, 61, '2024-06-20 09:03:42'),
+(1445, 2, 3, 61, '2024-06-20 09:03:43'),
+(1446, 2, 3, 61, '2024-06-20 09:03:43'),
+(1447, 1, 2, 60, '2024-06-21 15:25:33'),
+(1448, 1, 2, 60, '2024-06-21 15:25:33'),
+(1449, 1, 2, 60, '2024-06-21 15:25:33');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `item_details`
+-- Table structure for table `item_details`
 --
 
 CREATE TABLE `item_details` (
@@ -715,7 +987,7 @@ CREATE TABLE `item_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `item_details`
+-- Dumping data for table `item_details`
 --
 
 INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, `is_contain_keywords`) VALUES
@@ -724,8 +996,8 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (10943, 806, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:58:58/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_13_128gb_-_1_1_.png', 0, 0),
 (10944, 807, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-13.html', 1, 0),
 (10945, 807, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0, 1),
-(10946, 807, 'Giá sản phẩm', '13790000', 0, 0),
-(10947, 807, 'Khuyến mãi', '\n          Giảm 27%\n        ', 0, 0),
+(10946, 807, 'Giá sản phẩm', '13690000', 0, 0),
+(10947, 807, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0, 0),
 (10948, 807, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png', 0, 0),
 (10949, 807, 'Số sao đánh giá', '5', 0, 0),
 (10950, 808, 'Link chi tiết sản phẩm', '/samsung-galaxy-s24-ultra.html', 1, 0),
@@ -742,8 +1014,8 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (10961, 809, 'Số sao đánh giá', '5', 0, 0),
 (10962, 810, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15.html', 1, 0),
 (10963, 810, 'Tên sản phẩm', 'iPhone 15 128GB | Chính hãng VN/A', 0, 1),
-(10964, 810, 'Giá sản phẩm', '19590000', 0, 0),
-(10965, 810, 'Khuyến mãi', '\n          Giảm 15%\n        ', 0, 0),
+(10964, 810, 'Giá sản phẩm', '19390000', 0, 0),
+(10965, 810, 'Khuyến mãi', '\n          Giảm 16%\n        ', 0, 0),
 (10966, 810, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png', 0, 0),
 (10967, 810, 'Số sao đánh giá', '5', 0, 0),
 (10968, 811, 'Link chi tiết sản phẩm', '/samsung-galaxy-s23-128gb.html', 1, 0),
@@ -808,8 +1080,8 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (11027, 820, 'Số sao đánh giá', '5', 0, 0),
 (11028, 821, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//iphone-15-pro.html', 1, 0),
 (11029, 821, 'Tên sản phẩm', 'iPhone 15 Pro 128GB | Chính hãng VN/A', 0, 1),
-(11030, 821, 'Giá sản phẩm', '25390000', 0, 0),
-(11031, 821, 'Khuyến mãi', '\n          Giảm 12%\n        ', 0, 0),
+(11030, 821, 'Giá sản phẩm', '25190000', 0, 0),
+(11031, 821, 'Khuyến mãi', '\n          Giảm 13%\n        ', 0, 0),
 (11032, 821, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png', 0, 0),
 (11033, 821, 'Số sao đánh giá', '5', 0, 0),
 (11034, 822, 'Link chi tiết sản phẩm', '/xiaomi-redmi-note-13.html', 1, 0),
@@ -844,7 +1116,7 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (11063, 826, 'Số sao đánh giá', '5', 0, 0),
 (11064, 827, 'Link chi tiết sản phẩm', 'https://tiki.vn/apple-iphone-11-p184036446.html?spid=32033721', 1, 0),
 (11065, 827, 'Tên sản phẩm', 'Apple iPhone 11', 0, 1),
-(11066, 827, 'Giá sản phẩm', '8550000', 0, 0),
+(11066, 827, 'Giá sản phẩm', '8250000', 0, 0),
 (11067, 827, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/a1/cd/ce/84a16c41ac07ce50d754e44a16ecbd1c.jpg', 0, 0),
 (11068, 828, 'Link chi tiết sản phẩm', 'https://tiki.vn/moi-dien-thoai-vivo-y18s-6gb-128gb-hang-chinh-hang-bao-hanh-1-doi-1-trong-thang-dau-tien-p275108186.html?spid=275108217', 1, 0),
 (11069, 828, 'Tên sản phẩm', '[MỚI] Điện thoại vivo Y18s (6GB+128GB) - Hàng chính hãng - Bảo hành 1 đổi 1 trong tháng đầu tiên', 0, 1),
@@ -864,7 +1136,7 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (11083, 831, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/5f/b5/df/9c561c5fec3a432c0c09b82398addadf.jpg', 0, 0),
 (11084, 832, 'Link chi tiết sản phẩm', 'https://tiki.vn/apple-iphone-11-p184036446.html?spid=32033721', 1, 0),
 (11085, 832, 'Tên sản phẩm', 'Apple iPhone 11', 0, 1),
-(11086, 832, 'Giá sản phẩm', '8550000', 0, 0),
+(11086, 832, 'Giá sản phẩm', '8250000', 0, 0),
 (11087, 832, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/a1/cd/ce/84a16c41ac07ce50d754e44a16ecbd1c.jpg', 0, 0),
 (11088, 833, 'Link chi tiết sản phẩm', 'https://tiki.vn/apple-iphone-13-hang-chinh-hang-p184059211.html?spid=123547428', 1, 0),
 (11089, 833, 'Tên sản phẩm', 'Apple iPhone 13', 0, 1),
@@ -872,7 +1144,7 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (11091, 833, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/a2/38/6c/ce008c63f4ac771550439da44f5f8ee8.png', 0, 0),
 (11092, 834, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-xiaomi-redmi-9a-2gb-32gb-hang-chinh-hang-p57809866.html?spid=57814361', 1, 0),
 (11093, 834, 'Tên sản phẩm', 'Điện thoại Xiaomi Redmi 9A (2GB/32GB)', 0, 1),
-(11094, 834, 'Giá sản phẩm', '1840000', 0, 0),
+(11094, 834, 'Giá sản phẩm', '1690000', 0, 0),
 (11095, 834, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/22/34/6c/f2f6ca4edc76d9ba9fbb03ac976c06ae.png', 0, 0),
 (11096, 835, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-nokia-c30-2gb-32gb-hang-chinh-hang-p120295859.html?spid=120295861', 1, 0),
 (11097, 835, 'Tên sản phẩm', 'Điện Thoại Nokia C30 (2GB/32GB) - Hàng Chính Hãng', 0, 1),
@@ -892,7 +1164,7 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (11111, 838, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/ae/77/39/dc4d08a8b156a0c2f797f95a1860bc8c.jpg', 0, 0),
 (11112, 839, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-nokia-c20-2gb-16gb-hang-chinh-hang-p126050455.html?spid=135538835', 1, 0),
 (11113, 839, 'Tên sản phẩm', 'Điện thoại Nokia C20 (2GB/16GB) - Hàng Chính Hãng', 0, 1),
-(11114, 839, 'Giá sản phẩm', '2290000', 0, 0),
+(11114, 839, 'Giá sản phẩm', '1259000', 0, 0),
 (11115, 839, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/7e/b6/67/0fac1f808c2a8f43b896b955702c8d2c.jpg', 0, 0),
 (11116, 840, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-xiaomi-redmi-9a-2gb-32gb-hang-chinh-hang-p172329599.html?spid=216725039', 1, 0),
 (11117, 840, 'Tên sản phẩm', 'Điện thoại Xiaomi Redmi 9A (2GB/32GB) - Hàng chính hãng', 0, 1),
@@ -928,11 +1200,11 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (11147, 847, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/f1/0f/74/534eaff816c2126a7c49608e3b5a41fe.jpg', 0, 0),
 (11148, 848, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-vivo-y33s-8gb-128gb-hang-chinh-hang-p158895857.html?spid=158895861', 1, 0),
 (11149, 848, 'Tên sản phẩm', 'Điện thoại Vivo Y33s (8GB/128GB) - Hàng chính hãng', 0, 1),
-(11150, 848, 'Giá sản phẩm', '6069000', 0, 0),
+(11150, 848, 'Giá sản phẩm', '5939000', 0, 0),
 (11151, 848, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/44/5d/98/552402fb183ed24fc6053d1799d4c618.jpg', 0, 0),
 (11152, 849, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-realme-c25y-4gb-128gb-hang-chinh-hang-p140144656.html?spid=140144658', 1, 0),
 (11153, 849, 'Tên sản phẩm', 'Điện thoại Realme C25Y (4GB/128GB) - Hàng chính hãng', 0, 1),
-(11154, 849, 'Giá sản phẩm', '3599000', 0, 0),
+(11154, 849, 'Giá sản phẩm', '3529000', 0, 0),
 (11155, 849, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/8c/18/91/d8e35540bbad051b6182573802e60a5a.jpg', 0, 0),
 (11156, 850, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-thong-minh-itel-a26-gia-re-2-sim-2-song-4g-lte-man-hinh-ips-5-7-hd-ram-2gb-rom-32-gb-ho-tro-the-nho-32-gb-mo-khoa-bang-guong-mat-chinh-hang-bao-hanh-12-thang-1-doi-1-trong-30-ngay-p147969070.html?spid=147969294', 1, 0),
 (11157, 850, 'Tên sản phẩm', 'Điện thoại thông minh itel A26 - giá rẻ | 2 Sim 2 Sóng 4G LTE | Màn hình IPS 5.7\" HD+ | RAM 2GB + ROM 32 GB (Hỗ trợ thẻ nhớ 32 GB) | Mở khoá bằng Gương Mặt | Chính Hãng bảo hành 12 tháng| 1 đổi 1 trong 30 ngày', 0, 1),
@@ -944,7 +1216,7 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (11163, 851, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/14/cc/b3/1224785fc8f2604497defb76fcf7d5f0.png', 0, 0),
 (11164, 852, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-realme-c11-2021-4gb-64gb-hang-chinh-hang-p140747649.html?spid=140747664', 1, 0),
 (11165, 852, 'Tên sản phẩm', 'Điện thoại Realme C11 2021 (4GB/64GB) - Hàng chính hãng', 0, 1),
-(11166, 852, 'Giá sản phẩm', '3790000', 0, 0),
+(11166, 852, 'Giá sản phẩm', '2690000', 0, 0),
 (11167, 852, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/40/93/b9/6a053b3d067bc57c941775944543aad0.jpg', 0, 0),
 (11168, 853, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-oppo-a57-4gb-64gb-hang-chinh-hang-p192348147.html?spid=253399234', 1, 0),
 (11169, 853, 'Tên sản phẩm', 'Điện thoại Oppo A57 (4GB/64GB) - Hàng chính hãng', 0, 1),
@@ -1910,20 +2182,20 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (12125, 1146, 'Số sao đánh giá', '5', 0, 0),
 (12126, 1147, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-s23-128gb.html', 1, 0),
 (12127, 1147, 'Tên sản phẩm', 'Samsung Galaxy S23 8GB 128GB - Chỉ có tại CellphoneS', 0, 1),
-(12128, 1147, 'Giá sản phẩm', '13490000', 0, 0),
-(12129, 1147, 'Khuyến mãi', '\n          Giảm 41%\n        ', 0, 0),
+(12128, 1147, 'Giá sản phẩm', '13190000', 0, 0),
+(12129, 1147, 'Khuyến mãi', '\n          Giảm 43%\n        ', 0, 0),
 (12130, 1147, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-s23_1.png', 0, 0),
 (12131, 1147, 'Số sao đánh giá', '5', 0, 0),
 (12132, 1148, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//dien-thoai-oppo-reno-11-f.html', 1, 0),
 (12133, 1148, 'Tên sản phẩm', 'OPPO Reno11 F 5G 8GB 256GB', 0, 1),
-(12134, 1148, 'Giá sản phẩm', '8490000', 0, 0),
-(12135, 1148, 'Khuyến mãi', '\n          Giảm 6%\n        ', 0, 0),
+(12134, 1148, 'Giá sản phẩm', '8090000', 0, 0),
+(12135, 1148, 'Khuyến mãi', '\n          Giảm 10%\n        ', 0, 0),
 (12136, 1148, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-11-f-2.png', 0, 0),
 (12137, 1148, 'Số sao đánh giá', '5', 0, 0),
 (12138, 1149, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-m34-5g.html', 1, 0),
 (12139, 1149, 'Tên sản phẩm', 'Samsung Galaxy M34 5G 8GB 128GB', 0, 1),
-(12140, 1149, 'Giá sản phẩm', '5790000', 0, 0),
-(12141, 1149, 'Khuyến mãi', '\n          Giảm 28%\n        ', 0, 0),
+(12140, 1149, 'Giá sản phẩm', '5590000', 0, 0),
+(12141, 1149, 'Khuyến mãi', '\n          Giảm 30%\n        ', 0, 0),
 (12142, 1149, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/c/3/c3845789-dda7-44d7-a9eb-bb8e775c9ffb.png', 0, 0),
 (12143, 1149, 'Số sao đánh giá', '5', 0, 0),
 (12144, 1150, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//xiaomi-redmi-note-13-pro-plus.html', 1, 0),
@@ -2076,12 +2348,540 @@ INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, 
 (12290, 1205, 'Tiêu đề tin tức', 'ÄĂ£ tĂ¬m tháº¥y ná»¯ sinh â€œmáº¥t tĂ­ch bĂ­ áº©nâ€ khi Ä‘i thi vĂ o lá»›p 10', 0, 1),
 (12291, 1205, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/da-tim-thay-nu-sinh-mat-tich-bi-an-khi-di-thi-vao-lop-10-c51a1577234.html\' title=\'ÄĂ£ tĂ¬m tháº¥y ná»¯ sinh â€œmáº¥t tĂ­ch bĂ­ áº©nâ€ khi Ä‘i thi vĂ o lá»›p 10\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-16/1718547694-905-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'ÄĂ£ tĂ¬m tháº¥y ná»¯ sinh â€œmáº¥t tĂ­ch bĂ­ áº©nâ€ khi Ä‘i thi vĂ o lá»›p 10\' title=\'ÄĂ£ tĂ¬m tháº¥y ná»¯ sinh â€œmáº¥t tĂ­ch bĂ­ áº©nâ€ khi Ä‘i thi vĂ o lá»›p 10\' /></a><br />Lá»±c lÆ°á»£ng chá»©c nÄƒng Ä‘Ă£ Ä‘Æ°a ná»¯ sinh â€œmáº¥t tĂ­ch bĂ­ áº©nâ€ tá»« Äá»“ng Nai vá» An Giang vĂ  bĂ n giao cho gia Ä‘Ă¬nh.\n\n', 0, 1),
 (12292, 1206, 'Tiêu đề tin tức', 'CĂ´ng an BĂ¬nh Äá»‹nh phĂ¡ Ä‘Æ°á»ng dĂ¢y ma tĂºy lá»›n nháº¥t tá»« trÆ°á»›c Ä‘áº¿n nay', 0, 1),
-(12293, 1206, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-binh-dinh-pha-duong-day-ma-tuy-lon-nhat-tu-truoc-den-nay-c51a1577236.html\' title=\'CĂ´ng an BĂ¬nh Äá»‹nh phĂ¡ Ä‘Æ°á»ng dĂ¢y ma tĂºy lá»›n nháº¥t tá»« trÆ°á»›c Ä‘áº¿n nay\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-16//adt1718549576-anh-man-hinh-2024-06-16-luc-18-05-09.png\' alt=\'CĂ´ng an BĂ¬nh Äá»‹nh phĂ¡ Ä‘Æ°á»ng dĂ¢y ma tĂºy lá»›n nháº¥t tá»« trÆ°á»›c Ä‘áº¿n nay\' title=\'CĂ´ng an BĂ¬nh Äá»‹nh phĂ¡ Ä‘Æ°á»ng dĂ¢y ma tĂºy lá»›n nháº¥t tá»« trÆ°á»›c Ä‘áº¿n nay\' /></a><br />Qua khĂ¡m xĂ©t nÆ¡i á»Ÿ cá»§a nhĂ³m Ä‘á»‘i tÆ°á»£ng sá»­ dá»¥ng trĂ¡i phĂ©p cháº¥t ma tĂºy, CĂ´ng an BĂ¬nh Äá»‹nh phĂ¡t hiá»‡n Ä‘Æ°á»ng dĂ¢y buĂ´n ma tuĂ½ vá»›i 2,9 kg ma tĂºy tá»•ng há»£p cĂ¡c loáº¡i bá»‹ thu giá»¯.\n\n', 0, 1);
+(12293, 1206, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-binh-dinh-pha-duong-day-ma-tuy-lon-nhat-tu-truoc-den-nay-c51a1577236.html\' title=\'CĂ´ng an BĂ¬nh Äá»‹nh phĂ¡ Ä‘Æ°á»ng dĂ¢y ma tĂºy lá»›n nháº¥t tá»« trÆ°á»›c Ä‘áº¿n nay\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-16//adt1718549576-anh-man-hinh-2024-06-16-luc-18-05-09.png\' alt=\'CĂ´ng an BĂ¬nh Äá»‹nh phĂ¡ Ä‘Æ°á»ng dĂ¢y ma tĂºy lá»›n nháº¥t tá»« trÆ°á»›c Ä‘áº¿n nay\' title=\'CĂ´ng an BĂ¬nh Äá»‹nh phĂ¡ Ä‘Æ°á»ng dĂ¢y ma tĂºy lá»›n nháº¥t tá»« trÆ°á»›c Ä‘áº¿n nay\' /></a><br />Qua khĂ¡m xĂ©t nÆ¡i á»Ÿ cá»§a nhĂ³m Ä‘á»‘i tÆ°á»£ng sá»­ dá»¥ng trĂ¡i phĂ©p cháº¥t ma tĂºy, CĂ´ng an BĂ¬nh Äá»‹nh phĂ¡t hiá»‡n Ä‘Æ°á»ng dĂ¢y buĂ´n ma tuĂ½ vá»›i 2,9 kg ma tĂºy tá»•ng há»£p cĂ¡c loáº¡i bá»‹ thu giá»¯.\n\n', 0, 1),
+(12294, 1207, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0, 1),
+(12295, 1207, 'Giá sản phẩm', '13690000', 0, 0),
+(12296, 1207, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:58:58/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_13_128gb_-_1_1_.png', 0, 0),
+(12297, 1208, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0, 1),
+(12298, 1208, 'Giá sản phẩm', '13690000', 0, 0),
+(12299, 1208, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:58:58/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_13_128gb_-_1_1_.png', 0, 0),
+(12300, 1209, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0, 1),
+(12301, 1209, 'Giá sản phẩm', '13690000', 0, 0),
+(12302, 1209, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:58:58/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_13_128gb_-_1_1_.png', 0, 0),
+(12303, 1210, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0, 1),
+(12304, 1210, 'Giá sản phẩm', '13690000', 0, 0),
+(12305, 1210, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:58:58/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_13_128gb_-_1_1_.png', 0, 0),
+(12306, 1211, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-ai-samsung-galaxy-s24-ultra-camera-200mp-zoom-100x-s-pen-vang-hang-chinh-hang-p273947792.html?spid=273947988', 1, 0),
+(12307, 1211, 'Tên sản phẩm', 'Điện thoại AI Samsung Galaxy S24 Ultra 12GB/256GB, Camera 200MP Zoom 100x, S Pen- Xám- Hàng Chính Hãng', 0, 1),
+(12308, 1211, 'Giá sản phẩm', '24990000', 0, 0),
+(12309, 1211, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/2c/97/51/72a1b0d191851e292326a228065200b2.jpg', 0, 0),
+(12310, 1212, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-samsung-galazy-a15-lte-8gb-128gb-da-kich-hoat-bao-hanh-dien-tu-hang-chinh-hang-p273951550.html?spid=273952409', 1, 0),
+(12311, 1212, 'Tên sản phẩm', 'Điện Thoại Samsung Galaxy A15 LTE (8GB/128GB)- Đã Kích Hoạt Bảo Hành Điện tử - Hàng Chính Hãng', 0, 1),
+(12312, 1212, 'Giá sản phẩm', '3990000', 0, 0),
+(12313, 1212, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/73/72/13/ed86e449d848c69b1d59634b26afebf2.jpg', 0, 0),
+(12314, 1213, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-samsung-galaxy-a05-4gb-128gb-da-kich-hoat-bao-hanh-dien-tu-hang-chinh-hang-p273258830.html?spid=273258974', 1, 0),
+(12315, 1213, 'Tên sản phẩm', 'Điện thoại Samsung Galaxy A05 (4GB/128GB) - Đã kích hoạt bảo hành điện tử - Hàng chính hãng', 0, 1),
+(12316, 1213, 'Giá sản phẩm', '2490000', 0, 0),
+(12317, 1213, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/71/34/8b/b740d3aef6ae4294901eaa9c147dd600.png', 0, 0),
+(12318, 1214, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-samsung-galaxy-a05s-4gb-128gb-da-kich-hoat-bao-hanh-dien-tu-hang-chinh-hang-p273258825.html?spid=273259161', 1, 0),
+(12319, 1214, 'Tên sản phẩm', 'Điện thoại Samsung Galaxy A05s (4GB/128GB) - Đã kích hoạt bảo hành điện tử - Hàng chính hãng', 0, 1),
+(12320, 1214, 'Giá sản phẩm', '3050000', 0, 0),
+(12321, 1214, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/44/a2/f8/768771540cb86d9b1a7be98e9ab8d025.jpg', 0, 0),
+(12322, 1215, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-xiaomi-redmi-note-12-pro-5g-8gb-256gb-hang-chinh-hang-p249955152.html?spid=249955156', 1, 0),
+(12323, 1215, 'Tên sản phẩm', 'Điện thoại Xiaomi Redmi Note 12 Pro 5G (8GB/256GB) - Hàng chính hãng', 0, 1),
+(12324, 1215, 'Giá sản phẩm', '8049000', 0, 0),
+(12325, 1215, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/b3/7b/d3/86c388951ed1843e58227a75b0792960.jpg', 0, 0),
+(12326, 1216, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-xiaomi-redmi-a3-hang-chinh-hang-p274840632.html?spid=274840669', 1, 0),
+(12327, 1216, 'Tên sản phẩm', 'Điện thoại Xiaomi Redmi A3 - Hàng chính hãng', 0, 1),
+(12328, 1216, 'Giá sản phẩm', '2319000', 0, 0),
+(12329, 1216, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/35/7e/92/1c209f53faa705fc9d425d2c8f69d02d.jpg', 0, 0),
+(12330, 1217, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-xiaomi-redmi-13c-4-128gb-6-74-90hz-media-tek-helio-g85-5000mah-p273411988.html?spid=273412100', 1, 0),
+(12331, 1217, 'Tên sản phẩm', 'Điện thoại Xiaomi Redmi 13C (6+128GB) | 6.74\" 90Hz| Media Tek Helio G85| 5000mAh - Hàng chính hãng', 0, 1),
+(12332, 1217, 'Giá sản phẩm', '2999000', 0, 0),
+(12333, 1217, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/8e/20/64/e72aa024ec2fa3a2fcacbe4c995b76e5.jpg', 0, 0),
+(12334, 1218, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-ai-samsung-galaxy-s24-ultra-camera-200mp-zoom-100x-s-pen-hang-chinh-hang-dkh-p274374725.html?spid=274374849', 1, 0),
+(12335, 1218, 'Tên sản phẩm', 'Điện thoại Samsung Galaxy S24 Ultra 5G 256GB - Hàng Chính Hãng', 0, 1),
+(12336, 1218, 'Giá sản phẩm', '26180000', 0, 0),
+(12337, 1218, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/6c/80/34/669d9536434b89fc97818331bb31e96c.jpg', 0, 0),
+(12338, 1219, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-tecno-spark-20c-8-8-gb-128gb-mtk-g36-5000-mah-sac-nhanh-18w-p273897590.html?spid=274457986', 1, 0),
+(12339, 1219, 'Tên sản phẩm', 'Điện thoại Tecno SPARK 20c (8+8)GB/128GB - MTK G36 | 5000 mAh | Sạc nhanh 18W | Hàng Chính Hãng', 0, 1),
+(12340, 1219, 'Giá sản phẩm', '2449000', 0, 0),
+(12341, 1219, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/4f/ae/70/d23ccce7a19bb9a80068fad345389254.png', 0, 0),
+(12342, 1220, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-tecno-camon-pro-20-8gb-256gb-hang-chinh-hang-p274959114.html?spid=274960019', 1, 0),
+(12343, 1220, 'Tên sản phẩm', 'Điện thoại Tecno CAMON 20 Pro 8GB/256GB - Hàng Chính Hãng', 0, 1),
+(12344, 1220, 'Giá sản phẩm', '4250000', 0, 0),
+(12345, 1220, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/7c/fb/03/89d427e80187454872fcef7e57de1922.png', 0, 0),
+(12346, 1221, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-xiaomi-redmi-note-13-pro-8gb-128gb-hang-chinh-hang-bao-hanh-18-thang-p274440344.html?spid=274440346', 1, 0),
+(12347, 1221, 'Tên sản phẩm', 'Điện thoại Xiaomi Redmi Note 13 pro (8GB - 128GB) hàng chính hãng - Bảo hành 18 tháng', 0, 1),
+(12348, 1221, 'Giá sản phẩm', '6089000', 0, 0),
+(12349, 1221, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/88/c1/40/ef753ce8fb3c3b7afbbb04665340ff40.png', 0, 0),
+(12350, 1222, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-samsung-galazy-a15-lte-8gb-128gb-da-kich-hoat-bao-hanh-dien-tu-hang-chinh-hang-p273951550.html?spid=273952411', 1, 0),
+(12351, 1222, 'Tên sản phẩm', 'Điện Thoại Samsung Galaxy A15 LTE (8GB/128GB)- Đã Kích Hoạt Bảo Hành Điện tử - Hàng Chính Hãng', 0, 1),
+(12352, 1222, 'Giá sản phẩm', '3990000', 0, 0),
+(12353, 1222, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/61/68/37/ed2f35fd8ed42e347d07e8fbadfafdd7.jpg', 0, 0),
+(12354, 1223, 'Tiêu đề tin tức', 'Giá xăng lên 22.460 đồng/lít', 0, 1),
+(12355, 1223, 'Mô tả', '<a href=\"https://tuoitre.vn/gia-xang-len-22-460-dong-lit-20240620145612793.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/29f586a2874624187d57-1718869284208832087073-0-0-800-1280-crop-1718869294192694673379.jpg\" /></a>Từ 15h ngày 20-6, giá xăng dầu tiếp tục thay đổi, mỗi lít xăng RON95 lên 22.460 đồng/lít, tăng 230 đồng.', 0, 1),
+(12356, 1224, 'Tiêu đề tin tức', 'Việt Nam, Nga ký 11 văn kiện hợp tác trong chuyến thăm của Tổng thống Putin', 0, 1),
+(12357, 1224, 'Mô tả', '<a href=\"https://tuoitre.vn/viet-nam-nga-ky-11-van-kien-hop-tac-trong-chuyen-tham-cua-tong-thong-putin-20240620140022787.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/ky-ket-viet-nga-nam-tran-1718869153575483685717-126-81-1176-1762-crop-17188691960441030831442.jpg\" /></a>Ngay sau cuộc hội đàm trưa 20-6, Chủ tịch nước Tô Lâm và Tổng thống Putin đã chứng kiến lễ trao nhiều văn kiện hợp tác được ký kết nhân chuyến thăm.', 0, 1),
+(12358, 1225, 'Tiêu đề tin tức', 'TP.HCM cảnh báo bệnh ho gà tăng, chủ yếu ở trẻ chưa tiêm vắc xin', 0, 1),
+(12359, 1225, 'Mô tả', '<a href=\"https://tuoitre.vn/tp-hcm-canh-bao-benh-ho-ga-tang-chu-yeu-o-tre-chua-tiem-vac-xin-20240620130416622.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-tiem-vac-xin-17188617042751063191523-141-0-1391-2000-crop-1718862482559381493619.jpg\" /></a>Đáng chú ý đa số trẻ mắc bệnh này chưa đến độ tuổi tiêm chủng hoặc chưa tiêm vắc xin đầy đủ.', 0, 1),
+(12360, 1226, 'Tiêu đề tin tức', '360ha cao su trên đất rừng phòng hộ không ai nhận chủ nhưng mủ vẫn cạo đều đều', 0, 1),
+(12361, 1226, 'Mô tả', '<a href=\"https://tuoitre.vn/360ha-cao-su-tren-dat-rung-phong-ho-khong-ai-nhan-chu-nhung-mu-van-cao-deu-deu-20240620084416663.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20-6-rung-cao-su-04-17188474653971552215573-0-119-796-1392-crop-1718847671027197043033.jpg\" /></a>Gần 360ha cao su tươi tốt đang kỳ cho mủ mọc trên đất rừng phòng hộ tại Gia Lai không có ai nhận là chủ, nhưng vẫn khai thác thường xuyên.', 0, 1),
+(12362, 1227, 'Tiêu đề tin tức', 'Đà Nẵng nói gì về kiến nghị kiểm tra công suất hoạt động nhà máy nước ngàn tỉ?', 0, 1),
+(12363, 1227, 'Mô tả', '<a href=\"https://tuoitre.vn/da-nang-noi-gi-ve-kien-nghi-kiem-tra-cong-suat-hoat-dong-nha-may-nuoc-ngan-ti-2024062011013589.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20-6-da-nang-tra-loi-gi-ve-kien-nghi-kiem-tra-cong-suat-nha-may-nuoc-ngan-ti-2-17188557172681897687506-308-333-1334-1975-crop-17188557921321142303249.jpg\" /></a>Ngày 20-6, Sở Xây dựng Đà Nẵng có báo cáo UBND TP Đà Nẵng về việc trả lời kiến nghị của cử tri.', 0, 1),
+(12364, 1228, 'Tiêu đề tin tức', 'Chính phủ chuẩn bị gì để luật về bất động sản có hiệu lực sớm?', 0, 1),
+(12365, 1228, 'Mô tả', '<a href=\"https://tuoitre.vn/chinh-phu-chuan-bi-gi-de-luat-ve-bat-dong-san-co-hieu-luc-som-20240620124915114.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hoangthanhtung-17188621348111364017956-9-0-809-1280-crop-17188624878481946494183.jpg\" /></a>Đại biểu Quốc hội băn khoăn thời gian đến ngày 1-8 gấp rút nhưng đến nay nhiều văn bản hướng dẫn các luật về bất động sản chưa được ban hành.', 0, 1),
+(12366, 1229, 'Tiêu đề tin tức', 'Công an kể khoảnh khắc lao vào khống chế hung thủ truy sát cả nhà ở Quảng Ngãi', 0, 1),
+(12367, 1229, 'Mô tả', '<a href=\"https://tuoitre.vn/cong-an-ke-khoanh-khac-lao-vao-khong-che-hung-thu-truy-sat-ca-nha-o-quang-ngai-20240620130134009.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/cong-an-ke-phut-giay-lao-vao-khong-che-hung-thu-truy-sat-ca-nha-2-17188621533391465616911-200-540-1113-2000-crop-17188630707551345416895.jpg\" /></a>Đại úy Trần Hoài An, phó trưởng Công an xã Nghĩa Dõng, là người lao vào khống chế kẻ truy sát cả nhà, bảo không nghĩ nguy hiểm cho mình.', 0, 1),
+(12368, 1230, 'Tiêu đề tin tức', 'Sau phản ánh, đường Song Hành - Võ Nguyên Giáp lại ngập ngụa rác', 0, 1),
+(12369, 1230, 'Mô tả', '<a href=\"https://tuoitre.vn/sau-phan-anh-duong-song-hanh-vo-nguyen-giap-lai-ngap-ngua-rac-20240620131429897.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/z5556389019567e0fd0a76f0e66663b463b715c5110fff-171886270973711228066-68-0-1081-1620-crop-171886344338176139968.jpg\" /></a>Mặc dù đã phản ánh trước đó, đoạn đường Song Hành - Võ Nguyên Giáp, phường An Phú, TP Thủ Đức (TP.HCM) lại ngập ngụa rác.', 0, 1),
+(12370, 1231, 'Tiêu đề tin tức', 'Bộ trưởng: Luật Đất đai thi hành sớm ngày nào người dân hưởng lợi ngày đó', 0, 1),
+(12371, 1231, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-luat-dat-dai-thi-hanh-som-ngay-nao-nguoi-dan-huong-loi-ngay-do-20240620124511012.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dang-quoc-khanh-17188612658822000155669-14-0-639-1000-crop-1718861293501894923763.jpg\" /></a>Người dân đang rất mong chờ Luật Đất đai có hiệu lực để được cấp sổ đỏ với những thửa đất không tranh chấp từ 1-7-2014 trở về trước.', 0, 1),
+(12372, 1232, 'Tiêu đề tin tức', 'Một luật sư ở Cần Thơ bị tòa án kiến nghị khởi tố vì \'gây rối tại phiên tòa\'', 0, 1),
+(12373, 1232, 'Mô tả', '<a href=\"https://tuoitre.vn/mot-luat-su-o-can-tho-bi-toa-an-kien-nghi-khoi-to-vi-gay-roi-tai-phien-toa-20240620130008148.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/tin-phap-luat-17154107415991378658948-0-37-315-541-crop-17167868274091111059251-17168050737871725559772-0-0-162-260-crop-1718863069722961481246.jpg\" /></a>Một luật sư thuộc Đoàn luật sư Cần Thơ bị Tòa án nhân dân Cần Thơ gửi văn bản kiến nghị công an khởi tố do ‘có dấu hiệu gây rối trật tự phiên tòa’.', 0, 1),
+(12374, 1233, 'Tiêu đề tin tức', 'Bộ Công an chỉ rõ 30 dự án cây xanh, yêu cầu Phú Yên cung cấp hồ sơ', 0, 1),
+(12375, 1233, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-cong-an-chi-ro-30-du-an-cay-xanh-yeu-cau-phu-yen-cung-cap-ho-so-20240620124852421.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20240620-cay-xanh-17188623268532130299414-75-0-1118-1668-crop-17188623372071925710872.jpg\" /></a>Cơ quan an ninh điều tra Bộ Công an yêu cầu Phú Yên cung cấp hồ sơ 30 dự án trồng và chăm sóc cây xanh tại tỉnh này để phục vụ điều tra vụ án liên quan Công ty TNHH Cây xanh Công Minh.', 0, 1),
+(12376, 1234, 'Tiêu đề tin tức', 'Tìm thấy nạn nhân còn lại trong vụ cháy cơ sở bột nhang 2 người chết ở Bình Chánh', 0, 1),
+(12377, 1234, 'Mô tả', '<a href=\"https://tuoitre.vn/tim-thay-nan-nhan-con-lai-trong-vu-chay-co-so-bot-nhang-2-nguoi-chet-o-binh-chanh-20240620112059372.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hien-truong-vu-chay-co-so-bot-nhang-171885517725811431526-75-0-1325-2000-crop-1718855649912557361982.jpg\" /></a>Sáng 20-6, lực lượng chức năng phong tỏa hiện trường, điều tra nguyên nhân vụ cháy cơ sở bột nhang trên đường Trần Văn Giàu.', 0, 1),
+(12378, 1235, 'Tiêu đề tin tức', 'Ngân hàng Indovina kiến nghị về dự án 2,7km vành đai 2, TP.HCM giao ba sở nghiên cứu', 0, 1),
+(12379, 1235, 'Mô tả', '<a href=\"https://tuoitre.vn/ngan-hang-indovina-kien-nghi-ve-du-an-2-7km-vanh-dai-2-tp-hcm-giao-ba-so-nghien-cuu-20240620115719706.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/base64-16885773476361157557708-17187718600341275596907-1718859371564807860804-0-7-450-727-crop-1718859380758336744878.png\" /></a>Trước kiến nghị của Ngân hàng Indovina về việc nguy cơ khoản vay tại dự án đoạn 3 đường vành đai 2 phát sinh nợ xấu, TP.HCM chỉ đạo các sở ngành.', 0, 1),
+(12380, 1236, 'Tiêu đề tin tức', 'Nhiều bất cập trên đường Mai Chí Thọ khi thi công nút giao An Phú', 0, 1),
+(12381, 1236, 'Mô tả', '<a href=\"https://tuoitre.vn/nhieu-bat-cap-tren-duong-mai-chi-tho-khi-thi-cong-nut-giao-an-phu-20240619193919942.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/z5554356434469603ca38d0de70225ade865f3949ae588-17187998983692040578173-0-0-1250-2000-crop-1718800770357856165951.jpg\" /></a>Khu vực thi công nút giao An Phú (TP Thủ Đức, TP.HCM) còn tồn tại nhiều bất cập như mặt đường hư, rào chắn nhưng không thi công.', 0, 1),
+(12382, 1237, 'Tiêu đề tin tức', 'Chủ tịch nước Tô Lâm và Tổng thống Putin bước vào hội đàm', 0, 1),
+(12383, 1237, 'Mô tả', '<a href=\"https://tuoitre.vn/chu-tich-nuoc-to-lam-va-tong-thong-putin-buoc-vao-hoi-dam-20240620125857805.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/to-lam-putin-1-17188630291301324613501-0-0-1250-2000-crop-1718863198768423819188.jpg\" /></a>Chủ tịch nước Tô Lâm và Tổng thống Putin hội đàm trưa 20-6, cùng thảo luận các biện pháp quan trọng để tăng cường quan hệ hai nước.', 0, 1),
+(12384, 1238, 'Tiêu đề tin tức', 'Cà Mau trả lời đơn cứu xét của chủ ‘biệt thự đẹp nhất’, nói có sai sót trong soạn thảo văn bản', 0, 1),
+(12385, 1238, 'Mô tả', '<a href=\"https://tuoitre.vn/ca-mau-tra-loi-don-cuu-xet-cua-chu-biet-thu-dep-nhat-noi-co-sai-sot-trong-soan-thao-van-ban-20240620120448677.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dsc05785-17188585401381325088299-42-92-1049-1703-crop-17188596717821798941977.jpg\" /></a>Trong khi quyết định 195 chưa triển khai đến ông Tập thì UBND TP Cà Mau đã ban hành quyết định 196 để thu hồi do có một số sai sót trong soạn thảo.', 0, 1),
+(12386, 1239, 'Tiêu đề tin tức', 'Tuổi Trẻ đạt giải C Giải báo chí quốc gia với loạt bài về phát triển công nghiệp văn hóa', 0, 1),
+(12387, 1239, 'Mô tả', '<a href=\"https://tuoitre.vn/tuoi-tre-dat-giai-c-giai-bao-chi-quoc-gia-voi-loat-bai-ve-phat-trien-cong-nghiep-van-hoa-20240620092113469.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/vnapotalhopbaothongtinvegiaibaochiquocgialanthuxviiistand-1718855973169-17188559732111813249264-59-126-232-403-crop-1718856144144358663436.jpg\" /></a>Báo Tuổi Trẻ được trao giải C cho loạt bài về phát triển công nghiệp văn hóa của nhóm ba tác giả Đậu Dung - Thiên Điểu - Mi Ly.', 0, 1),
+(12388, 1240, 'Tiêu đề tin tức', 'Cháy nhà 5 tầng ở Hà Nội, cứu thoát 1 người', 0, 1),
+(12389, 1240, 'Mô tả', '<a href=\"https://tuoitre.vn/chay-nha-5-tang-o-ha-noi-cuu-thoat-1-nguoi-20240620113341913.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hien-truong-chay-nha-dan-ha-noi-17188574895671262684349-75-164-573-960-crop-17188577417691637234486.jpeg\" /></a>Vụ cháy xảy ra tại ngôi nhà 5 tầng nằm sâu trong ngõ phố Hà Trì thuộc phường Hà Cầu (quận Hà Đông, Hà Nội) rạng sáng 20-6.', 0, 1),
+(12390, 1241, 'Tiêu đề tin tức', 'Vụ nhận hối lộ tại trung tâm đăng kiểm: Vì sao không xử lý người đưa hối lộ?', 0, 1),
+(12391, 1241, 'Mô tả', '<a href=\"https://tuoitre.vn/vu-nhan-hoi-lo-tai-trung-tam-dang-kiem-vi-sao-khong-xu-ly-nguoi-dua-hoi-lo-20240620112433628.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dang-kiem-1718857308799714451984-0-0-1080-1728-crop-17188573618222064175479.jpg\" /></a>Các chủ xe trực tiếp hoặc qua trung gian đưa tiền để được cấp giấy chứng nhận cải tạo xe. Nhưng họ không bị xử lý hành vi đưa hối lộ, vì sao?', 0, 1),
+(12392, 1242, 'Tiêu đề tin tức', 'Bộ trưởng Nguyễn Chí Dũng: Không có kế hoạch khả thi, quy hoạch thủ đô chỉ là kỳ vọng', 0, 1),
+(12393, 1242, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-nguyen-chi-dung-khong-co-ke-hoach-kha-thi-quy-hoach-thu-do-chi-la-ky-vong-20240620104328249.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/nguyenchidung-17188544397901228562377-14-0-502-780-crop-17188546325571467557385.jpg\" /></a>Ông Dũng cho rằng phải xác định cơ chế, nguồn lực, kế hoạch để thực hiện được quy hoạch thủ đô. Nếu không chỉ là kỳ vọng, định hướng tương lai.', 0, 1),
+(12394, 1243, 'Tiêu đề tin tức', 'Chủ tịch nước Tô Lâm chủ trì lễ đón Tổng thống Putin', 0, 1),
+(12395, 1243, 'Mô tả', '<a href=\"https://tuoitre.vn/chu-tich-nuoc-to-lam-chu-tri-le-don-tong-thong-putin-20240620094752667.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/ctn-to-lam-don-putin-1718861265792100130335-121-524-872-1726-crop-17188613320261087494679.jpg\" /></a>Sau khi đến Hà Nội rạng sáng 20-6, Tổng thống Nga Vladimir Putin bắt đầu chuyến thăm cấp nhà nước đến Việt Nam với một ngày gồm các hoạt động ngoại giao dày đặc.', 0, 1),
+(12396, 1244, 'Tiêu đề tin tức', 'Phó cục trưởng Cục An ninh đối ngoại làm giám đốc Công an tỉnh Hà Tĩnh', 0, 1),
+(12397, 1244, 'Mô tả', '<a href=\"https://tuoitre.vn/pho-cuc-truong-cuc-an-ninh-doi-ngoai-lam-giam-doc-cong-an-tinh-ha-tinh-2024062009273329.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dai-ta-nguyen-xuan-thao-giam-doc-cong-an-ha-tinh-phat-bieu-nhan-nhiem-vu-1718849919295278061818-125-0-750-1000-crop-17188501067771382266416.jpg\" /></a>Đại tá Nguyễn Xuân Thao - phó cục trưởng Cục An ninh đối ngoại - được Bộ Công an điều động, bổ nhiệm giám đốc Công an tỉnh Hà Tĩnh.', 0, 1),
+(12398, 1245, 'Tiêu đề tin tức', 'Xe khách giường nằm chạy giờ cấm ở Bình Thạnh: Cảnh sát giao thông hứa xử lý dứt điểm', 0, 1),
+(12399, 1245, 'Mô tả', '<a href=\"https://tuoitre.vn/xe-khach-giuong-nam-chay-gio-cam-o-binh-thanh-canh-sat-giao-thong-hua-xu-ly-dut-diem-20240620072533053.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-7-17186978693831677989490-0-154-1126-1956-crop-17188409671317617195.jpg\" /></a>Phòng Cảnh sát giao thông chỉ đạo các đơn vị xử lý dứt điểm tình trạng xe khách giường nằm chạy khung giờ cấm quanh bến xe Miền Đông cũ.', 0, 1),
+(12400, 1246, 'Tiêu đề tin tức', 'Chuyên gia Nga: Việt Nam là đối tác đặc biệt quan trọng của Nga', 0, 1),
+(12401, 1246, 'Mô tả', '<a href=\"https://tuoitre.vn/chuyen-gia-nga-viet-nam-la-doi-tac-dac-biet-quan-trong-cua-nga-20240620083954429.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/chan-dung-ong-alexander-butko-17188474424851008113575-0-0-692-1107-crop-17188474763041849316362.jpg\" /></a>\'Việt Nam có tầm quan trọng đặc biệt đối với Nga do sự tin tưởng chính trị sâu sắc và nền tảng lớn trong quan hệ song phương\'.', 0, 1),
+(12402, 1247, 'Tiêu đề tin tức', 'Khi nước Nga hướng đông và nhìn về Việt Nam', 0, 1),
+(12403, 1247, 'Mô tả', '<a href=\"https://tuoitre.vn/khi-nuoc-nga-huong-dong-va-nhin-ve-viet-nam-20240620083311636.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/tong-thong-nga-tham-vn-17188482171601900974201-75-68-832-1280-crop-1718848261399439060862.png\" /></a>Tổng thống Nga mang đến Hà Nội không chỉ sự coi trọng rất lớn mà còn cả những kỳ vọng về giai đoạn phát triển mới với Việt Nam.', 0, 1),
+(12404, 1248, 'Tiêu đề tin tức', 'Tin tức sáng 20-6: Novaland sẽ vay hàng trăm tỉ đồng từ công ty con', 0, 1),
+(12405, 1248, 'Mô tả', '<a href=\"https://tuoitre.vn/tin-tuc-sang-20-6-novaland-se-vay-hang-tram-ti-dong-tu-cong-ty-con-20240619203709324.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/xuatkhaulaodong-17188040344411881722616-84-0-1334-2000-crop-17188111410941613891875.jpg\" /></a>Một số tin tức đáng chú ý: Novaland vay hàng trăm tỉ đồng từ công ty con; Doanh nghiệp lãnh phạt vì… ít sếp; Chi khám chữa bệnh bảo hiểm y tế ở Hà Nội nửa năm có thể trên 11.000 tỉ đồng...', 0, 1),
+(12406, 1249, 'Tiêu đề tin tức', 'Thời tiết hôm nay 20-6: Bắc Bộ, Trung Bộ nắng ‘đổ lửa’; Nam Bộ chiều mưa', 0, 1),
+(12407, 1249, 'Mô tả', '<a href=\"https://tuoitre.vn/thoi-tiet-hom-nay-20-6-bac-bo-trung-bo-nang-do-lua-nam-bo-chieu-mua-20240619174643839.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/thoi-tiet-20-6-1718793692904356940700-63-0-1313-2000-crop-17187938643432056351659.jpg\" /></a>Hôm nay 20-6,  thời tiết Nam Bộ về chiều tối mưa nhiều hơn, có nơi mưa to và dông lốc. Bắc Bộ, Trung Bộ nắng nóng.', 0, 1),
+(12408, 1250, 'Tiêu đề tin tức', 'Tổng thống Putin đến sân bay Nội Bài lúc rạng sáng 20-6', 0, 1),
+(12409, 1250, 'Mô tả', '<a href=\"https://tuoitre.vn/tong-thong-putin-den-san-bay-noi-bai-luc-rang-sang-20-6-20240619220916316.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/sua-gif-putin-ha-canh-17188306729552034928912-0-0-270-432-crop-1718833368527366076781.gif\" /></a>Tổng thống Nga Vladimir Putin đã đặt chân xuống sân bay quốc tế Nội Bài (Hà Nội) lúc 2h sáng 20-6, chuẩn bị cho chuyến thăm cấp nhà nước Việt Nam theo lời mời của Tổng bí thư Nguyễn Phú Trọng.', 0, 1),
+(12410, 1251, 'Tiêu đề tin tức', 'Tổng thống Putin đánh giá cao đường lối đối ngoại của Việt Nam', 0, 1),
+(12411, 1251, 'Mô tả', '<a href=\"https://tuoitre.vn/tong-thong-putin-danh-gia-cao-duong-loi-doi-ngoai-cua-viet-nam-20240619224217762.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/tong-thong-putin-nga-5-1718811699136565820609-0-101-675-1181-crop-17188123978051669258469.jpg\" /></a>Trong bài viết trước thềm chuyến thăm, Tổng thống Putin đã chia sẻ tầm nhìn của ông về lịch sử, hiện trạng và tương lai của quan hệ đối tác Nga - Việt Nam.', 0, 1),
+(12412, 1252, 'Tiêu đề tin tức', 'Hai phó chủ tịch UBND TP.HCM Dương Ngọc Hải và Trần Thị Diệu Thúy phụ trách lĩnh vực nào?', 0, 1),
+(12413, 1252, 'Mô tả', '<a href=\"https://tuoitre.vn/hai-pho-chu-tich-ubnd-tp-hcm-duong-ngoc-hai-va-tran-thi-dieu-thuy-phu-trach-linh-vuc-nao-20240619213255794.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/f9d6702b72f7d1a988e6-17188071405402125126842-28-0-731-1125-crop-1718807312760653047333.jpg\" /></a>Chủ tịch UBND TP.HCM Phan Văn Mãi vừa có quyết định phân công công tác chủ tịch, phó chủ tịch UBND TP.HCM và các ủy viên UBND nhiệm kỳ 2021 - 2026.', 0, 1),
+(12414, 1253, 'Tiêu đề tin tức', 'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương', 0, 1),
+(12415, 1253, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-tp-hcm-bat-nguoi-tu-xung-pho-truong-ban-noi-chinh-trung-uong-c51a1578345.html\' title=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718866238-vu-17188616662461974751348-303-0-190.jpeg\' alt=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\' title=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\' /></a><br />Công an TP HCM đã khởi tố bị can Trần Anh Vũ về tội lừa đảo và đang tìm nạn nhân của người này.\n\n', 0, 1),
+(12416, 1254, 'Tiêu đề tin tức', 'Đốt nhà người tình để trả thù', 0, 1),
+(12417, 1254, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/dot-nha-nguoi-tinh-de-tra-thu-c51a1578329.html\' title=\'Đốt nhà người tình để trả thù\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718864627-toan-jpg-1718853547-8051-1718853704.jpg\' alt=\'Đốt nhà người tình để trả thù\' title=\'Đốt nhà người tình để trả thù\' /></a><br />Sóc Trăng - Trần Văn Toàn, 31 tuổi, mua xăng đốt nhà người yêu để trả thù do mâu thuẫn tình cảm.\n\n', 0, 1),
+(12418, 1255, 'Tiêu đề tin tức', 'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh', 0, 1);
+INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, `is_contain_keywords`) VALUES
+(12419, 1255, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/giau-ma-tuy-vao-thanh-kim-loai-van-chuyen-qua-duong-chuyen-phat-nhanh-c51a1578347.html\' title=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718866316-tm2-1718859463044.jpg\' alt=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\' title=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\' /></a><br />Phòng CSĐT Công an TP Hà Nội ngày 20/6 cho biết, đã hoàn thành bản kết luận điều tra, chuyển hồ sơ vụ án Nguyễn Quang Toàn cùng đồng phạm vận chuyển trái phép chất ma tuý đến Viện kiểm sát cùng cấp đề nghị truy tố 4 đối tượng. \n\n', 0, 1),
+(12420, 1256, 'Tiêu đề tin tức', 'Con rể đe dọa giết cả nhà mẹ vợ', 0, 1),
+(12421, 1256, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/con-re-de-doa-giet-ca-nha-me-vo-c51a1578160.html\' title=\'Con rể đe dọa giết cả nhà mẹ vợ\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718814949-642-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Con rể đe dọa giết cả nhà mẹ vợ\' title=\'Con rể đe dọa giết cả nhà mẹ vợ\' /></a><br />Đặng Đức An đã liên tục nhắn tin, sau đó đến nhà vợ ở huyện Hoài Đức, Hà Nội đe dọa giết cả nhà vợ và đăng ảnh nhạy cảm của vợ lên mạng xã hội.\n\n', 0, 1),
+(12422, 1257, 'Tiêu đề tin tức', '“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới', 0, 1),
+(12423, 1257, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nu-quai-bi-truy-na-trong-duong-day-danh-bac-3600-ty-da-sa-luoi-c51a1578334.html\' title=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718864911-20_6_2024_tin_bat_doi_tuong_truy-171.jpg\' alt=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\' title=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\' /></a><br />Ngày 20/6, Phòng Cảnh sát hình sự Công an tỉnh Sóc Trăng cho biết vừa bắt giữ Nguyễn Thị Trang Anh (SN 1998, ngụ huyện Phước Long, tỉnh Bạc Liêu), đối tượng bị cơ quan CSĐT Công an tỉnh Nam Định truy nã về tội “Tổ chức đánh bạc hoặc gá bạc”.\n\n', 0, 1),
+(12424, 1258, 'Tiêu đề tin tức', 'Công an truy tìm Chủ tịch Công ty Đại Lộc Land', 0, 1),
+(12425, 1258, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-truy-tim-chu-tich-cong-ty-dai-loc-land-c51a1578281.html\' title=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718853145-4-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\' title=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\' /></a><br />Huy động vốn bằng cách trả vàng SJC và nhiều loại phần thưởng khác, song lãnh đạo Công ty Đại Lộc Land đã không thanh toán, trốn tránh không trả tiền\n\n', 0, 1),
+(12426, 1259, 'Tiêu đề tin tức', 'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích', 0, 1),
+(12427, 1259, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-3-tinh-phoi-hop-bat-2-nguoi-nuoc-ngoai-chuyen-hanh-nghe-dao-chich-c51a1578274.html\' title=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718852283-772-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\' title=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\' /></a><br />Công an 3 tỉnh Thanh Hóa, Bắc Giang, Bắc Ninh vừa phối hợp bắt giữ 2 người nước ngoài quốc tịch Trung Quốc đã đột nhập vào công ty ở các khu công nghiệp, cạy phá tủ, ngăn kéo trộm cắp tài sản\n\n', 0, 1),
+(12428, 1260, 'Tiêu đề tin tức', 'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!', 0, 1),
+(12429, 1260, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/dieu-tra-ben-trong-rap-phim-tinh-nhan-bai-cuoi-nhieu-he-luy-lam-noi-lo-c51a1578238.html\' title=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718848275-rap-phim-tinh-nhan-3517.jpg\' alt=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\' title=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\' /></a><br />Dịch vụ couple cinema (còn được gọi là “rạp phim tình nhân”) dễ bị biến tướng với những hoạt động nhạy cảm, cần có biện pháp quản lý chặt chẽ hơn.\n\n', 0, 1),
+(12430, 1261, 'Tiêu đề tin tức', 'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó', 0, 1),
+(12431, 1261, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nhan-than-bat-hao-cua-3-doi-tuong-bi-bat-vi-trom-va-tieu-thu-cho-c51a1578204.html\' title=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718844430-681-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\' title=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\' /></a><br />Đây là nhóm đối tượng trộm cắp và tiêu thụ chó thường xuyên, gây nhức nhối trên địa bàn, Công an TX.Ba Đồn đã nhiều lần tổ chức triệt xóa.\n\n', 0, 1),
+(12432, 1262, 'Tiêu đề tin tức', 'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi', 0, 1),
+(12433, 1262, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/thu-doan-chiem-doat-hon-13-ty-dong-cua-nu-chu-hui-c51a1578200.html\' title=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718843238-286-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\' title=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\' /></a><br />Hoàng Thị Thảo đứng ra làm chủ hụi nhiều năm nhưng mất khả năng chi trả. Từ năm 2020 đến đầu năm 2023, Thảo lừa đảo, chiếm đoạt của 65 bị hại với tổng số tiền hơn 13,2 tỷ đồng.\n\n', 0, 1),
+(12434, 1263, 'Tiêu đề tin tức', 'Khởi tố người cho vay lãi nặng 547,5%/năm', 0, 1),
+(12435, 1263, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/khoi-to-nguoi-cho-vay-lai-nang-5475-nam-c51a1578297.html\' title=\'Khởi tố người cho vay lãi nặng 547,5%/năm\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718856171-cho-vay-lai-nang-2814.jpg\' alt=\'Khởi tố người cho vay lãi nặng 547,5%/năm\' title=\'Khởi tố người cho vay lãi nặng 547,5%/năm\' /></a><br />Cho vay 50 triệu nhưng Thạch Nhân thu lời tới 750.000 đồng/ngày tương đương lãi suất 547,5%/năm, qua đó thu lợi bất chính 190 triệu đồng.\n\n', 0, 1),
+(12436, 1264, 'Tiêu đề tin tức', 'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?', 0, 1),
+(12437, 1264, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vi-sao-lien-tiep-xay-ra-nhung-vu-an-lam-gia-ket-luan-benh-an-tam-than-c51a1578085.html\' title=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718785928-45-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\' title=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\' /></a><br />Việc làm giả bệnh án tâm thần, kết luận giám định là do buông lỏng quản lý, do đạo đức nghề nghiệp hay chế tài xử lý chưa đủ sức răn đe?\n\n', 0, 1),
+(12438, 1265, 'Tiêu đề tin tức', 'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch', 0, 1),
+(12439, 1265, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vu-tham-an-chan-dong-o-quang-ngai-hai-chau-nho-da-qua-con-nguy-kich-c51a1578066.html\' title=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718783582-342-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\' title=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\' /></a><br />Hai cháu nhỏ con của ông L.H.T. trong vụ thảm án gây chấn động ở thôn 4 (xã Nghĩa Dõng, TP. Quảng Ngãi, tỉnh Quảng Ngãi) hiện đã qua cơn nguy kịch.\n\n', 0, 1),
+(12440, 1266, 'Tiêu đề tin tức', 'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng', 0, 1),
+(12441, 1266, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vut-xe-bo-chay-khi-gap-911-da-nang-c51a1578124.html\' title=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718792436-345-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\' title=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\' /></a><br />Khi gặp 911 Đà Nẵng, Vỹ liền tăng ga bỏ chạy rồi vứt xe tẩu thoát nhưng nhanh chóng bị tổ công tác khống chế.\n\n', 0, 1),
+(12442, 1267, 'Tiêu đề tin tức', 'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố', 0, 1),
+(12443, 1267, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/tung-anh-nhay-cam-cua-ban-gai-cu-len-mang-nam-thanh-nien-bi-khoi-to-c51a1578138.html\' title=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718801662-hinh-anh-nhay-cam.jpg\' alt=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\' title=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\' /></a><br />Khi bạn gái chuyển đi ở nơi khác không tiếp tục sống cùng, Hiền đã tạo 1 tài khoản giả mạo trên Facebook rồi đăng tải hình ảnh nhạy cảm của nạn nhân lên mạng xã hội.\n\n', 0, 1),
+(12444, 1268, 'Tiêu đề tin tức', 'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp', 0, 1),
+(12445, 1268, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/hai-cap-nam-nu-bay-lac-trong-can-ho-tang-15-chung-cu-cao-cap-c51a1578120.html\' title=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718791393-7-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\' title=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\' /></a><br />Công an tỉnh Quảng Ninh ngày 19-6 thông tin kết quả điều tra ban đầu vụ án Tổ chức sử dụng trái phép chất ma túy xảy ra ngày 31-5, tại chung cư Greenbay Garden Hạ Long.\n\n', 0, 1),
+(12446, 1269, 'Tiêu đề tin tức', 'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi', 0, 1),
+(12447, 1269, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/xu-phat-chu-quan-ca-phe-lap-kinh-mot-chieu-de-du-khach-hen-ho-ghep-doi-c51a1578115.html\' title=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718790861-982-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\' title=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\' /></a><br />Ngày 19/6, UBND quận 1 (TP Hồ Chí Minh) đã ra quyết định xử phạt vi phạm hành chính với cá nhân H.T.A.D. (SN 2003, ngụ quận 12), chủ hộ kinh doanh quán Mina Dating Café - quán cà phê hẹn hò ghép đôi, dùng kính một chiều với số tiền hơn 18 triệu đồng.\n\n', 0, 1),
+(12448, 1270, 'Tiêu đề tin tức', 'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn', 0, 1),
+(12449, 1270, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nguoi-dan-ong-de-lai-xe-may-tren-cau-nhay-xuong-song-sai-gon-c51a1578083.html\' title=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718785486-img-5447_4032_2419_978.jpeg\' alt=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\' title=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\' /></a><br />Người đàn ông chạy xe máy lên cầu Bình Phước, Quận 12, TPHCM rồi để lại xe rồi nhảy xuống sông Sài Gòn, mất tích.\n\n', 0, 1),
+(12450, 1271, 'Tiêu đề tin tức', 'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người', 0, 1),
+(12451, 1271, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/ban-an-cho-nu-tai-xe-uong-ruou-lai-xe-gay-tai-nan-chet-nguoi-c51a1578065.html\' title=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718783085-toa-xu-tai-xe.jpg\' alt=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\' title=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\' /></a><br />Phan Ngọc Minh - nữ tài xế uống rượu, điều khiển xe gây tai nạn chết người vừa bị toà án xử phạt 15 tháng tù giam.\n\n', 0, 1),
+(12452, 1272, 'Tiêu đề tin tức', 'Sát hại cả gia đình em họ vì tranh chấp đất', 0, 1),
+(12453, 1272, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/sat-hai-ca-gia-dinh-em-ho-vi-tranh-chap-dat-c51a1577957.html\' title=\'Sát hại cả gia đình em họ vì tranh chấp đất\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718762794-z5552446114073-dead41120bb6eb3-1730-.jpg\' alt=\'Sát hại cả gia đình em họ vì tranh chấp đất\' title=\'Sát hại cả gia đình em họ vì tranh chấp đất\' /></a><br />Quảng Ngãi - Lê Đình Thuyết, 57 tuổi, từ Vũng Tàu về quê sát hại vợ chồng người em họ, đâm hai cháu gái bị thương, sáng 19/6.\n\n', 0, 1),
+(12454, 1273, 'Tiêu đề tin tức', 'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù', 0, 1),
+(12455, 1273, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/kip-thoi-ngan-chan-hai-doi-tuong-mang-theo-12-vo-chai-bia-di-tra-thu-c51a1578061.html\' title=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718782655-z5550702074408-6776a8ad0b4de6e398599.jpg\' alt=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\' title=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\' /></a><br />Trong quá trình tuần tra đảm bảo an ninh trật tự, phòng chống tội phạm đường phố, các đơn vị thuộc Công an quận Thanh Xuân, Hà Nội đã kịp thời phát hiện, ngăn chặn 2 đối tượng mang theo vỏ chai bia chuẩn bị đi đánh nhau.\n\n', 0, 1),
+(12456, 1274, 'Tiêu đề tin tức', 'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng', 0, 1),
+(12457, 1274, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-quang-tri-khoi-to-12-doi-tuong-lien-quan-vu-danh-bac-gan-1-ti-dong-c51a1578069.html\' title=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718789470-474-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\' title=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\' /></a><br />Chiều 19/6, Cơ quan CSĐT Công an TP Đông Hà (Quảng Trị) cho biết đã khởi tố bị can, bắt tạm giam đối với nhóm 12 đối tượng trong vụ đánh bạc gần 1 tỉ đồng xảy ra ngày 11/6 tại khu phố Lập Thạch, phường Đông Lễ, TP Đông Hà.\n\n', 0, 1),
+(12458, 1275, 'Tiêu đề tin tức', 'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân', 0, 1),
+(12459, 1275, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/xu-ly-nghiem-nhom-thanh-nien-dieu-khien-xe-mo-to-bang-2-chan-c51a1578049.html\' title=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718781197-untitled_1-1718775069910.jpg\' alt=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\' title=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\' /></a><br />Ngày 19/6, Công an TP Sóc Trăng (tỉnh Sóc Trăng) cho biết đang củng cố hồ sơ để xử lý nghiêm nhóm đối tượng thanh thiếu niên có hành vi điều khiển xe mô tô gây rối trật tự công cộng và trật tự an toàn giao thông.\n\n', 0, 1),
+(12460, 1276, 'Tiêu đề tin tức', 'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“', 0, 1),
+(12461, 1276, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/khoe-co-nhieu-moi-quan-he-cap-doi-nhan-tien-ti-de-lua-chay-an-c51a1577987.html\' title=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718767703-990-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\' title=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\' /></a><br />Bị cáo khoe bản thân có nhiều mối quan hệ, có khả năng “giúp đỡ“ những người đang bị điều tra, khởi tố nhưng thực chất đây chỉ là chiêu lừa chạy án để chiếm đoạt tiền.\n\n', 0, 1),
+(12462, 1277, 'Tiêu đề tin tức', '', 0, 1),
+(12463, 1277, 'Mô tả', '', 0, 1),
+(12464, 1278, 'Tiêu đề tin tức', 'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương', 0, 1),
+(12465, 1278, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-tp-hcm-bat-nguoi-tu-xung-pho-truong-ban-noi-chinh-trung-uong-c51a1578345.html\' title=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718866238-vu-17188616662461974751348-303-0-190.jpeg\' alt=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\' title=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\' /></a><br />Công an TP HCM đã khởi tố bị can Trần Anh Vũ về tội lừa đảo và đang tìm nạn nhân của người này.\n\n', 0, 1),
+(12466, 1279, 'Tiêu đề tin tức', 'Đốt nhà người tình để trả thù', 0, 1),
+(12467, 1279, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/dot-nha-nguoi-tinh-de-tra-thu-c51a1578329.html\' title=\'Đốt nhà người tình để trả thù\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718864627-toan-jpg-1718853547-8051-1718853704.jpg\' alt=\'Đốt nhà người tình để trả thù\' title=\'Đốt nhà người tình để trả thù\' /></a><br />Sóc Trăng - Trần Văn Toàn, 31 tuổi, mua xăng đốt nhà người yêu để trả thù do mâu thuẫn tình cảm.\n\n', 0, 1),
+(12468, 1280, 'Tiêu đề tin tức', 'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh', 0, 1),
+(12469, 1280, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/giau-ma-tuy-vao-thanh-kim-loai-van-chuyen-qua-duong-chuyen-phat-nhanh-c51a1578347.html\' title=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718866316-tm2-1718859463044.jpg\' alt=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\' title=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\' /></a><br />Phòng CSĐT Công an TP Hà Nội ngày 20/6 cho biết, đã hoàn thành bản kết luận điều tra, chuyển hồ sơ vụ án Nguyễn Quang Toàn cùng đồng phạm vận chuyển trái phép chất ma tuý đến Viện kiểm sát cùng cấp đề nghị truy tố 4 đối tượng. \n\n', 0, 1),
+(12470, 1281, 'Tiêu đề tin tức', 'Con rể đe dọa giết cả nhà mẹ vợ', 0, 1),
+(12471, 1281, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/con-re-de-doa-giet-ca-nha-me-vo-c51a1578160.html\' title=\'Con rể đe dọa giết cả nhà mẹ vợ\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718814949-642-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Con rể đe dọa giết cả nhà mẹ vợ\' title=\'Con rể đe dọa giết cả nhà mẹ vợ\' /></a><br />Đặng Đức An đã liên tục nhắn tin, sau đó đến nhà vợ ở huyện Hoài Đức, Hà Nội đe dọa giết cả nhà vợ và đăng ảnh nhạy cảm của vợ lên mạng xã hội.\n\n', 0, 1),
+(12472, 1282, 'Tiêu đề tin tức', '“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới', 0, 1),
+(12473, 1282, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nu-quai-bi-truy-na-trong-duong-day-danh-bac-3600-ty-da-sa-luoi-c51a1578334.html\' title=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718864911-20_6_2024_tin_bat_doi_tuong_truy-171.jpg\' alt=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\' title=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\' /></a><br />Ngày 20/6, Phòng Cảnh sát hình sự Công an tỉnh Sóc Trăng cho biết vừa bắt giữ Nguyễn Thị Trang Anh (SN 1998, ngụ huyện Phước Long, tỉnh Bạc Liêu), đối tượng bị cơ quan CSĐT Công an tỉnh Nam Định truy nã về tội “Tổ chức đánh bạc hoặc gá bạc”.\n\n', 0, 1),
+(12474, 1283, 'Tiêu đề tin tức', 'Công an truy tìm Chủ tịch Công ty Đại Lộc Land', 0, 1),
+(12475, 1283, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-truy-tim-chu-tich-cong-ty-dai-loc-land-c51a1578281.html\' title=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718853145-4-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\' title=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\' /></a><br />Huy động vốn bằng cách trả vàng SJC và nhiều loại phần thưởng khác, song lãnh đạo Công ty Đại Lộc Land đã không thanh toán, trốn tránh không trả tiền\n\n', 0, 1),
+(12476, 1284, 'Tiêu đề tin tức', 'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích', 0, 1),
+(12477, 1284, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-3-tinh-phoi-hop-bat-2-nguoi-nuoc-ngoai-chuyen-hanh-nghe-dao-chich-c51a1578274.html\' title=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718852283-772-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\' title=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\' /></a><br />Công an 3 tỉnh Thanh Hóa, Bắc Giang, Bắc Ninh vừa phối hợp bắt giữ 2 người nước ngoài quốc tịch Trung Quốc đã đột nhập vào công ty ở các khu công nghiệp, cạy phá tủ, ngăn kéo trộm cắp tài sản\n\n', 0, 1),
+(12478, 1285, 'Tiêu đề tin tức', 'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!', 0, 1),
+(12479, 1285, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/dieu-tra-ben-trong-rap-phim-tinh-nhan-bai-cuoi-nhieu-he-luy-lam-noi-lo-c51a1578238.html\' title=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718848275-rap-phim-tinh-nhan-3517.jpg\' alt=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\' title=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\' /></a><br />Dịch vụ couple cinema (còn được gọi là “rạp phim tình nhân”) dễ bị biến tướng với những hoạt động nhạy cảm, cần có biện pháp quản lý chặt chẽ hơn.\n\n', 0, 1),
+(12480, 1286, 'Tiêu đề tin tức', 'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó', 0, 1),
+(12481, 1286, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nhan-than-bat-hao-cua-3-doi-tuong-bi-bat-vi-trom-va-tieu-thu-cho-c51a1578204.html\' title=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718844430-681-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\' title=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\' /></a><br />Đây là nhóm đối tượng trộm cắp và tiêu thụ chó thường xuyên, gây nhức nhối trên địa bàn, Công an TX.Ba Đồn đã nhiều lần tổ chức triệt xóa.\n\n', 0, 1),
+(12482, 1287, 'Tiêu đề tin tức', 'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi', 0, 1),
+(12483, 1287, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/thu-doan-chiem-doat-hon-13-ty-dong-cua-nu-chu-hui-c51a1578200.html\' title=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718843238-286-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\' title=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\' /></a><br />Hoàng Thị Thảo đứng ra làm chủ hụi nhiều năm nhưng mất khả năng chi trả. Từ năm 2020 đến đầu năm 2023, Thảo lừa đảo, chiếm đoạt của 65 bị hại với tổng số tiền hơn 13,2 tỷ đồng.\n\n', 0, 1),
+(12484, 1288, 'Tiêu đề tin tức', 'Khởi tố người cho vay lãi nặng 547,5%/năm', 0, 1),
+(12485, 1288, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/khoi-to-nguoi-cho-vay-lai-nang-5475-nam-c51a1578297.html\' title=\'Khởi tố người cho vay lãi nặng 547,5%/năm\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718856171-cho-vay-lai-nang-2814.jpg\' alt=\'Khởi tố người cho vay lãi nặng 547,5%/năm\' title=\'Khởi tố người cho vay lãi nặng 547,5%/năm\' /></a><br />Cho vay 50 triệu nhưng Thạch Nhân thu lời tới 750.000 đồng/ngày tương đương lãi suất 547,5%/năm, qua đó thu lợi bất chính 190 triệu đồng.\n\n', 0, 1),
+(12486, 1289, 'Tiêu đề tin tức', 'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?', 0, 1),
+(12487, 1289, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vi-sao-lien-tiep-xay-ra-nhung-vu-an-lam-gia-ket-luan-benh-an-tam-than-c51a1578085.html\' title=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718785928-45-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\' title=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\' /></a><br />Việc làm giả bệnh án tâm thần, kết luận giám định là do buông lỏng quản lý, do đạo đức nghề nghiệp hay chế tài xử lý chưa đủ sức răn đe?\n\n', 0, 1),
+(12488, 1290, 'Tiêu đề tin tức', 'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch', 0, 1),
+(12489, 1290, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vu-tham-an-chan-dong-o-quang-ngai-hai-chau-nho-da-qua-con-nguy-kich-c51a1578066.html\' title=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718783582-342-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\' title=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\' /></a><br />Hai cháu nhỏ con của ông L.H.T. trong vụ thảm án gây chấn động ở thôn 4 (xã Nghĩa Dõng, TP. Quảng Ngãi, tỉnh Quảng Ngãi) hiện đã qua cơn nguy kịch.\n\n', 0, 1),
+(12490, 1291, 'Tiêu đề tin tức', 'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng', 0, 1),
+(12491, 1291, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vut-xe-bo-chay-khi-gap-911-da-nang-c51a1578124.html\' title=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718792436-345-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\' title=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\' /></a><br />Khi gặp 911 Đà Nẵng, Vỹ liền tăng ga bỏ chạy rồi vứt xe tẩu thoát nhưng nhanh chóng bị tổ công tác khống chế.\n\n', 0, 1),
+(12492, 1292, 'Tiêu đề tin tức', 'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố', 0, 1),
+(12493, 1292, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/tung-anh-nhay-cam-cua-ban-gai-cu-len-mang-nam-thanh-nien-bi-khoi-to-c51a1578138.html\' title=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718801662-hinh-anh-nhay-cam.jpg\' alt=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\' title=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\' /></a><br />Khi bạn gái chuyển đi ở nơi khác không tiếp tục sống cùng, Hiền đã tạo 1 tài khoản giả mạo trên Facebook rồi đăng tải hình ảnh nhạy cảm của nạn nhân lên mạng xã hội.\n\n', 0, 1),
+(12494, 1293, 'Tiêu đề tin tức', 'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp', 0, 1),
+(12495, 1293, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/hai-cap-nam-nu-bay-lac-trong-can-ho-tang-15-chung-cu-cao-cap-c51a1578120.html\' title=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718791393-7-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\' title=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\' /></a><br />Công an tỉnh Quảng Ninh ngày 19-6 thông tin kết quả điều tra ban đầu vụ án Tổ chức sử dụng trái phép chất ma túy xảy ra ngày 31-5, tại chung cư Greenbay Garden Hạ Long.\n\n', 0, 1),
+(12496, 1294, 'Tiêu đề tin tức', 'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi', 0, 1),
+(12497, 1294, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/xu-phat-chu-quan-ca-phe-lap-kinh-mot-chieu-de-du-khach-hen-ho-ghep-doi-c51a1578115.html\' title=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718790861-982-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\' title=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\' /></a><br />Ngày 19/6, UBND quận 1 (TP Hồ Chí Minh) đã ra quyết định xử phạt vi phạm hành chính với cá nhân H.T.A.D. (SN 2003, ngụ quận 12), chủ hộ kinh doanh quán Mina Dating Café - quán cà phê hẹn hò ghép đôi, dùng kính một chiều với số tiền hơn 18 triệu đồng.\n\n', 0, 1),
+(12498, 1295, 'Tiêu đề tin tức', 'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn', 0, 1),
+(12499, 1295, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nguoi-dan-ong-de-lai-xe-may-tren-cau-nhay-xuong-song-sai-gon-c51a1578083.html\' title=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718785486-img-5447_4032_2419_978.jpeg\' alt=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\' title=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\' /></a><br />Người đàn ông chạy xe máy lên cầu Bình Phước, Quận 12, TPHCM rồi để lại xe rồi nhảy xuống sông Sài Gòn, mất tích.\n\n', 0, 1),
+(12500, 1296, 'Tiêu đề tin tức', 'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người', 0, 1),
+(12501, 1296, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/ban-an-cho-nu-tai-xe-uong-ruou-lai-xe-gay-tai-nan-chet-nguoi-c51a1578065.html\' title=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718783085-toa-xu-tai-xe.jpg\' alt=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\' title=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\' /></a><br />Phan Ngọc Minh - nữ tài xế uống rượu, điều khiển xe gây tai nạn chết người vừa bị toà án xử phạt 15 tháng tù giam.\n\n', 0, 1),
+(12502, 1297, 'Tiêu đề tin tức', 'Sát hại cả gia đình em họ vì tranh chấp đất', 0, 1),
+(12503, 1297, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/sat-hai-ca-gia-dinh-em-ho-vi-tranh-chap-dat-c51a1577957.html\' title=\'Sát hại cả gia đình em họ vì tranh chấp đất\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718762794-z5552446114073-dead41120bb6eb3-1730-.jpg\' alt=\'Sát hại cả gia đình em họ vì tranh chấp đất\' title=\'Sát hại cả gia đình em họ vì tranh chấp đất\' /></a><br />Quảng Ngãi - Lê Đình Thuyết, 57 tuổi, từ Vũng Tàu về quê sát hại vợ chồng người em họ, đâm hai cháu gái bị thương, sáng 19/6.\n\n', 0, 1),
+(12504, 1298, 'Tiêu đề tin tức', 'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù', 0, 1),
+(12505, 1298, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/kip-thoi-ngan-chan-hai-doi-tuong-mang-theo-12-vo-chai-bia-di-tra-thu-c51a1578061.html\' title=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718782655-z5550702074408-6776a8ad0b4de6e398599.jpg\' alt=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\' title=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\' /></a><br />Trong quá trình tuần tra đảm bảo an ninh trật tự, phòng chống tội phạm đường phố, các đơn vị thuộc Công an quận Thanh Xuân, Hà Nội đã kịp thời phát hiện, ngăn chặn 2 đối tượng mang theo vỏ chai bia chuẩn bị đi đánh nhau.\n\n', 0, 1),
+(12506, 1299, 'Tiêu đề tin tức', 'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng', 0, 1),
+(12507, 1299, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-quang-tri-khoi-to-12-doi-tuong-lien-quan-vu-danh-bac-gan-1-ti-dong-c51a1578069.html\' title=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718789470-474-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\' title=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\' /></a><br />Chiều 19/6, Cơ quan CSĐT Công an TP Đông Hà (Quảng Trị) cho biết đã khởi tố bị can, bắt tạm giam đối với nhóm 12 đối tượng trong vụ đánh bạc gần 1 tỉ đồng xảy ra ngày 11/6 tại khu phố Lập Thạch, phường Đông Lễ, TP Đông Hà.\n\n', 0, 1),
+(12508, 1300, 'Tiêu đề tin tức', 'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân', 0, 1),
+(12509, 1300, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/xu-ly-nghiem-nhom-thanh-nien-dieu-khien-xe-mo-to-bang-2-chan-c51a1578049.html\' title=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718781197-untitled_1-1718775069910.jpg\' alt=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\' title=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\' /></a><br />Ngày 19/6, Công an TP Sóc Trăng (tỉnh Sóc Trăng) cho biết đang củng cố hồ sơ để xử lý nghiêm nhóm đối tượng thanh thiếu niên có hành vi điều khiển xe mô tô gây rối trật tự công cộng và trật tự an toàn giao thông.\n\n', 0, 1),
+(12510, 1301, 'Tiêu đề tin tức', 'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“', 0, 1),
+(12511, 1301, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/khoe-co-nhieu-moi-quan-he-cap-doi-nhan-tien-ti-de-lua-chay-an-c51a1577987.html\' title=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718767703-990-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\' title=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\' /></a><br />Bị cáo khoe bản thân có nhiều mối quan hệ, có khả năng “giúp đỡ“ những người đang bị điều tra, khởi tố nhưng thực chất đây chỉ là chiêu lừa chạy án để chiếm đoạt tiền.\n\n', 0, 1),
+(12512, 1302, 'Tiêu đề tin tức', 'Pháp luật - 24H RSS', 0, 1),
+(12513, 1302, 'Mô tả', 'An ninh hình sự mới nhất 24h - Tin tức pháp luật trong ngày, điều tra phá án. Tin mới các vụ án hình sự trong nước và thế giới được cập nhật liên tục', 0, 1),
+(12514, 1303, 'Tiêu đề tin tức', 'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương', 0, 1),
+(12515, 1303, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-tp-hcm-bat-nguoi-tu-xung-pho-truong-ban-noi-chinh-trung-uong-c51a1578345.html\' title=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718866238-vu-17188616662461974751348-303-0-190.jpeg\' alt=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\' title=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\' /></a><br />Công an TP HCM đã khởi tố bị can Trần Anh Vũ về tội lừa đảo và đang tìm nạn nhân của người này.\n\n', 0, 1),
+(12516, 1304, 'Tiêu đề tin tức', 'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương', 0, 1),
+(12517, 1304, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-tp-hcm-bat-nguoi-tu-xung-pho-truong-ban-noi-chinh-trung-uong-c51a1578345.html\' title=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718866238-vu-17188616662461974751348-303-0-190.jpeg\' alt=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\' title=\'Công an TP HCM bắt người tự xưng Phó Trưởng Ban nội chính Trung ương\' /></a><br />Công an TP HCM đã khởi tố bị can Trần Anh Vũ về tội lừa đảo và đang tìm nạn nhân của người này.\n\n', 0, 1),
+(12518, 1305, 'Tiêu đề tin tức', 'Đốt nhà người tình để trả thù', 0, 1),
+(12519, 1305, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/dot-nha-nguoi-tinh-de-tra-thu-c51a1578329.html\' title=\'Đốt nhà người tình để trả thù\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718864627-toan-jpg-1718853547-8051-1718853704.jpg\' alt=\'Đốt nhà người tình để trả thù\' title=\'Đốt nhà người tình để trả thù\' /></a><br />Sóc Trăng - Trần Văn Toàn, 31 tuổi, mua xăng đốt nhà người yêu để trả thù do mâu thuẫn tình cảm.\n\n', 0, 1),
+(12520, 1306, 'Tiêu đề tin tức', 'Đốt nhà người tình để trả thù', 0, 1),
+(12521, 1306, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/dot-nha-nguoi-tinh-de-tra-thu-c51a1578329.html\' title=\'Đốt nhà người tình để trả thù\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718864627-toan-jpg-1718853547-8051-1718853704.jpg\' alt=\'Đốt nhà người tình để trả thù\' title=\'Đốt nhà người tình để trả thù\' /></a><br />Sóc Trăng - Trần Văn Toàn, 31 tuổi, mua xăng đốt nhà người yêu để trả thù do mâu thuẫn tình cảm.\n\n', 0, 1),
+(12522, 1307, 'Tiêu đề tin tức', 'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh', 0, 1),
+(12523, 1307, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/giau-ma-tuy-vao-thanh-kim-loai-van-chuyen-qua-duong-chuyen-phat-nhanh-c51a1578347.html\' title=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718866316-tm2-1718859463044.jpg\' alt=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\' title=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\' /></a><br />Phòng CSĐT Công an TP Hà Nội ngày 20/6 cho biết, đã hoàn thành bản kết luận điều tra, chuyển hồ sơ vụ án Nguyễn Quang Toàn cùng đồng phạm vận chuyển trái phép chất ma tuý đến Viện kiểm sát cùng cấp đề nghị truy tố 4 đối tượng. \n\n', 0, 1),
+(12524, 1308, 'Tiêu đề tin tức', 'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh', 0, 1),
+(12525, 1308, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/giau-ma-tuy-vao-thanh-kim-loai-van-chuyen-qua-duong-chuyen-phat-nhanh-c51a1578347.html\' title=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718866316-tm2-1718859463044.jpg\' alt=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\' title=\'Giấu ma tuý vào thanh kim loại, vận chuyển qua đường chuyển phát nhanh\' /></a><br />Phòng CSĐT Công an TP Hà Nội ngày 20/6 cho biết, đã hoàn thành bản kết luận điều tra, chuyển hồ sơ vụ án Nguyễn Quang Toàn cùng đồng phạm vận chuyển trái phép chất ma tuý đến Viện kiểm sát cùng cấp đề nghị truy tố 4 đối tượng. \n\n', 0, 1),
+(12526, 1309, 'Tiêu đề tin tức', 'Con rể đe dọa giết cả nhà mẹ vợ', 0, 1),
+(12527, 1309, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/con-re-de-doa-giet-ca-nha-me-vo-c51a1578160.html\' title=\'Con rể đe dọa giết cả nhà mẹ vợ\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718814949-642-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Con rể đe dọa giết cả nhà mẹ vợ\' title=\'Con rể đe dọa giết cả nhà mẹ vợ\' /></a><br />Đặng Đức An đã liên tục nhắn tin, sau đó đến nhà vợ ở huyện Hoài Đức, Hà Nội đe dọa giết cả nhà vợ và đăng ảnh nhạy cảm của vợ lên mạng xã hội.\n\n', 0, 1),
+(12528, 1310, 'Tiêu đề tin tức', 'Con rể đe dọa giết cả nhà mẹ vợ', 0, 1),
+(12529, 1310, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/con-re-de-doa-giet-ca-nha-me-vo-c51a1578160.html\' title=\'Con rể đe dọa giết cả nhà mẹ vợ\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718814949-642-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Con rể đe dọa giết cả nhà mẹ vợ\' title=\'Con rể đe dọa giết cả nhà mẹ vợ\' /></a><br />Đặng Đức An đã liên tục nhắn tin, sau đó đến nhà vợ ở huyện Hoài Đức, Hà Nội đe dọa giết cả nhà vợ và đăng ảnh nhạy cảm của vợ lên mạng xã hội.\n\n', 0, 1),
+(12530, 1311, 'Tiêu đề tin tức', '“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới', 0, 1),
+(12531, 1311, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nu-quai-bi-truy-na-trong-duong-day-danh-bac-3600-ty-da-sa-luoi-c51a1578334.html\' title=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718864911-20_6_2024_tin_bat_doi_tuong_truy-171.jpg\' alt=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\' title=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\' /></a><br />Ngày 20/6, Phòng Cảnh sát hình sự Công an tỉnh Sóc Trăng cho biết vừa bắt giữ Nguyễn Thị Trang Anh (SN 1998, ngụ huyện Phước Long, tỉnh Bạc Liêu), đối tượng bị cơ quan CSĐT Công an tỉnh Nam Định truy nã về tội “Tổ chức đánh bạc hoặc gá bạc”.\n\n', 0, 1),
+(12532, 1312, 'Tiêu đề tin tức', '“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới', 0, 1),
+(12533, 1312, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nu-quai-bi-truy-na-trong-duong-day-danh-bac-3600-ty-da-sa-luoi-c51a1578334.html\' title=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718864911-20_6_2024_tin_bat_doi_tuong_truy-171.jpg\' alt=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\' title=\'“Nữ quái“ bị truy nã trong đường dây đánh bạc 3.600 tỷ đã sa lưới\' /></a><br />Ngày 20/6, Phòng Cảnh sát hình sự Công an tỉnh Sóc Trăng cho biết vừa bắt giữ Nguyễn Thị Trang Anh (SN 1998, ngụ huyện Phước Long, tỉnh Bạc Liêu), đối tượng bị cơ quan CSĐT Công an tỉnh Nam Định truy nã về tội “Tổ chức đánh bạc hoặc gá bạc”.\n\n', 0, 1),
+(12534, 1313, 'Tiêu đề tin tức', 'Công an truy tìm Chủ tịch Công ty Đại Lộc Land', 0, 1),
+(12535, 1313, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-truy-tim-chu-tich-cong-ty-dai-loc-land-c51a1578281.html\' title=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718853145-4-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\' title=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\' /></a><br />Huy động vốn bằng cách trả vàng SJC và nhiều loại phần thưởng khác, song lãnh đạo Công ty Đại Lộc Land đã không thanh toán, trốn tránh không trả tiền\n\n', 0, 1),
+(12536, 1314, 'Tiêu đề tin tức', 'Công an truy tìm Chủ tịch Công ty Đại Lộc Land', 0, 1),
+(12537, 1314, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-truy-tim-chu-tich-cong-ty-dai-loc-land-c51a1578281.html\' title=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718853145-4-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\' title=\'Công an truy tìm Chủ tịch Công ty Đại Lộc Land\' /></a><br />Huy động vốn bằng cách trả vàng SJC và nhiều loại phần thưởng khác, song lãnh đạo Công ty Đại Lộc Land đã không thanh toán, trốn tránh không trả tiền\n\n', 0, 1),
+(12538, 1315, 'Tiêu đề tin tức', 'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích', 0, 1),
+(12539, 1315, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-3-tinh-phoi-hop-bat-2-nguoi-nuoc-ngoai-chuyen-hanh-nghe-dao-chich-c51a1578274.html\' title=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718852283-772-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\' title=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\' /></a><br />Công an 3 tỉnh Thanh Hóa, Bắc Giang, Bắc Ninh vừa phối hợp bắt giữ 2 người nước ngoài quốc tịch Trung Quốc đã đột nhập vào công ty ở các khu công nghiệp, cạy phá tủ, ngăn kéo trộm cắp tài sản\n\n', 0, 1),
+(12540, 1316, 'Tiêu đề tin tức', 'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích', 0, 1),
+(12541, 1316, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-3-tinh-phoi-hop-bat-2-nguoi-nuoc-ngoai-chuyen-hanh-nghe-dao-chich-c51a1578274.html\' title=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718852283-772-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\' title=\'Công an 3 tỉnh phối hợp bắt 2 người nước ngoài chuyên “hành nghề“ đạo chích\' /></a><br />Công an 3 tỉnh Thanh Hóa, Bắc Giang, Bắc Ninh vừa phối hợp bắt giữ 2 người nước ngoài quốc tịch Trung Quốc đã đột nhập vào công ty ở các khu công nghiệp, cạy phá tủ, ngăn kéo trộm cắp tài sản\n\n', 0, 1),
+(12542, 1317, 'Tiêu đề tin tức', 'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!', 0, 1),
+(12543, 1317, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/dieu-tra-ben-trong-rap-phim-tinh-nhan-bai-cuoi-nhieu-he-luy-lam-noi-lo-c51a1578238.html\' title=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718848275-rap-phim-tinh-nhan-3517.jpg\' alt=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\' title=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\' /></a><br />Dịch vụ couple cinema (còn được gọi là “rạp phim tình nhân”) dễ bị biến tướng với những hoạt động nhạy cảm, cần có biện pháp quản lý chặt chẽ hơn.\n\n', 0, 1),
+(12544, 1318, 'Tiêu đề tin tức', 'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!', 0, 1);
+INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, `is_contain_keywords`) VALUES
+(12545, 1318, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/dieu-tra-ben-trong-rap-phim-tinh-nhan-bai-cuoi-nhieu-he-luy-lam-noi-lo-c51a1578238.html\' title=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718848275-rap-phim-tinh-nhan-3517.jpg\' alt=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\' title=\'ĐIỀU TRA: Bên trong “rạp phim tình nhân“ - Bài cuối: Nhiều hệ lụy, lắm nỗi lo!\' /></a><br />Dịch vụ couple cinema (còn được gọi là “rạp phim tình nhân”) dễ bị biến tướng với những hoạt động nhạy cảm, cần có biện pháp quản lý chặt chẽ hơn.\n\n', 0, 1),
+(12546, 1319, 'Tiêu đề tin tức', 'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó', 0, 1),
+(12547, 1319, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nhan-than-bat-hao-cua-3-doi-tuong-bi-bat-vi-trom-va-tieu-thu-cho-c51a1578204.html\' title=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718844430-681-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\' title=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\' /></a><br />Đây là nhóm đối tượng trộm cắp và tiêu thụ chó thường xuyên, gây nhức nhối trên địa bàn, Công an TX.Ba Đồn đã nhiều lần tổ chức triệt xóa.\n\n', 0, 1),
+(12548, 1320, 'Tiêu đề tin tức', 'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó', 0, 1),
+(12549, 1320, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nhan-than-bat-hao-cua-3-doi-tuong-bi-bat-vi-trom-va-tieu-thu-cho-c51a1578204.html\' title=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718844430-681-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\' title=\'Nhân thân “bất hảo“ của 3 đối tượng bị bắt vì trộm và tiêu thụ chó\' /></a><br />Đây là nhóm đối tượng trộm cắp và tiêu thụ chó thường xuyên, gây nhức nhối trên địa bàn, Công an TX.Ba Đồn đã nhiều lần tổ chức triệt xóa.\n\n', 0, 1),
+(12550, 1321, 'Tiêu đề tin tức', 'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi', 0, 1),
+(12551, 1321, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/thu-doan-chiem-doat-hon-13-ty-dong-cua-nu-chu-hui-c51a1578200.html\' title=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718843238-286-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\' title=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\' /></a><br />Hoàng Thị Thảo đứng ra làm chủ hụi nhiều năm nhưng mất khả năng chi trả. Từ năm 2020 đến đầu năm 2023, Thảo lừa đảo, chiếm đoạt của 65 bị hại với tổng số tiền hơn 13,2 tỷ đồng.\n\n', 0, 1),
+(12552, 1322, 'Tiêu đề tin tức', 'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi', 0, 1),
+(12553, 1322, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/thu-doan-chiem-doat-hon-13-ty-dong-cua-nu-chu-hui-c51a1578200.html\' title=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20/1718843238-286-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\' title=\'Thủ đoạn chiếm đoạt hơn 13 tỷ đồng của nữ chủ hụi\' /></a><br />Hoàng Thị Thảo đứng ra làm chủ hụi nhiều năm nhưng mất khả năng chi trả. Từ năm 2020 đến đầu năm 2023, Thảo lừa đảo, chiếm đoạt của 65 bị hại với tổng số tiền hơn 13,2 tỷ đồng.\n\n', 0, 1),
+(12554, 1323, 'Tiêu đề tin tức', 'Khởi tố người cho vay lãi nặng 547,5%/năm', 0, 1),
+(12555, 1323, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/khoi-to-nguoi-cho-vay-lai-nang-5475-nam-c51a1578297.html\' title=\'Khởi tố người cho vay lãi nặng 547,5%/năm\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718856171-cho-vay-lai-nang-2814.jpg\' alt=\'Khởi tố người cho vay lãi nặng 547,5%/năm\' title=\'Khởi tố người cho vay lãi nặng 547,5%/năm\' /></a><br />Cho vay 50 triệu nhưng Thạch Nhân thu lời tới 750.000 đồng/ngày tương đương lãi suất 547,5%/năm, qua đó thu lợi bất chính 190 triệu đồng.\n\n', 0, 1),
+(12556, 1324, 'Tiêu đề tin tức', 'Khởi tố người cho vay lãi nặng 547,5%/năm', 0, 1),
+(12557, 1324, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/khoi-to-nguoi-cho-vay-lai-nang-5475-nam-c51a1578297.html\' title=\'Khởi tố người cho vay lãi nặng 547,5%/năm\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-20//adt1718856171-cho-vay-lai-nang-2814.jpg\' alt=\'Khởi tố người cho vay lãi nặng 547,5%/năm\' title=\'Khởi tố người cho vay lãi nặng 547,5%/năm\' /></a><br />Cho vay 50 triệu nhưng Thạch Nhân thu lời tới 750.000 đồng/ngày tương đương lãi suất 547,5%/năm, qua đó thu lợi bất chính 190 triệu đồng.\n\n', 0, 1),
+(12558, 1325, 'Tiêu đề tin tức', 'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?', 0, 1),
+(12559, 1325, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vi-sao-lien-tiep-xay-ra-nhung-vu-an-lam-gia-ket-luan-benh-an-tam-than-c51a1578085.html\' title=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718785928-45-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\' title=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\' /></a><br />Việc làm giả bệnh án tâm thần, kết luận giám định là do buông lỏng quản lý, do đạo đức nghề nghiệp hay chế tài xử lý chưa đủ sức răn đe?\n\n', 0, 1),
+(12560, 1326, 'Tiêu đề tin tức', 'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?', 0, 1),
+(12561, 1326, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vi-sao-lien-tiep-xay-ra-nhung-vu-an-lam-gia-ket-luan-benh-an-tam-than-c51a1578085.html\' title=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718785928-45-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\' title=\'Vì sao liên tiếp xảy ra những vụ án làm giả kết luận, bệnh án tâm thần?\' /></a><br />Việc làm giả bệnh án tâm thần, kết luận giám định là do buông lỏng quản lý, do đạo đức nghề nghiệp hay chế tài xử lý chưa đủ sức răn đe?\n\n', 0, 1),
+(12562, 1327, 'Tiêu đề tin tức', 'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch', 0, 1),
+(12563, 1327, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vu-tham-an-chan-dong-o-quang-ngai-hai-chau-nho-da-qua-con-nguy-kich-c51a1578066.html\' title=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718783582-342-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\' title=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\' /></a><br />Hai cháu nhỏ con của ông L.H.T. trong vụ thảm án gây chấn động ở thôn 4 (xã Nghĩa Dõng, TP. Quảng Ngãi, tỉnh Quảng Ngãi) hiện đã qua cơn nguy kịch.\n\n', 0, 1),
+(12564, 1328, 'Tiêu đề tin tức', 'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch', 0, 1),
+(12565, 1328, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vu-tham-an-chan-dong-o-quang-ngai-hai-chau-nho-da-qua-con-nguy-kich-c51a1578066.html\' title=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718783582-342-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\' title=\'Vụ thảm án chấn động ở Quảng Ngãi: Hai cháu nhỏ đã qua cơn nguy kịch\' /></a><br />Hai cháu nhỏ con của ông L.H.T. trong vụ thảm án gây chấn động ở thôn 4 (xã Nghĩa Dõng, TP. Quảng Ngãi, tỉnh Quảng Ngãi) hiện đã qua cơn nguy kịch.\n\n', 0, 1),
+(12566, 1329, 'Tiêu đề tin tức', 'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng', 0, 1),
+(12567, 1329, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vut-xe-bo-chay-khi-gap-911-da-nang-c51a1578124.html\' title=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718792436-345-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\' title=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\' /></a><br />Khi gặp 911 Đà Nẵng, Vỹ liền tăng ga bỏ chạy rồi vứt xe tẩu thoát nhưng nhanh chóng bị tổ công tác khống chế.\n\n', 0, 1),
+(12568, 1330, 'Tiêu đề tin tức', 'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng', 0, 1),
+(12569, 1330, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/vut-xe-bo-chay-khi-gap-911-da-nang-c51a1578124.html\' title=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718792436-345-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\' title=\'Vứt xe bỏ chạy khi gặp 911 Đà Nẵng\' /></a><br />Khi gặp 911 Đà Nẵng, Vỹ liền tăng ga bỏ chạy rồi vứt xe tẩu thoát nhưng nhanh chóng bị tổ công tác khống chế.\n\n', 0, 1),
+(12570, 1331, 'Tiêu đề tin tức', 'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố', 0, 1),
+(12571, 1331, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/tung-anh-nhay-cam-cua-ban-gai-cu-len-mang-nam-thanh-nien-bi-khoi-to-c51a1578138.html\' title=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718801662-hinh-anh-nhay-cam.jpg\' alt=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\' title=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\' /></a><br />Khi bạn gái chuyển đi ở nơi khác không tiếp tục sống cùng, Hiền đã tạo 1 tài khoản giả mạo trên Facebook rồi đăng tải hình ảnh nhạy cảm của nạn nhân lên mạng xã hội.\n\n', 0, 1),
+(12572, 1332, 'Tiêu đề tin tức', 'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố', 0, 1),
+(12573, 1332, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/tung-anh-nhay-cam-cua-ban-gai-cu-len-mang-nam-thanh-nien-bi-khoi-to-c51a1578138.html\' title=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718801662-hinh-anh-nhay-cam.jpg\' alt=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\' title=\'Tung “ảnh nhạy cảm” của bạn gái cũ lên mạng, nam thanh niên bị khởi tố\' /></a><br />Khi bạn gái chuyển đi ở nơi khác không tiếp tục sống cùng, Hiền đã tạo 1 tài khoản giả mạo trên Facebook rồi đăng tải hình ảnh nhạy cảm của nạn nhân lên mạng xã hội.\n\n', 0, 1),
+(12574, 1333, 'Tiêu đề tin tức', 'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp', 0, 1),
+(12575, 1333, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/hai-cap-nam-nu-bay-lac-trong-can-ho-tang-15-chung-cu-cao-cap-c51a1578120.html\' title=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718791393-7-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\' title=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\' /></a><br />Công an tỉnh Quảng Ninh ngày 19-6 thông tin kết quả điều tra ban đầu vụ án Tổ chức sử dụng trái phép chất ma túy xảy ra ngày 31-5, tại chung cư Greenbay Garden Hạ Long.\n\n', 0, 1),
+(12576, 1334, 'Tiêu đề tin tức', 'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp', 0, 1),
+(12577, 1334, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/hai-cap-nam-nu-bay-lac-trong-can-ho-tang-15-chung-cu-cao-cap-c51a1578120.html\' title=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718791393-7-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\' title=\'Hai cặp nam nữ ‘bay lắc’ trong căn hộ tầng 15 chung cư cao cấp\' /></a><br />Công an tỉnh Quảng Ninh ngày 19-6 thông tin kết quả điều tra ban đầu vụ án Tổ chức sử dụng trái phép chất ma túy xảy ra ngày 31-5, tại chung cư Greenbay Garden Hạ Long.\n\n', 0, 1),
+(12578, 1335, 'Tiêu đề tin tức', 'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi', 0, 1),
+(12579, 1335, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/xu-phat-chu-quan-ca-phe-lap-kinh-mot-chieu-de-du-khach-hen-ho-ghep-doi-c51a1578115.html\' title=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718790861-982-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\' title=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\' /></a><br />Ngày 19/6, UBND quận 1 (TP Hồ Chí Minh) đã ra quyết định xử phạt vi phạm hành chính với cá nhân H.T.A.D. (SN 2003, ngụ quận 12), chủ hộ kinh doanh quán Mina Dating Café - quán cà phê hẹn hò ghép đôi, dùng kính một chiều với số tiền hơn 18 triệu đồng.\n\n', 0, 1),
+(12580, 1336, 'Tiêu đề tin tức', 'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi', 0, 1),
+(12581, 1336, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/xu-phat-chu-quan-ca-phe-lap-kinh-mot-chieu-de-du-khach-hen-ho-ghep-doi-c51a1578115.html\' title=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718790861-982-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\' title=\'Xử phạt chủ quán cà phê lắp kính một chiều để dụ khách hẹn hò ghép đôi\' /></a><br />Ngày 19/6, UBND quận 1 (TP Hồ Chí Minh) đã ra quyết định xử phạt vi phạm hành chính với cá nhân H.T.A.D. (SN 2003, ngụ quận 12), chủ hộ kinh doanh quán Mina Dating Café - quán cà phê hẹn hò ghép đôi, dùng kính một chiều với số tiền hơn 18 triệu đồng.\n\n', 0, 1),
+(12582, 1337, 'Tiêu đề tin tức', 'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn', 0, 1),
+(12583, 1337, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nguoi-dan-ong-de-lai-xe-may-tren-cau-nhay-xuong-song-sai-gon-c51a1578083.html\' title=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718785486-img-5447_4032_2419_978.jpeg\' alt=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\' title=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\' /></a><br />Người đàn ông chạy xe máy lên cầu Bình Phước, Quận 12, TPHCM rồi để lại xe rồi nhảy xuống sông Sài Gòn, mất tích.\n\n', 0, 1),
+(12584, 1338, 'Tiêu đề tin tức', 'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn', 0, 1),
+(12585, 1338, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/nguoi-dan-ong-de-lai-xe-may-tren-cau-nhay-xuong-song-sai-gon-c51a1578083.html\' title=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718785486-img-5447_4032_2419_978.jpeg\' alt=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\' title=\'Người đàn ông để lại xe máy trên cầu, nhảy xuống sông Sài Gòn\' /></a><br />Người đàn ông chạy xe máy lên cầu Bình Phước, Quận 12, TPHCM rồi để lại xe rồi nhảy xuống sông Sài Gòn, mất tích.\n\n', 0, 1),
+(12586, 1339, 'Tiêu đề tin tức', 'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người', 0, 1),
+(12587, 1339, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/ban-an-cho-nu-tai-xe-uong-ruou-lai-xe-gay-tai-nan-chet-nguoi-c51a1578065.html\' title=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718783085-toa-xu-tai-xe.jpg\' alt=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\' title=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\' /></a><br />Phan Ngọc Minh - nữ tài xế uống rượu, điều khiển xe gây tai nạn chết người vừa bị toà án xử phạt 15 tháng tù giam.\n\n', 0, 1),
+(12588, 1340, 'Tiêu đề tin tức', 'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người', 0, 1),
+(12589, 1340, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/ban-an-cho-nu-tai-xe-uong-ruou-lai-xe-gay-tai-nan-chet-nguoi-c51a1578065.html\' title=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718783085-toa-xu-tai-xe.jpg\' alt=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\' title=\'Bản án cho nữ tài xế uống rượu lái xe gây tai nạn chết người\' /></a><br />Phan Ngọc Minh - nữ tài xế uống rượu, điều khiển xe gây tai nạn chết người vừa bị toà án xử phạt 15 tháng tù giam.\n\n', 0, 1),
+(12590, 1341, 'Tiêu đề tin tức', 'Sát hại cả gia đình em họ vì tranh chấp đất', 0, 1),
+(12591, 1341, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/sat-hai-ca-gia-dinh-em-ho-vi-tranh-chap-dat-c51a1577957.html\' title=\'Sát hại cả gia đình em họ vì tranh chấp đất\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718762794-z5552446114073-dead41120bb6eb3-1730-.jpg\' alt=\'Sát hại cả gia đình em họ vì tranh chấp đất\' title=\'Sát hại cả gia đình em họ vì tranh chấp đất\' /></a><br />Quảng Ngãi - Lê Đình Thuyết, 57 tuổi, từ Vũng Tàu về quê sát hại vợ chồng người em họ, đâm hai cháu gái bị thương, sáng 19/6.\n\n', 0, 1),
+(12592, 1342, 'Tiêu đề tin tức', 'Sát hại cả gia đình em họ vì tranh chấp đất', 0, 1),
+(12593, 1342, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/sat-hai-ca-gia-dinh-em-ho-vi-tranh-chap-dat-c51a1577957.html\' title=\'Sát hại cả gia đình em họ vì tranh chấp đất\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718762794-z5552446114073-dead41120bb6eb3-1730-.jpg\' alt=\'Sát hại cả gia đình em họ vì tranh chấp đất\' title=\'Sát hại cả gia đình em họ vì tranh chấp đất\' /></a><br />Quảng Ngãi - Lê Đình Thuyết, 57 tuổi, từ Vũng Tàu về quê sát hại vợ chồng người em họ, đâm hai cháu gái bị thương, sáng 19/6.\n\n', 0, 1),
+(12594, 1343, 'Tiêu đề tin tức', 'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù', 0, 1),
+(12595, 1343, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/kip-thoi-ngan-chan-hai-doi-tuong-mang-theo-12-vo-chai-bia-di-tra-thu-c51a1578061.html\' title=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718782655-z5550702074408-6776a8ad0b4de6e398599.jpg\' alt=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\' title=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\' /></a><br />Trong quá trình tuần tra đảm bảo an ninh trật tự, phòng chống tội phạm đường phố, các đơn vị thuộc Công an quận Thanh Xuân, Hà Nội đã kịp thời phát hiện, ngăn chặn 2 đối tượng mang theo vỏ chai bia chuẩn bị đi đánh nhau.\n\n', 0, 1),
+(12596, 1344, 'Tiêu đề tin tức', 'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù', 0, 1),
+(12597, 1344, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/kip-thoi-ngan-chan-hai-doi-tuong-mang-theo-12-vo-chai-bia-di-tra-thu-c51a1578061.html\' title=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718782655-z5550702074408-6776a8ad0b4de6e398599.jpg\' alt=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\' title=\'Kịp thời ngăn chặn hai đối tượng mang theo 12 vỏ chai bia đi trả thù\' /></a><br />Trong quá trình tuần tra đảm bảo an ninh trật tự, phòng chống tội phạm đường phố, các đơn vị thuộc Công an quận Thanh Xuân, Hà Nội đã kịp thời phát hiện, ngăn chặn 2 đối tượng mang theo vỏ chai bia chuẩn bị đi đánh nhau.\n\n', 0, 1),
+(12598, 1345, 'Tiêu đề tin tức', 'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng', 0, 1),
+(12599, 1345, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-quang-tri-khoi-to-12-doi-tuong-lien-quan-vu-danh-bac-gan-1-ti-dong-c51a1578069.html\' title=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718789470-474-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\' title=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\' /></a><br />Chiều 19/6, Cơ quan CSĐT Công an TP Đông Hà (Quảng Trị) cho biết đã khởi tố bị can, bắt tạm giam đối với nhóm 12 đối tượng trong vụ đánh bạc gần 1 tỉ đồng xảy ra ngày 11/6 tại khu phố Lập Thạch, phường Đông Lễ, TP Đông Hà.\n\n', 0, 1),
+(12600, 1346, 'Tiêu đề tin tức', 'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng', 0, 1),
+(12601, 1346, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/cong-an-quang-tri-khoi-to-12-doi-tuong-lien-quan-vu-danh-bac-gan-1-ti-dong-c51a1578069.html\' title=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718789470-474-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\' title=\'Công an Quảng Trị khởi tố 12 đối tượng liên quan vụ đánh bạc gần 1 tỉ đồng\' /></a><br />Chiều 19/6, Cơ quan CSĐT Công an TP Đông Hà (Quảng Trị) cho biết đã khởi tố bị can, bắt tạm giam đối với nhóm 12 đối tượng trong vụ đánh bạc gần 1 tỉ đồng xảy ra ngày 11/6 tại khu phố Lập Thạch, phường Đông Lễ, TP Đông Hà.\n\n', 0, 1),
+(12602, 1347, 'Tiêu đề tin tức', 'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân', 0, 1),
+(12603, 1347, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/xu-ly-nghiem-nhom-thanh-nien-dieu-khien-xe-mo-to-bang-2-chan-c51a1578049.html\' title=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718781197-untitled_1-1718775069910.jpg\' alt=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\' title=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\' /></a><br />Ngày 19/6, Công an TP Sóc Trăng (tỉnh Sóc Trăng) cho biết đang củng cố hồ sơ để xử lý nghiêm nhóm đối tượng thanh thiếu niên có hành vi điều khiển xe mô tô gây rối trật tự công cộng và trật tự an toàn giao thông.\n\n', 0, 1),
+(12604, 1348, 'Tiêu đề tin tức', 'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân', 0, 1),
+(12605, 1348, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/xu-ly-nghiem-nhom-thanh-nien-dieu-khien-xe-mo-to-bang-2-chan-c51a1578049.html\' title=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19//adt1718781197-untitled_1-1718775069910.jpg\' alt=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\' title=\'Xử lý nghiêm nhóm thanh niên điều khiển xe mô tô bằng 2 chân\' /></a><br />Ngày 19/6, Công an TP Sóc Trăng (tỉnh Sóc Trăng) cho biết đang củng cố hồ sơ để xử lý nghiêm nhóm đối tượng thanh thiếu niên có hành vi điều khiển xe mô tô gây rối trật tự công cộng và trật tự an toàn giao thông.\n\n', 0, 1),
+(12606, 1349, 'Tiêu đề tin tức', 'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“', 0, 1),
+(12607, 1349, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/khoe-co-nhieu-moi-quan-he-cap-doi-nhan-tien-ti-de-lua-chay-an-c51a1577987.html\' title=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718767703-990-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\' title=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\' /></a><br />Bị cáo khoe bản thân có nhiều mối quan hệ, có khả năng “giúp đỡ“ những người đang bị điều tra, khởi tố nhưng thực chất đây chỉ là chiêu lừa chạy án để chiếm đoạt tiền.\n\n', 0, 1),
+(12608, 1350, 'Tiêu đề tin tức', 'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“', 0, 1),
+(12609, 1350, 'Mô tả', '\n\n <a href=\'https://www.24h.com.vn/an-ninh-hinh-su/khoe-co-nhieu-moi-quan-he-cap-doi-nhan-tien-ti-de-lua-chay-an-c51a1577987.html\' title=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\'><img width=\'130\' height=\'100\' src=\'https://cdn.24h.com.vn/upload/2-2024/images/2024-06-19/1718767703-990-thumbnail-width740height495_anh_cat_3_2_anh_cat_4_3.jpg\' alt=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\' title=\'Khoe có nhiều mối quan hệ, cặp đôi nhận tiền tỉ để lừa “chạy án“\' /></a><br />Bị cáo khoe bản thân có nhiều mối quan hệ, có khả năng “giúp đỡ“ những người đang bị điều tra, khởi tố nhưng thực chất đây chỉ là chiêu lừa chạy án để chiếm đoạt tiền.\n\n', 0, 1),
+(12610, 1351, 'Tiêu đề tin tức', 'Sắp xếp khu phố, ấp: Khó khăn với các khu phố có chung cư cao cấp', 0, 1),
+(12611, 1351, 'Mô tả', '<a href=\"https://tuoitre.vn/sap-xep-khu-pho-ap-kho-khan-voi-cac-khu-pho-co-chung-cu-cao-cap-20240620133533461.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dc496ed099353a6b6324-1718865285162194646100-84-0-1334-2000-crop-17188653001651167447868.jpg\" /></a>Việc trao đổi, chia sẻ giữa các tòa nhà, các tầng rất khó khăn, ảnh hưởng lớn đến nhiệm vụ cấp ủy chi bộ.', 0, 1),
+(12612, 1352, 'Tiêu đề tin tức', 'Thủ tướng Phạm Minh Chính hội kiến Tổng thống Nga Vladimir Putin', 0, 1),
+(12613, 1352, 'Mô tả', '<a href=\"https://tuoitre.vn/thu-tuong-pham-minh-chinh-hoi-kien-tong-thong-nga-vladimir-putin-20240620125753125.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/putin-pham-minh-chinh-ttx-1-17188717654751456568849-91-114-519-799-crop-17188718084162027045238.png\" /></a>Chiều 20-6, tại Trụ sở Chính phủ, Thủ tướng Phạm Minh Chính hội kiến Tổng thống Liên bang Nga Vladimir Putin thăm cấp Nhà nước tới Việt Nam.', 0, 1),
+(12614, 1353, 'Tiêu đề tin tức', 'Đường mới làm được hơn 1 năm đã sạt lở xuống sông', 0, 1),
+(12615, 1353, 'Mô tả', '<a href=\"https://tuoitre.vn/duong-moi-lam-duoc-hon-1-nam-da-sat-lo-xuong-song-20240620123520089.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-2-17188610266281569414575-77-370-806-1537-crop-17188614572681913912846.jpg\" /></a>Con đường cặp mé sông Ông Vẽ, huyện Cái Bè, tỉnh Tiền Giang vừa mới được đầu tư xây dựng, người dân chưa kịp vui mừng thì đã bị sạt lở xuống sông.', 0, 1),
+(12616, 1354, 'Tiêu đề tin tức', 'Giá xăng lên 22.460 đồng/lít', 0, 1),
+(12617, 1354, 'Mô tả', '<a href=\"https://tuoitre.vn/gia-xang-len-22-460-dong-lit-20240620145612793.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/29f586a2874624187d57-1718869284208832087073-0-0-800-1280-crop-1718869294192694673379.jpg\" /></a>Từ 15h ngày 20-6, giá xăng dầu tiếp tục thay đổi, mỗi lít xăng RON95 lên 22.460 đồng/lít, tăng 230 đồng.', 0, 1),
+(12618, 1355, 'Tiêu đề tin tức', 'Bộ trưởng Phạm Thị Thanh Trà: Từ 1-7, tăng lương cơ sở từ 1,8 triệu lên 2.340.000 đồng', 0, 1),
+(12619, 1355, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-pham-thi-thanh-tra-tu-1-7-tang-luong-co-so-tu-1-8-trieu-len-2-340-000-dong-20240620152545128.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/pham-thi-thanh-tra-17188697543011800043019-0-0-750-1200-crop-17188697696482146609608.jpg\" /></a>Bộ trưởng Bộ Nội vụ Phạm Thị Thanh Trà cho biết Bộ Chính trị đã thống nhất tăng lương cơ sở đồng đều cho tất cả cán bộ, công chức từ 1,8 triệu đồng lên 2.340.000 đồng từ ngày 1-7.', 0, 1),
+(12620, 1356, 'Tiêu đề tin tức', 'Sắp xếp khu phố, ấp: Khó khăn với các khu phố có chung cư cao cấp', 0, 1),
+(12621, 1356, 'Mô tả', '<a href=\"https://tuoitre.vn/sap-xep-khu-pho-ap-kho-khan-voi-cac-khu-pho-co-chung-cu-cao-cap-20240620133533461.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dc496ed099353a6b6324-1718865285162194646100-84-0-1334-2000-crop-17188653001651167447868.jpg\" /></a>Việc trao đổi, chia sẻ giữa các tòa nhà, các tầng rất khó khăn, ảnh hưởng lớn đến nhiệm vụ cấp ủy chi bộ.', 0, 1),
+(12622, 1357, 'Tiêu đề tin tức', 'Thủ tướng Phạm Minh Chính hội kiến Tổng thống Nga Vladimir Putin', 0, 1),
+(12623, 1357, 'Mô tả', '<a href=\"https://tuoitre.vn/thu-tuong-pham-minh-chinh-hoi-kien-tong-thong-nga-vladimir-putin-20240620125753125.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/putin-pham-minh-chinh-ttx-1-17188717654751456568849-91-114-519-799-crop-17188718084162027045238.png\" /></a>Chiều 20-6, tại trụ sở Chính phủ, Thủ tướng Phạm Minh Chính hội kiến Tổng thống Liên bang Nga Vladimir Putin thăm cấp Nhà nước tới Việt Nam.', 0, 1),
+(12624, 1358, 'Tiêu đề tin tức', 'Đường mới làm được hơn 1 năm đã sạt lở xuống sông', 0, 1),
+(12625, 1358, 'Mô tả', '<a href=\"https://tuoitre.vn/duong-moi-lam-duoc-hon-1-nam-da-sat-lo-xuong-song-20240620123520089.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-2-17188610266281569414575-77-370-806-1537-crop-17188614572681913912846.jpg\" /></a>Con đường cặp mé sông Ông Vẽ, huyện Cái Bè, tỉnh Tiền Giang vừa mới được đầu tư xây dựng, người dân chưa kịp vui mừng thì đã bị sạt lở xuống sông.', 0, 1),
+(12626, 1359, 'Tiêu đề tin tức', 'Giá xăng lên 22.460 đồng/lít', 0, 1),
+(12627, 1359, 'Mô tả', '<a href=\"https://tuoitre.vn/gia-xang-len-22-460-dong-lit-20240620145612793.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/29f586a2874624187d57-1718869284208832087073-0-0-800-1280-crop-1718869294192694673379.jpg\" /></a>Từ 15h ngày 20-6, giá xăng dầu tiếp tục thay đổi, mỗi lít xăng RON95 lên 22.460 đồng/lít, tăng 230 đồng.', 0, 1),
+(12628, 1360, 'Tiêu đề tin tức', 'Việt Nam, Nga ký 11 văn kiện hợp tác trong chuyến thăm của Tổng thống Putin', 0, 1),
+(12629, 1360, 'Mô tả', '<a href=\"https://tuoitre.vn/viet-nam-nga-ky-11-van-kien-hop-tac-trong-chuyen-tham-cua-tong-thong-putin-20240620140022787.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/ky-ket-viet-nga-nam-tran-1718869153575483685717-126-81-1176-1762-crop-17188691960441030831442.jpg\" /></a>Ngay sau cuộc hội đàm trưa 20-6, Chủ tịch nước Tô Lâm và Tổng thống Putin đã chứng kiến lễ trao nhiều văn kiện hợp tác được ký kết nhân chuyến thăm.', 0, 1),
+(12630, 1361, 'Tiêu đề tin tức', 'TP.HCM cảnh báo bệnh ho gà tăng, chủ yếu ở trẻ chưa tiêm vắc xin', 0, 1),
+(12631, 1361, 'Mô tả', '<a href=\"https://tuoitre.vn/tp-hcm-canh-bao-benh-ho-ga-tang-chu-yeu-o-tre-chua-tiem-vac-xin-20240620130416622.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-tiem-vac-xin-17188617042751063191523-141-0-1391-2000-crop-1718862482559381493619.jpg\" /></a>Đáng chú ý đa số trẻ mắc bệnh này chưa đến độ tuổi tiêm chủng hoặc chưa tiêm vắc xin đầy đủ.', 0, 1),
+(12632, 1362, 'Tiêu đề tin tức', '360ha cao su trên đất rừng phòng hộ không ai nhận chủ nhưng mủ vẫn cạo đều đều', 0, 1),
+(12633, 1362, 'Mô tả', '<a href=\"https://tuoitre.vn/360ha-cao-su-tren-dat-rung-phong-ho-khong-ai-nhan-chu-nhung-mu-van-cao-deu-deu-20240620084416663.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20-6-rung-cao-su-04-17188474653971552215573-0-119-796-1392-crop-1718847671027197043033.jpg\" /></a>Gần 360ha cao su tươi tốt đang kỳ cho mủ mọc trên đất rừng phòng hộ tại Gia Lai không có ai nhận là chủ, nhưng vẫn khai thác thường xuyên.', 0, 1),
+(12634, 1363, 'Tiêu đề tin tức', 'Đà Nẵng nói gì về kiến nghị kiểm tra công suất hoạt động nhà máy nước ngàn tỉ?', 0, 1),
+(12635, 1363, 'Mô tả', '<a href=\"https://tuoitre.vn/da-nang-noi-gi-ve-kien-nghi-kiem-tra-cong-suat-hoat-dong-nha-may-nuoc-ngan-ti-2024062011013589.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20-6-da-nang-tra-loi-gi-ve-kien-nghi-kiem-tra-cong-suat-nha-may-nuoc-ngan-ti-2-17188557172681897687506-308-333-1334-1975-crop-17188557921321142303249.jpg\" /></a>Ngày 20-6, Sở Xây dựng Đà Nẵng có báo cáo UBND TP Đà Nẵng về việc trả lời kiến nghị của cử tri.', 0, 1),
+(12636, 1364, 'Tiêu đề tin tức', 'Chính phủ chuẩn bị gì để luật về bất động sản có hiệu lực sớm?', 0, 1),
+(12637, 1364, 'Mô tả', '<a href=\"https://tuoitre.vn/chinh-phu-chuan-bi-gi-de-luat-ve-bat-dong-san-co-hieu-luc-som-20240620124915114.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hoangthanhtung-17188621348111364017956-9-0-809-1280-crop-17188624878481946494183.jpg\" /></a>Đại biểu Quốc hội băn khoăn thời gian đến ngày 1-8 gấp rút nhưng đến nay nhiều văn bản hướng dẫn các luật về bất động sản chưa được ban hành.', 0, 1),
+(12638, 1365, 'Tiêu đề tin tức', 'Công an kể khoảnh khắc lao vào khống chế hung thủ truy sát cả nhà ở Quảng Ngãi', 0, 1),
+(12639, 1365, 'Mô tả', '<a href=\"https://tuoitre.vn/cong-an-ke-khoanh-khac-lao-vao-khong-che-hung-thu-truy-sat-ca-nha-o-quang-ngai-20240620130134009.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/cong-an-ke-phut-giay-lao-vao-khong-che-hung-thu-truy-sat-ca-nha-2-17188621533391465616911-200-540-1113-2000-crop-17188630707551345416895.jpg\" /></a>Đại úy Trần Hoài An, phó trưởng Công an xã Nghĩa Dõng, là người lao vào khống chế kẻ truy sát cả nhà, bảo không nghĩ nguy hiểm cho mình.', 0, 1),
+(12640, 1366, 'Tiêu đề tin tức', 'Sau phản ánh, đường Song Hành - Võ Nguyên Giáp lại ngập ngụa rác', 0, 1),
+(12641, 1366, 'Mô tả', '<a href=\"https://tuoitre.vn/sau-phan-anh-duong-song-hanh-vo-nguyen-giap-lai-ngap-ngua-rac-20240620131429897.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/z5556389019567e0fd0a76f0e66663b463b715c5110fff-171886270973711228066-68-0-1081-1620-crop-171886344338176139968.jpg\" /></a>Mặc dù đã phản ánh trước đó, đoạn đường Song Hành - Võ Nguyên Giáp, phường An Phú, TP Thủ Đức (TP.HCM) lại ngập ngụa rác.', 0, 1),
+(12642, 1367, 'Tiêu đề tin tức', 'Bộ trưởng: Luật Đất đai thi hành sớm ngày nào người dân hưởng lợi ngày đó', 0, 1),
+(12643, 1367, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-luat-dat-dai-thi-hanh-som-ngay-nao-nguoi-dan-huong-loi-ngay-do-20240620124511012.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dang-quoc-khanh-17188612658822000155669-14-0-639-1000-crop-1718861293501894923763.jpg\" /></a>Người dân đang rất mong chờ Luật Đất đai có hiệu lực để được cấp sổ đỏ với những thửa đất không tranh chấp từ 1-7-2014 trở về trước.', 0, 1),
+(12644, 1368, 'Tiêu đề tin tức', 'Một luật sư ở Cần Thơ bị tòa án kiến nghị khởi tố vì \'gây rối tại phiên tòa\'', 0, 1),
+(12645, 1368, 'Mô tả', '<a href=\"https://tuoitre.vn/mot-luat-su-o-can-tho-bi-toa-an-kien-nghi-khoi-to-vi-gay-roi-tai-phien-toa-20240620130008148.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/tin-phap-luat-17154107415991378658948-0-37-315-541-crop-17167868274091111059251-17168050737871725559772-0-0-162-260-crop-1718863069722961481246.jpg\" /></a>Một luật sư thuộc Đoàn luật sư Cần Thơ bị Tòa án nhân dân Cần Thơ gửi văn bản kiến nghị công an khởi tố do ‘có dấu hiệu gây rối trật tự phiên tòa’.', 0, 1),
+(12646, 1369, 'Tiêu đề tin tức', 'Bộ Công an chỉ rõ 30 dự án cây xanh, yêu cầu Phú Yên cung cấp hồ sơ', 0, 1),
+(12647, 1369, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-cong-an-chi-ro-30-du-an-cay-xanh-yeu-cau-phu-yen-cung-cap-ho-so-20240620124852421.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20240620-cay-xanh-17188623268532130299414-75-0-1118-1668-crop-17188623372071925710872.jpg\" /></a>Cơ quan an ninh điều tra Bộ Công an yêu cầu Phú Yên cung cấp hồ sơ 30 dự án trồng và chăm sóc cây xanh tại tỉnh này để phục vụ điều tra vụ án liên quan Công ty TNHH Cây xanh Công Minh.', 0, 1),
+(12648, 1370, 'Tiêu đề tin tức', 'Tìm thấy nạn nhân còn lại trong vụ cháy cơ sở bột nhang 2 người chết ở Bình Chánh', 0, 1),
+(12649, 1370, 'Mô tả', '<a href=\"https://tuoitre.vn/tim-thay-nan-nhan-con-lai-trong-vu-chay-co-so-bot-nhang-2-nguoi-chet-o-binh-chanh-20240620112059372.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hien-truong-vu-chay-co-so-bot-nhang-171885517725811431526-75-0-1325-2000-crop-1718855649912557361982.jpg\" /></a>Sáng 20-6, lực lượng chức năng phong tỏa hiện trường, điều tra nguyên nhân vụ cháy cơ sở bột nhang trên đường Trần Văn Giàu.', 0, 1),
+(12650, 1371, 'Tiêu đề tin tức', 'Ngân hàng Indovina kiến nghị về dự án 2,7km vành đai 2, TP.HCM giao ba sở nghiên cứu', 0, 1),
+(12651, 1371, 'Mô tả', '<a href=\"https://tuoitre.vn/ngan-hang-indovina-kien-nghi-ve-du-an-2-7km-vanh-dai-2-tp-hcm-giao-ba-so-nghien-cuu-20240620115719706.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/base64-16885773476361157557708-17187718600341275596907-1718859371564807860804-0-7-450-727-crop-1718859380758336744878.png\" /></a>Trước kiến nghị của Ngân hàng Indovina về việc nguy cơ khoản vay tại dự án đoạn 3 đường vành đai 2 phát sinh nợ xấu, TP.HCM chỉ đạo các sở ngành.', 0, 1),
+(12652, 1372, 'Tiêu đề tin tức', 'Nhiều bất cập trên đường Mai Chí Thọ khi thi công nút giao An Phú', 0, 1),
+(12653, 1372, 'Mô tả', '<a href=\"https://tuoitre.vn/nhieu-bat-cap-tren-duong-mai-chi-tho-khi-thi-cong-nut-giao-an-phu-20240619193919942.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/z5554356434469603ca38d0de70225ade865f3949ae588-17187998983692040578173-0-0-1250-2000-crop-1718800770357856165951.jpg\" /></a>Khu vực thi công nút giao An Phú (TP Thủ Đức, TP.HCM) còn tồn tại nhiều bất cập như mặt đường hư, rào chắn nhưng không thi công.', 0, 1),
+(12654, 1373, 'Tiêu đề tin tức', 'Chủ tịch nước Tô Lâm và Tổng thống Putin bước vào hội đàm', 0, 1),
+(12655, 1373, 'Mô tả', '<a href=\"https://tuoitre.vn/chu-tich-nuoc-to-lam-va-tong-thong-putin-buoc-vao-hoi-dam-20240620125857805.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/to-lam-putin-1-17188630291301324613501-0-0-1250-2000-crop-1718863198768423819188.jpg\" /></a>Chủ tịch nước Tô Lâm và Tổng thống Putin hội đàm trưa 20-6, cùng thảo luận các biện pháp quan trọng để tăng cường quan hệ hai nước.', 0, 1),
+(12656, 1374, 'Tiêu đề tin tức', 'Cà Mau trả lời đơn cứu xét của chủ ‘biệt thự đẹp nhất’, nói có sai sót trong soạn thảo văn bản', 0, 1),
+(12657, 1374, 'Mô tả', '<a href=\"https://tuoitre.vn/ca-mau-tra-loi-don-cuu-xet-cua-chu-biet-thu-dep-nhat-noi-co-sai-sot-trong-soan-thao-van-ban-20240620120448677.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dsc05785-17188585401381325088299-42-92-1049-1703-crop-17188596717821798941977.jpg\" /></a>Trong khi quyết định 195 chưa triển khai đến ông Tập thì UBND TP Cà Mau đã ban hành quyết định 196 để thu hồi do có một số sai sót trong soạn thảo.', 0, 1),
+(12658, 1375, 'Tiêu đề tin tức', 'Tuổi Trẻ đạt giải C Giải báo chí quốc gia với loạt bài về phát triển công nghiệp văn hóa', 0, 1),
+(12659, 1375, 'Mô tả', '<a href=\"https://tuoitre.vn/tuoi-tre-dat-giai-c-giai-bao-chi-quoc-gia-voi-loat-bai-ve-phat-trien-cong-nghiep-van-hoa-20240620092113469.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/vnapotalhopbaothongtinvegiaibaochiquocgialanthuxviiistand-1718855973169-17188559732111813249264-59-126-232-403-crop-1718856144144358663436.jpg\" /></a>Báo Tuổi Trẻ được trao giải C cho loạt bài về phát triển công nghiệp văn hóa của nhóm ba tác giả Đậu Dung - Thiên Điểu - Mi Ly.', 0, 1),
+(12660, 1376, 'Tiêu đề tin tức', 'Cháy nhà 5 tầng ở Hà Nội, cứu thoát 1 người', 0, 1),
+(12661, 1376, 'Mô tả', '<a href=\"https://tuoitre.vn/chay-nha-5-tang-o-ha-noi-cuu-thoat-1-nguoi-20240620113341913.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hien-truong-chay-nha-dan-ha-noi-17188574895671262684349-75-164-573-960-crop-17188577417691637234486.jpeg\" /></a>Vụ cháy xảy ra tại ngôi nhà 5 tầng nằm sâu trong ngõ phố Hà Trì thuộc phường Hà Cầu (quận Hà Đông, Hà Nội) rạng sáng 20-6.', 0, 1),
+(12662, 1377, 'Tiêu đề tin tức', 'Vụ nhận hối lộ tại trung tâm đăng kiểm: Vì sao không xử lý người đưa hối lộ?', 0, 1),
+(12663, 1377, 'Mô tả', '<a href=\"https://tuoitre.vn/vu-nhan-hoi-lo-tai-trung-tam-dang-kiem-vi-sao-khong-xu-ly-nguoi-dua-hoi-lo-20240620112433628.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dang-kiem-1718857308799714451984-0-0-1080-1728-crop-17188573618222064175479.jpg\" /></a>Các chủ xe trực tiếp hoặc qua trung gian đưa tiền để được cấp giấy chứng nhận cải tạo xe. Nhưng họ không bị xử lý hành vi đưa hối lộ, vì sao?', 0, 1),
+(12664, 1378, 'Tiêu đề tin tức', 'Bộ trưởng Nguyễn Chí Dũng: Không có kế hoạch khả thi, quy hoạch thủ đô chỉ là kỳ vọng', 0, 1),
+(12665, 1378, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-nguyen-chi-dung-khong-co-ke-hoach-kha-thi-quy-hoach-thu-do-chi-la-ky-vong-20240620104328249.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/nguyenchidung-17188544397901228562377-14-0-502-780-crop-17188546325571467557385.jpg\" /></a>Ông Dũng cho rằng phải xác định cơ chế, nguồn lực, kế hoạch để thực hiện được quy hoạch thủ đô. Nếu không chỉ là kỳ vọng, định hướng tương lai.', 0, 1),
+(12666, 1379, 'Tiêu đề tin tức', 'Chủ tịch nước Tô Lâm chủ trì lễ đón Tổng thống Putin', 0, 1),
+(12667, 1379, 'Mô tả', '<a href=\"https://tuoitre.vn/chu-tich-nuoc-to-lam-chu-tri-le-don-tong-thong-putin-20240620094752667.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/ctn-to-lam-don-putin-1718861265792100130335-121-524-872-1726-crop-17188613320261087494679.jpg\" /></a>Sau khi đến Hà Nội rạng sáng 20-6, Tổng thống Nga Vladimir Putin bắt đầu chuyến thăm cấp nhà nước đến Việt Nam với một ngày gồm các hoạt động ngoại giao dày đặc.', 0, 1),
+(12668, 1380, 'Tiêu đề tin tức', 'Phó cục trưởng Cục An ninh đối ngoại làm giám đốc Công an tỉnh Hà Tĩnh', 0, 1),
+(12669, 1380, 'Mô tả', '<a href=\"https://tuoitre.vn/pho-cuc-truong-cuc-an-ninh-doi-ngoai-lam-giam-doc-cong-an-tinh-ha-tinh-2024062009273329.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dai-ta-nguyen-xuan-thao-giam-doc-cong-an-ha-tinh-phat-bieu-nhan-nhiem-vu-1718849919295278061818-125-0-750-1000-crop-17188501067771382266416.jpg\" /></a>Đại tá Nguyễn Xuân Thao - phó cục trưởng Cục An ninh đối ngoại - được Bộ Công an điều động, bổ nhiệm giám đốc Công an tỉnh Hà Tĩnh.', 0, 1),
+(12670, 1381, 'Tiêu đề tin tức', 'Xe khách giường nằm chạy giờ cấm ở Bình Thạnh: Cảnh sát giao thông hứa xử lý dứt điểm', 0, 1),
+(12671, 1381, 'Mô tả', '<a href=\"https://tuoitre.vn/xe-khach-giuong-nam-chay-gio-cam-o-binh-thanh-canh-sat-giao-thong-hua-xu-ly-dut-diem-20240620072533053.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-7-17186978693831677989490-0-154-1126-1956-crop-17188409671317617195.jpg\" /></a>Phòng Cảnh sát giao thông chỉ đạo các đơn vị xử lý dứt điểm tình trạng xe khách giường nằm chạy khung giờ cấm quanh bến xe Miền Đông cũ.', 0, 1),
+(12672, 1382, 'Tiêu đề tin tức', 'Chuyên gia Nga: Việt Nam là đối tác đặc biệt quan trọng của Nga', 0, 1),
+(12673, 1382, 'Mô tả', '<a href=\"https://tuoitre.vn/chuyen-gia-nga-viet-nam-la-doi-tac-dac-biet-quan-trong-cua-nga-20240620083954429.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/chan-dung-ong-alexander-butko-17188474424851008113575-0-0-692-1107-crop-17188474763041849316362.jpg\" /></a>\'Việt Nam có tầm quan trọng đặc biệt đối với Nga do sự tin tưởng chính trị sâu sắc và nền tảng lớn trong quan hệ song phương\'.', 0, 1),
+(12674, 1383, 'Tiêu đề tin tức', 'Khi nước Nga hướng đông và nhìn về Việt Nam', 0, 1),
+(12675, 1383, 'Mô tả', '<a href=\"https://tuoitre.vn/khi-nuoc-nga-huong-dong-va-nhin-ve-viet-nam-20240620083311636.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/tong-thong-nga-tham-vn-17188482171601900974201-75-68-832-1280-crop-1718848261399439060862.png\" /></a>Tổng thống Nga mang đến Hà Nội không chỉ sự coi trọng rất lớn mà còn cả những kỳ vọng về giai đoạn phát triển mới với Việt Nam.', 0, 1),
+(12676, 1384, 'Tiêu đề tin tức', 'Tin tức sáng 20-6: Novaland sẽ vay hàng trăm tỉ đồng từ công ty con', 0, 1),
+(12677, 1384, 'Mô tả', '<a href=\"https://tuoitre.vn/tin-tuc-sang-20-6-novaland-se-vay-hang-tram-ti-dong-tu-cong-ty-con-20240619203709324.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/xuatkhaulaodong-17188040344411881722616-84-0-1334-2000-crop-17188111410941613891875.jpg\" /></a>Một số tin tức đáng chú ý: Novaland vay hàng trăm tỉ đồng từ công ty con; Doanh nghiệp lãnh phạt vì… ít sếp; Chi khám chữa bệnh bảo hiểm y tế ở Hà Nội nửa năm có thể trên 11.000 tỉ đồng...', 0, 1),
+(12678, 1385, 'Tên sản phẩm', 'iPhone 13 128GB | Chính hãng VN/A', 0, 1),
+(12679, 1385, 'Giá sản phẩm', '13690000', 0, 0),
+(12680, 1385, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:58:58/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_13_128gb_-_1_1_.png', 0, 0),
+(12681, 1386, 'Link chi tiết sản phẩm', 'https://cellphones.com.vn//samsung-galaxy-a55.html', 1, 0),
+(12682, 1386, 'Tên sản phẩm', 'Samsung Galaxy A55 5G 8GB 128GB', 0, 1),
+(12683, 1386, 'Giá sản phẩm', '9690000', 0, 0),
+(12684, 1386, 'Khuyến mãi', '\n          Giảm 3%\n        ', 0, 0),
+(12685, 1386, 'url ảnh', 'https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/m/sm-a556_galaxy_a55_awesome_lilac_ui.png', 0, 0),
+(12686, 1386, 'Số sao đánh giá', '5', 0, 0),
+(12687, 1387, 'Tiêu đề tin tức', 'Bộ trưởng Phạm Thị Thanh Trà: Từ 1-7, tăng lương cơ sở từ 1,8 triệu lên 2.340.000 đồng', 0, 1),
+(12688, 1387, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-pham-thi-thanh-tra-tu-1-7-tang-luong-co-so-tu-1-8-trieu-len-2-340-000-dong-20240620152545128.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/pham-thi-thanh-tra-16891575456021244534858-0-144-1051-1825-crop-1718873709916588392611.jpeg\" /></a>Bộ trưởng Bộ Nội vụ Phạm Thị Thanh Trà cho biết Bộ Chính trị đã thống nhất tăng lương cơ sở đồng đều cho tất cả cán bộ, công chức từ 1,8 triệu đồng lên 2.340.000 đồng từ ngày 1-7.', 0, 1),
+(12689, 1388, 'Tiêu đề tin tức', 'Sắp xếp khu phố, ấp: Khó khăn với các khu phố có chung cư cao cấp', 0, 1),
+(12690, 1388, 'Mô tả', '<a href=\"https://tuoitre.vn/sap-xep-khu-pho-ap-kho-khan-voi-cac-khu-pho-co-chung-cu-cao-cap-20240620133533461.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dc496ed099353a6b6324-1718865285162194646100-84-0-1334-2000-crop-17188653001651167447868.jpg\" /></a>Việc trao đổi, chia sẻ giữa các tòa nhà, các tầng rất khó khăn, ảnh hưởng lớn đến nhiệm vụ cấp ủy chi bộ.', 0, 1),
+(12691, 1389, 'Tiêu đề tin tức', 'Thủ tướng Phạm Minh Chính hội kiến Tổng thống Nga Vladimir Putin', 0, 1),
+(12692, 1389, 'Mô tả', '<a href=\"https://tuoitre.vn/thu-tuong-pham-minh-chinh-hoi-kien-tong-thong-nga-vladimir-putin-20240620125753125.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/putin-pham-minh-chinh-ttx-1-17188717654751456568849-91-114-519-799-crop-17188718084162027045238.png\" /></a>Chiều 20-6, tại trụ sở Chính phủ, Thủ tướng Phạm Minh Chính hội kiến Tổng thống Liên bang Nga Vladimir Putin thăm cấp Nhà nước tới Việt Nam.', 0, 1),
+(12693, 1390, 'Tiêu đề tin tức', 'Đường mới làm được hơn 1 năm đã sạt lở xuống sông', 0, 1),
+(12694, 1390, 'Mô tả', '<a href=\"https://tuoitre.vn/duong-moi-lam-duoc-hon-1-nam-da-sat-lo-xuong-song-20240620123520089.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-2-17188610266281569414575-77-370-806-1537-crop-17188614572681913912846.jpg\" /></a>Con đường cặp mé sông Ông Vẽ, huyện Cái Bè, tỉnh Tiền Giang vừa mới được đầu tư xây dựng, người dân chưa kịp vui mừng thì đã bị sạt lở xuống sông.', 0, 1),
+(12695, 1391, 'Tiêu đề tin tức', 'Giá xăng lên 22.460 đồng/lít', 0, 1);
+INSERT INTO `item_details` (`id`, `item_id`, `name`, `value`, `is_primary_key`, `is_contain_keywords`) VALUES
+(12696, 1391, 'Mô tả', '<a href=\"https://tuoitre.vn/gia-xang-len-22-460-dong-lit-20240620145612793.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/29f586a2874624187d57-1718869284208832087073-0-0-800-1280-crop-1718869294192694673379.jpg\" /></a>Từ 15h ngày 20-6, giá xăng dầu tiếp tục thay đổi, mỗi lít xăng RON95 lên 22.460 đồng/lít, tăng 230 đồng.', 0, 1),
+(12697, 1392, 'Tiêu đề tin tức', 'Việt Nam, Nga ký 11 văn kiện hợp tác trong chuyến thăm của Tổng thống Putin', 0, 1),
+(12698, 1392, 'Mô tả', '<a href=\"https://tuoitre.vn/viet-nam-nga-ky-11-van-kien-hop-tac-trong-chuyen-tham-cua-tong-thong-putin-20240620140022787.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/ky-ket-viet-nga-nam-tran-1718869153575483685717-126-81-1176-1762-crop-17188691960441030831442.jpg\" /></a>Ngay sau cuộc hội đàm trưa 20-6, Chủ tịch nước Tô Lâm và Tổng thống Putin đã chứng kiến lễ trao nhiều văn kiện hợp tác được ký kết nhân chuyến thăm.', 0, 1),
+(12699, 1393, 'Tiêu đề tin tức', 'TP.HCM cảnh báo bệnh ho gà tăng, chủ yếu ở trẻ chưa tiêm vắc xin', 0, 1),
+(12700, 1393, 'Mô tả', '<a href=\"https://tuoitre.vn/tp-hcm-canh-bao-benh-ho-ga-tang-chu-yeu-o-tre-chua-tiem-vac-xin-20240620130416622.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-tiem-vac-xin-17188617042751063191523-141-0-1391-2000-crop-1718862482559381493619.jpg\" /></a>Đáng chú ý đa số trẻ mắc bệnh này chưa đến độ tuổi tiêm chủng hoặc chưa tiêm vắc xin đầy đủ.', 0, 1),
+(12701, 1394, 'Tiêu đề tin tức', '360ha cao su trên đất rừng phòng hộ không ai nhận chủ nhưng mủ vẫn cạo đều đều', 0, 1),
+(12702, 1394, 'Mô tả', '<a href=\"https://tuoitre.vn/360ha-cao-su-tren-dat-rung-phong-ho-khong-ai-nhan-chu-nhung-mu-van-cao-deu-deu-20240620084416663.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20-6-rung-cao-su-04-17188474653971552215573-0-119-796-1392-crop-1718847671027197043033.jpg\" /></a>Gần 360ha cao su tươi tốt đang kỳ cho mủ mọc trên đất rừng phòng hộ tại Gia Lai không có ai nhận là chủ, nhưng vẫn khai thác thường xuyên.', 0, 1),
+(12703, 1395, 'Tiêu đề tin tức', 'Đà Nẵng nói gì về kiến nghị kiểm tra công suất hoạt động nhà máy nước ngàn tỉ?', 0, 1),
+(12704, 1395, 'Mô tả', '<a href=\"https://tuoitre.vn/da-nang-noi-gi-ve-kien-nghi-kiem-tra-cong-suat-hoat-dong-nha-may-nuoc-ngan-ti-2024062011013589.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20-6-da-nang-tra-loi-gi-ve-kien-nghi-kiem-tra-cong-suat-nha-may-nuoc-ngan-ti-2-17188557172681897687506-308-333-1334-1975-crop-17188557921321142303249.jpg\" /></a>Ngày 20-6, Sở Xây dựng Đà Nẵng có báo cáo UBND TP Đà Nẵng về việc trả lời kiến nghị của cử tri.', 0, 1),
+(12705, 1396, 'Tiêu đề tin tức', 'Chính phủ chuẩn bị gì để luật về bất động sản có hiệu lực sớm?', 0, 1),
+(12706, 1396, 'Mô tả', '<a href=\"https://tuoitre.vn/chinh-phu-chuan-bi-gi-de-luat-ve-bat-dong-san-co-hieu-luc-som-20240620124915114.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hoangthanhtung-17188621348111364017956-9-0-809-1280-crop-17188624878481946494183.jpg\" /></a>Đại biểu Quốc hội băn khoăn thời gian đến ngày 1-8 gấp rút nhưng đến nay nhiều văn bản hướng dẫn các luật về bất động sản chưa được ban hành.', 0, 1),
+(12707, 1397, 'Tiêu đề tin tức', 'Công an kể khoảnh khắc lao vào khống chế hung thủ truy sát cả nhà ở Quảng Ngãi', 0, 1),
+(12708, 1397, 'Mô tả', '<a href=\"https://tuoitre.vn/cong-an-ke-khoanh-khac-lao-vao-khong-che-hung-thu-truy-sat-ca-nha-o-quang-ngai-20240620130134009.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/cong-an-ke-phut-giay-lao-vao-khong-che-hung-thu-truy-sat-ca-nha-2-17188621533391465616911-200-540-1113-2000-crop-17188630707551345416895.jpg\" /></a>Đại úy Trần Hoài An, phó trưởng Công an xã Nghĩa Dõng, là người lao vào khống chế kẻ truy sát cả nhà, bảo không nghĩ nguy hiểm cho mình.', 0, 1),
+(12709, 1398, 'Tiêu đề tin tức', 'Sau phản ánh, đường Song Hành - Võ Nguyên Giáp lại ngập ngụa rác', 0, 1),
+(12710, 1398, 'Mô tả', '<a href=\"https://tuoitre.vn/sau-phan-anh-duong-song-hanh-vo-nguyen-giap-lai-ngap-ngua-rac-20240620131429897.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/z5556389019567e0fd0a76f0e66663b463b715c5110fff-171886270973711228066-68-0-1081-1620-crop-171886344338176139968.jpg\" /></a>Mặc dù đã phản ánh trước đó, đoạn đường Song Hành - Võ Nguyên Giáp, phường An Phú, TP Thủ Đức (TP.HCM) lại ngập ngụa rác.', 0, 1),
+(12711, 1399, 'Tiêu đề tin tức', 'Bộ trưởng: Luật Đất đai thi hành sớm ngày nào người dân hưởng lợi ngày đó', 0, 1),
+(12712, 1399, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-luat-dat-dai-thi-hanh-som-ngay-nao-nguoi-dan-huong-loi-ngay-do-20240620124511012.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dang-quoc-khanh-17188612658822000155669-14-0-639-1000-crop-1718861293501894923763.jpg\" /></a>Người dân đang rất mong chờ Luật Đất đai có hiệu lực để được cấp sổ đỏ với những thửa đất không tranh chấp từ 1-7-2014 trở về trước.', 0, 1),
+(12713, 1400, 'Tiêu đề tin tức', 'Một luật sư ở Cần Thơ bị tòa án kiến nghị khởi tố vì \'gây rối tại phiên tòa\'', 0, 1),
+(12714, 1400, 'Mô tả', '<a href=\"https://tuoitre.vn/mot-luat-su-o-can-tho-bi-toa-an-kien-nghi-khoi-to-vi-gay-roi-tai-phien-toa-20240620130008148.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/tin-phap-luat-17154107415991378658948-0-37-315-541-crop-17167868274091111059251-17168050737871725559772-0-0-162-260-crop-1718863069722961481246.jpg\" /></a>Một luật sư thuộc Đoàn luật sư Cần Thơ bị Tòa án nhân dân Cần Thơ gửi văn bản kiến nghị công an khởi tố do ‘có dấu hiệu gây rối trật tự phiên tòa’.', 0, 1),
+(12715, 1401, 'Tiêu đề tin tức', 'Bộ Công an chỉ rõ 30 dự án cây xanh, yêu cầu Phú Yên cung cấp hồ sơ', 0, 1),
+(12716, 1401, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-cong-an-chi-ro-30-du-an-cay-xanh-yeu-cau-phu-yen-cung-cap-ho-so-20240620124852421.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20240620-cay-xanh-17188623268532130299414-75-0-1118-1668-crop-17188623372071925710872.jpg\" /></a>Cơ quan an ninh điều tra Bộ Công an yêu cầu Phú Yên cung cấp hồ sơ 30 dự án trồng và chăm sóc cây xanh tại tỉnh này để phục vụ điều tra vụ án liên quan Công ty TNHH Cây xanh Công Minh.', 0, 1),
+(12717, 1402, 'Tiêu đề tin tức', 'Tìm thấy nạn nhân còn lại trong vụ cháy cơ sở bột nhang 2 người chết ở Bình Chánh', 0, 1),
+(12718, 1402, 'Mô tả', '<a href=\"https://tuoitre.vn/tim-thay-nan-nhan-con-lai-trong-vu-chay-co-so-bot-nhang-2-nguoi-chet-o-binh-chanh-20240620112059372.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hien-truong-vu-chay-co-so-bot-nhang-171885517725811431526-75-0-1325-2000-crop-1718855649912557361982.jpg\" /></a>Sáng 20-6, lực lượng chức năng phong tỏa hiện trường, điều tra nguyên nhân vụ cháy cơ sở bột nhang trên đường Trần Văn Giàu.', 0, 1),
+(12719, 1403, 'Tiêu đề tin tức', 'Ngân hàng Indovina kiến nghị về dự án 2,7km vành đai 2, TP.HCM giao ba sở nghiên cứu', 0, 1),
+(12720, 1403, 'Mô tả', '<a href=\"https://tuoitre.vn/ngan-hang-indovina-kien-nghi-ve-du-an-2-7km-vanh-dai-2-tp-hcm-giao-ba-so-nghien-cuu-20240620115719706.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/base64-16885773476361157557708-17187718600341275596907-1718859371564807860804-0-7-450-727-crop-1718859380758336744878.png\" /></a>Trước kiến nghị của Ngân hàng Indovina về việc nguy cơ khoản vay tại dự án đoạn 3 đường vành đai 2 phát sinh nợ xấu, TP.HCM chỉ đạo các sở ngành.', 0, 1),
+(12721, 1404, 'Tiêu đề tin tức', 'Nhiều bất cập trên đường Mai Chí Thọ khi thi công nút giao An Phú', 0, 1),
+(12722, 1404, 'Mô tả', '<a href=\"https://tuoitre.vn/nhieu-bat-cap-tren-duong-mai-chi-tho-khi-thi-cong-nut-giao-an-phu-20240619193919942.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/z5554356434469603ca38d0de70225ade865f3949ae588-17187998983692040578173-0-0-1250-2000-crop-1718800770357856165951.jpg\" /></a>Khu vực thi công nút giao An Phú (TP Thủ Đức, TP.HCM) còn tồn tại nhiều bất cập như mặt đường hư, rào chắn nhưng không thi công.', 0, 1),
+(12723, 1405, 'Tiêu đề tin tức', 'Chủ tịch nước Tô Lâm và Tổng thống Putin bước vào hội đàm', 0, 1),
+(12724, 1405, 'Mô tả', '<a href=\"https://tuoitre.vn/chu-tich-nuoc-to-lam-va-tong-thong-putin-buoc-vao-hoi-dam-20240620125857805.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/to-lam-putin-1-17188630291301324613501-0-0-1250-2000-crop-1718863198768423819188.jpg\" /></a>Chủ tịch nước Tô Lâm và Tổng thống Putin hội đàm trưa 20-6, cùng thảo luận các biện pháp quan trọng để tăng cường quan hệ hai nước.', 0, 1),
+(12725, 1406, 'Tiêu đề tin tức', 'Cà Mau trả lời đơn cứu xét của chủ ‘biệt thự đẹp nhất’, nói có sai sót trong soạn thảo văn bản', 0, 1),
+(12726, 1406, 'Mô tả', '<a href=\"https://tuoitre.vn/ca-mau-tra-loi-don-cuu-xet-cua-chu-biet-thu-dep-nhat-noi-co-sai-sot-trong-soan-thao-van-ban-20240620120448677.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dsc05785-17188585401381325088299-42-92-1049-1703-crop-17188596717821798941977.jpg\" /></a>Trong khi quyết định 195 chưa triển khai đến ông Tập thì UBND TP Cà Mau đã ban hành quyết định 196 để thu hồi do có một số sai sót trong soạn thảo.', 0, 1),
+(12727, 1407, 'Tiêu đề tin tức', 'Tuổi Trẻ đạt giải C Giải báo chí quốc gia với loạt bài về phát triển công nghiệp văn hóa', 0, 1),
+(12728, 1407, 'Mô tả', '<a href=\"https://tuoitre.vn/tuoi-tre-dat-giai-c-giai-bao-chi-quoc-gia-voi-loat-bai-ve-phat-trien-cong-nghiep-van-hoa-20240620092113469.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/vnapotalhopbaothongtinvegiaibaochiquocgialanthuxviiistand-1718855973169-17188559732111813249264-59-126-232-403-crop-1718856144144358663436.jpg\" /></a>Báo Tuổi Trẻ được trao giải C cho loạt bài về phát triển công nghiệp văn hóa của nhóm ba tác giả Đậu Dung - Thiên Điểu - Mi Ly.', 0, 1),
+(12729, 1408, 'Tiêu đề tin tức', 'Cháy nhà 5 tầng ở Hà Nội, cứu thoát 1 người', 0, 1),
+(12730, 1408, 'Mô tả', '<a href=\"https://tuoitre.vn/chay-nha-5-tang-o-ha-noi-cuu-thoat-1-nguoi-20240620113341913.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hien-truong-chay-nha-dan-ha-noi-17188574895671262684349-75-164-573-960-crop-17188577417691637234486.jpeg\" /></a>Vụ cháy xảy ra tại ngôi nhà 5 tầng nằm sâu trong ngõ phố Hà Trì thuộc phường Hà Cầu (quận Hà Đông, Hà Nội) rạng sáng 20-6.', 0, 1),
+(12731, 1409, 'Tiêu đề tin tức', 'Vụ nhận hối lộ tại trung tâm đăng kiểm: Vì sao không xử lý người đưa hối lộ?', 0, 1),
+(12732, 1409, 'Mô tả', '<a href=\"https://tuoitre.vn/vu-nhan-hoi-lo-tai-trung-tam-dang-kiem-vi-sao-khong-xu-ly-nguoi-dua-hoi-lo-20240620112433628.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dang-kiem-1718857308799714451984-0-0-1080-1728-crop-17188573618222064175479.jpg\" /></a>Các chủ xe trực tiếp hoặc qua trung gian đưa tiền để được cấp giấy chứng nhận cải tạo xe. Nhưng họ không bị xử lý hành vi đưa hối lộ, vì sao?', 0, 1),
+(12733, 1410, 'Tiêu đề tin tức', 'Bộ trưởng Nguyễn Chí Dũng: Không có kế hoạch khả thi, quy hoạch thủ đô chỉ là kỳ vọng', 0, 1),
+(12734, 1410, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-nguyen-chi-dung-khong-co-ke-hoach-kha-thi-quy-hoach-thu-do-chi-la-ky-vong-20240620104328249.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/nguyenchidung-17188544397901228562377-14-0-502-780-crop-17188546325571467557385.jpg\" /></a>Ông Dũng cho rằng phải xác định cơ chế, nguồn lực, kế hoạch để thực hiện được quy hoạch thủ đô. Nếu không chỉ là kỳ vọng, định hướng tương lai.', 0, 1),
+(12735, 1411, 'Tiêu đề tin tức', 'Chủ tịch nước Tô Lâm chủ trì lễ đón Tổng thống Putin', 0, 1),
+(12736, 1411, 'Mô tả', '<a href=\"https://tuoitre.vn/chu-tich-nuoc-to-lam-chu-tri-le-don-tong-thong-putin-20240620094752667.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/ctn-to-lam-don-putin-1718861265792100130335-121-524-872-1726-crop-17188613320261087494679.jpg\" /></a>Sau khi đến Hà Nội rạng sáng 20-6, Tổng thống Nga Vladimir Putin bắt đầu chuyến thăm cấp nhà nước đến Việt Nam với một ngày gồm các hoạt động ngoại giao dày đặc.', 0, 1),
+(12737, 1412, 'Tiêu đề tin tức', 'Phó cục trưởng Cục An ninh đối ngoại làm giám đốc Công an tỉnh Hà Tĩnh', 0, 1),
+(12738, 1412, 'Mô tả', '<a href=\"https://tuoitre.vn/pho-cuc-truong-cuc-an-ninh-doi-ngoai-lam-giam-doc-cong-an-tinh-ha-tinh-2024062009273329.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dai-ta-nguyen-xuan-thao-giam-doc-cong-an-ha-tinh-phat-bieu-nhan-nhiem-vu-1718849919295278061818-125-0-750-1000-crop-17188501067771382266416.jpg\" /></a>Đại tá Nguyễn Xuân Thao - phó cục trưởng Cục An ninh đối ngoại - được Bộ Công an điều động, bổ nhiệm giám đốc Công an tỉnh Hà Tĩnh.', 0, 1),
+(12739, 1413, 'Tiêu đề tin tức', 'Xe khách giường nằm chạy giờ cấm ở Bình Thạnh: Cảnh sát giao thông hứa xử lý dứt điểm', 0, 1),
+(12740, 1413, 'Mô tả', '<a href=\"https://tuoitre.vn/xe-khach-giuong-nam-chay-gio-cam-o-binh-thanh-canh-sat-giao-thong-hua-xu-ly-dut-diem-20240620072533053.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-7-17186978693831677989490-0-154-1126-1956-crop-17188409671317617195.jpg\" /></a>Phòng Cảnh sát giao thông chỉ đạo các đơn vị xử lý dứt điểm tình trạng xe khách giường nằm chạy khung giờ cấm quanh bến xe Miền Đông cũ.', 0, 1),
+(12741, 1414, 'Tiêu đề tin tức', 'Chuyên gia Nga: Việt Nam là đối tác đặc biệt quan trọng của Nga', 0, 1),
+(12742, 1414, 'Mô tả', '<a href=\"https://tuoitre.vn/chuyen-gia-nga-viet-nam-la-doi-tac-dac-biet-quan-trong-cua-nga-20240620083954429.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/chan-dung-ong-alexander-butko-17188474424851008113575-0-0-692-1107-crop-17188474763041849316362.jpg\" /></a>\'Việt Nam có tầm quan trọng đặc biệt đối với Nga do sự tin tưởng chính trị sâu sắc và nền tảng lớn trong quan hệ song phương\'.', 0, 1),
+(12743, 1415, 'Tiêu đề tin tức', 'Khi nước Nga hướng đông và nhìn về Việt Nam', 0, 1),
+(12744, 1415, 'Mô tả', '<a href=\"https://tuoitre.vn/khi-nuoc-nga-huong-dong-va-nhin-ve-viet-nam-20240620083311636.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/tong-thong-nga-tham-vn-17188482171601900974201-75-68-832-1280-crop-1718848261399439060862.png\" /></a>Tổng thống Nga mang đến Hà Nội không chỉ sự coi trọng rất lớn mà còn cả những kỳ vọng về giai đoạn phát triển mới với Việt Nam.', 0, 1),
+(12745, 1416, 'Tiêu đề tin tức', 'Tin tức sáng 20-6: Novaland sẽ vay hàng trăm tỉ đồng từ công ty con', 0, 1),
+(12746, 1416, 'Mô tả', '<a href=\"https://tuoitre.vn/tin-tuc-sang-20-6-novaland-se-vay-hang-tram-ti-dong-tu-cong-ty-con-20240619203709324.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/xuatkhaulaodong-17188040344411881722616-84-0-1334-2000-crop-17188111410941613891875.jpg\" /></a>Một số tin tức đáng chú ý: Novaland vay hàng trăm tỉ đồng từ công ty con; Doanh nghiệp lãnh phạt vì… ít sếp; Chi khám chữa bệnh bảo hiểm y tế ở Hà Nội nửa năm có thể trên 11.000 tỉ đồng...', 0, 1),
+(12747, 1417, 'Tiêu đề tin tức', 'Nam sinh viên mất tích 2 tháng được gia đình chi 150 triệu đồng chuộc về', 0, 1),
+(12748, 1417, 'Mô tả', '<a href=\"https://tuoitre.vn/nam-sinh-vien-mat-tich-2-thang-duoc-gia-dinh-chi-150-trieu-dong-chuoc-ve-20240620154303438.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/nguyen-lu-anh-nam-17188725665631257247602-0-0-852-1364-crop-17188727292261950509585.png\" /></a>\"Con tôi bị bọn buôn người dụ dỗ, bảo sẽ giới thiệu vào làm công việc văn phòng, lương cao tại Tây Ninh nhưng đó lừa đưa qua Thái Lan\".', 0, 1),
+(12749, 1418, 'Tiêu đề tin tức', 'Bộ trưởng Phạm Thị Thanh Trà: Từ 1-7, tăng lương cơ sở từ 1,8 triệu lên 2.340.000 đồng', 0, 1),
+(12750, 1418, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-pham-thi-thanh-tra-tu-1-7-tang-luong-co-so-tu-1-8-trieu-len-2-340-000-dong-20240620152545128.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/pham-thi-thanh-tra-16891575456021244534858-0-144-1051-1825-crop-1718873709916588392611.jpeg\" /></a>Bộ trưởng Bộ Nội vụ Phạm Thị Thanh Trà cho biết Bộ Chính trị đã thống nhất tăng lương cơ sở đồng đều cho tất cả cán bộ, công chức từ 1,8 triệu đồng lên 2.340.000 đồng từ ngày 1-7.', 0, 1),
+(12751, 1419, 'Tiêu đề tin tức', 'Sắp xếp khu phố, ấp: Khó khăn với các khu phố có chung cư cao cấp', 0, 1),
+(12752, 1419, 'Mô tả', '<a href=\"https://tuoitre.vn/sap-xep-khu-pho-ap-kho-khan-voi-cac-khu-pho-co-chung-cu-cao-cap-20240620133533461.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dc496ed099353a6b6324-1718865285162194646100-84-0-1334-2000-crop-17188653001651167447868.jpg\" /></a>Việc trao đổi, chia sẻ giữa các tòa nhà, các tầng rất khó khăn, ảnh hưởng lớn đến nhiệm vụ cấp ủy chi bộ.', 0, 1),
+(12753, 1420, 'Tiêu đề tin tức', 'Thủ tướng Phạm Minh Chính hội kiến Tổng thống Nga Vladimir Putin', 0, 1),
+(12754, 1420, 'Mô tả', '<a href=\"https://tuoitre.vn/thu-tuong-pham-minh-chinh-hoi-kien-tong-thong-nga-vladimir-putin-20240620125753125.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/putin-pham-minh-chinh-ttx-1-17188717654751456568849-91-114-519-799-crop-17188718084162027045238.png\" /></a>Chiều 20-6, tại trụ sở Chính phủ, Thủ tướng Phạm Minh Chính hội kiến Tổng thống Liên bang Nga Vladimir Putin thăm cấp Nhà nước tới Việt Nam.', 0, 1),
+(12755, 1421, 'Tiêu đề tin tức', 'Đường mới làm được hơn 1 năm đã sạt lở xuống sông', 0, 1),
+(12756, 1421, 'Mô tả', '<a href=\"https://tuoitre.vn/duong-moi-lam-duoc-hon-1-nam-da-sat-lo-xuong-song-20240620123520089.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-2-17188610266281569414575-77-370-806-1537-crop-17188614572681913912846.jpg\" /></a>Con đường cặp mé sông Ông Vẽ, huyện Cái Bè, tỉnh Tiền Giang vừa mới được đầu tư xây dựng, người dân chưa kịp vui mừng thì đã bị sạt lở xuống sông.', 0, 1),
+(12757, 1422, 'Tiêu đề tin tức', 'Giá xăng lên 22.460 đồng/lít', 0, 1),
+(12758, 1422, 'Mô tả', '<a href=\"https://tuoitre.vn/gia-xang-len-22-460-dong-lit-20240620145612793.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/29f586a2874624187d57-1718869284208832087073-0-0-800-1280-crop-1718869294192694673379.jpg\" /></a>Từ 15h ngày 20-6, giá xăng dầu tiếp tục thay đổi, mỗi lít xăng RON95 lên 22.460 đồng/lít, tăng 230 đồng.', 0, 1),
+(12759, 1423, 'Tiêu đề tin tức', 'Việt Nam, Nga ký 11 văn kiện hợp tác trong chuyến thăm của Tổng thống Putin', 0, 1),
+(12760, 1423, 'Mô tả', '<a href=\"https://tuoitre.vn/viet-nam-nga-ky-11-van-kien-hop-tac-trong-chuyen-tham-cua-tong-thong-putin-20240620140022787.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/ky-ket-viet-nga-nam-tran-1718869153575483685717-126-81-1176-1762-crop-17188691960441030831442.jpg\" /></a>Ngay sau cuộc hội đàm trưa 20-6, Chủ tịch nước Tô Lâm và Tổng thống Putin đã chứng kiến lễ trao nhiều văn kiện hợp tác được ký kết nhân chuyến thăm.', 0, 1),
+(12761, 1424, 'Tiêu đề tin tức', 'TP.HCM cảnh báo bệnh ho gà tăng, chủ yếu ở trẻ chưa tiêm vắc xin', 0, 1),
+(12762, 1424, 'Mô tả', '<a href=\"https://tuoitre.vn/tp-hcm-canh-bao-benh-ho-ga-tang-chu-yeu-o-tre-chua-tiem-vac-xin-20240620130416622.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-tiem-vac-xin-17188617042751063191523-141-0-1391-2000-crop-1718862482559381493619.jpg\" /></a>Đáng chú ý đa số trẻ mắc bệnh này chưa đến độ tuổi tiêm chủng hoặc chưa tiêm vắc xin đầy đủ.', 0, 1),
+(12763, 1425, 'Tiêu đề tin tức', '360ha cao su trên đất rừng phòng hộ không ai nhận chủ nhưng mủ vẫn cạo đều đều', 0, 1),
+(12764, 1425, 'Mô tả', '<a href=\"https://tuoitre.vn/360ha-cao-su-tren-dat-rung-phong-ho-khong-ai-nhan-chu-nhung-mu-van-cao-deu-deu-20240620084416663.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20-6-rung-cao-su-04-17188474653971552215573-0-119-796-1392-crop-1718847671027197043033.jpg\" /></a>Gần 360ha cao su tươi tốt đang kỳ cho mủ mọc trên đất rừng phòng hộ tại Gia Lai không có ai nhận là chủ, nhưng vẫn khai thác thường xuyên.', 0, 1),
+(12765, 1426, 'Tiêu đề tin tức', 'Đà Nẵng nói gì về kiến nghị kiểm tra công suất hoạt động nhà máy nước ngàn tỉ?', 0, 1),
+(12766, 1426, 'Mô tả', '<a href=\"https://tuoitre.vn/da-nang-noi-gi-ve-kien-nghi-kiem-tra-cong-suat-hoat-dong-nha-may-nuoc-ngan-ti-2024062011013589.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20-6-da-nang-tra-loi-gi-ve-kien-nghi-kiem-tra-cong-suat-nha-may-nuoc-ngan-ti-2-17188557172681897687506-308-333-1334-1975-crop-17188557921321142303249.jpg\" /></a>Ngày 20-6, Sở Xây dựng Đà Nẵng có báo cáo UBND TP Đà Nẵng về việc trả lời kiến nghị của cử tri.', 0, 1),
+(12767, 1427, 'Tiêu đề tin tức', 'Chính phủ chuẩn bị gì để luật về bất động sản có hiệu lực sớm?', 0, 1),
+(12768, 1427, 'Mô tả', '<a href=\"https://tuoitre.vn/chinh-phu-chuan-bi-gi-de-luat-ve-bat-dong-san-co-hieu-luc-som-20240620124915114.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hoangthanhtung-17188621348111364017956-9-0-809-1280-crop-17188624878481946494183.jpg\" /></a>Đại biểu Quốc hội băn khoăn thời gian đến ngày 1-8 gấp rút nhưng đến nay nhiều văn bản hướng dẫn các luật về bất động sản chưa được ban hành.', 0, 1),
+(12769, 1428, 'Tiêu đề tin tức', 'Công an kể khoảnh khắc lao vào khống chế hung thủ truy sát cả nhà ở Quảng Ngãi', 0, 1),
+(12770, 1428, 'Mô tả', '<a href=\"https://tuoitre.vn/cong-an-ke-khoanh-khac-lao-vao-khong-che-hung-thu-truy-sat-ca-nha-o-quang-ngai-20240620130134009.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/cong-an-ke-phut-giay-lao-vao-khong-che-hung-thu-truy-sat-ca-nha-2-17188621533391465616911-200-540-1113-2000-crop-17188630707551345416895.jpg\" /></a>Đại úy Trần Hoài An, phó trưởng Công an xã Nghĩa Dõng, là người lao vào khống chế kẻ truy sát cả nhà, bảo không nghĩ nguy hiểm cho mình.', 0, 1),
+(12771, 1429, 'Tiêu đề tin tức', 'Sau phản ánh, đường Song Hành - Võ Nguyên Giáp lại ngập ngụa rác', 0, 1),
+(12772, 1429, 'Mô tả', '<a href=\"https://tuoitre.vn/sau-phan-anh-duong-song-hanh-vo-nguyen-giap-lai-ngap-ngua-rac-20240620131429897.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/z5556389019567e0fd0a76f0e66663b463b715c5110fff-171886270973711228066-68-0-1081-1620-crop-171886344338176139968.jpg\" /></a>Mặc dù đã phản ánh trước đó, đoạn đường Song Hành - Võ Nguyên Giáp, phường An Phú, TP Thủ Đức (TP.HCM) lại ngập ngụa rác.', 0, 1),
+(12773, 1430, 'Tiêu đề tin tức', 'Bộ trưởng: Luật Đất đai thi hành sớm ngày nào người dân hưởng lợi ngày đó', 0, 1),
+(12774, 1430, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-luat-dat-dai-thi-hanh-som-ngay-nao-nguoi-dan-huong-loi-ngay-do-20240620124511012.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dang-quoc-khanh-17188612658822000155669-14-0-639-1000-crop-1718861293501894923763.jpg\" /></a>Người dân đang rất mong chờ Luật Đất đai có hiệu lực để được cấp sổ đỏ với những thửa đất không tranh chấp từ 1-7-2014 trở về trước.', 0, 1),
+(12775, 1431, 'Tiêu đề tin tức', 'Một luật sư ở Cần Thơ bị tòa án kiến nghị khởi tố vì \'gây rối tại phiên tòa\'', 0, 1),
+(12776, 1431, 'Mô tả', '<a href=\"https://tuoitre.vn/mot-luat-su-o-can-tho-bi-toa-an-kien-nghi-khoi-to-vi-gay-roi-tai-phien-toa-20240620130008148.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/tin-phap-luat-17154107415991378658948-0-37-315-541-crop-17167868274091111059251-17168050737871725559772-0-0-162-260-crop-1718863069722961481246.jpg\" /></a>Một luật sư thuộc Đoàn luật sư Cần Thơ bị Tòa án nhân dân Cần Thơ gửi văn bản kiến nghị công an khởi tố do ‘có dấu hiệu gây rối trật tự phiên tòa’.', 0, 1),
+(12777, 1432, 'Tiêu đề tin tức', 'Bộ Công an chỉ rõ 30 dự án cây xanh, yêu cầu Phú Yên cung cấp hồ sơ', 0, 1),
+(12778, 1432, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-cong-an-chi-ro-30-du-an-cay-xanh-yeu-cau-phu-yen-cung-cap-ho-so-20240620124852421.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/20240620-cay-xanh-17188623268532130299414-75-0-1118-1668-crop-17188623372071925710872.jpg\" /></a>Cơ quan an ninh điều tra Bộ Công an yêu cầu Phú Yên cung cấp hồ sơ 30 dự án trồng và chăm sóc cây xanh tại tỉnh này để phục vụ điều tra vụ án liên quan Công ty TNHH Cây xanh Công Minh.', 0, 1),
+(12779, 1433, 'Tiêu đề tin tức', 'Tìm thấy nạn nhân còn lại trong vụ cháy cơ sở bột nhang 2 người chết ở Bình Chánh', 0, 1),
+(12780, 1433, 'Mô tả', '<a href=\"https://tuoitre.vn/tim-thay-nan-nhan-con-lai-trong-vu-chay-co-so-bot-nhang-2-nguoi-chet-o-binh-chanh-20240620112059372.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hien-truong-vu-chay-co-so-bot-nhang-171885517725811431526-75-0-1325-2000-crop-1718855649912557361982.jpg\" /></a>Sáng 20-6, lực lượng chức năng phong tỏa hiện trường, điều tra nguyên nhân vụ cháy cơ sở bột nhang trên đường Trần Văn Giàu.', 0, 1),
+(12781, 1434, 'Tiêu đề tin tức', 'Ngân hàng Indovina kiến nghị về dự án 2,7km vành đai 2, TP.HCM giao ba sở nghiên cứu', 0, 1),
+(12782, 1434, 'Mô tả', '<a href=\"https://tuoitre.vn/ngan-hang-indovina-kien-nghi-ve-du-an-2-7km-vanh-dai-2-tp-hcm-giao-ba-so-nghien-cuu-20240620115719706.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/base64-16885773476361157557708-17187718600341275596907-1718859371564807860804-0-7-450-727-crop-1718859380758336744878.png\" /></a>Trước kiến nghị của Ngân hàng Indovina về việc nguy cơ khoản vay tại dự án đoạn 3 đường vành đai 2 phát sinh nợ xấu, TP.HCM chỉ đạo các sở ngành.', 0, 1),
+(12783, 1435, 'Tiêu đề tin tức', 'Nhiều bất cập trên đường Mai Chí Thọ khi thi công nút giao An Phú', 0, 1),
+(12784, 1435, 'Mô tả', '<a href=\"https://tuoitre.vn/nhieu-bat-cap-tren-duong-mai-chi-tho-khi-thi-cong-nut-giao-an-phu-20240619193919942.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/19/z5554356434469603ca38d0de70225ade865f3949ae588-17187998983692040578173-0-0-1250-2000-crop-1718800770357856165951.jpg\" /></a>Khu vực thi công nút giao An Phú (TP Thủ Đức, TP.HCM) còn tồn tại nhiều bất cập như mặt đường hư, rào chắn nhưng không thi công.', 0, 1),
+(12785, 1436, 'Tiêu đề tin tức', 'Chủ tịch nước Tô Lâm và Tổng thống Putin bước vào hội đàm', 0, 1),
+(12786, 1436, 'Mô tả', '<a href=\"https://tuoitre.vn/chu-tich-nuoc-to-lam-va-tong-thong-putin-buoc-vao-hoi-dam-20240620125857805.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/to-lam-putin-1-17188630291301324613501-0-0-1250-2000-crop-1718863198768423819188.jpg\" /></a>Chủ tịch nước Tô Lâm và Tổng thống Putin hội đàm trưa 20-6, cùng thảo luận các biện pháp quan trọng để tăng cường quan hệ hai nước.', 0, 1),
+(12787, 1437, 'Tiêu đề tin tức', 'Cà Mau trả lời đơn cứu xét của chủ ‘biệt thự đẹp nhất’, nói có sai sót trong soạn thảo văn bản', 0, 1),
+(12788, 1437, 'Mô tả', '<a href=\"https://tuoitre.vn/ca-mau-tra-loi-don-cuu-xet-cua-chu-biet-thu-dep-nhat-noi-co-sai-sot-trong-soan-thao-van-ban-20240620120448677.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dsc05785-17188585401381325088299-42-92-1049-1703-crop-17188596717821798941977.jpg\" /></a>Trong khi quyết định 195 chưa triển khai đến ông Tập thì UBND TP Cà Mau đã ban hành quyết định 196 để thu hồi do có một số sai sót trong soạn thảo.', 0, 1),
+(12789, 1438, 'Tiêu đề tin tức', 'Tuổi Trẻ đạt giải C Giải báo chí quốc gia với loạt bài về phát triển công nghiệp văn hóa', 0, 1),
+(12790, 1438, 'Mô tả', '<a href=\"https://tuoitre.vn/tuoi-tre-dat-giai-c-giai-bao-chi-quoc-gia-voi-loat-bai-ve-phat-trien-cong-nghiep-van-hoa-20240620092113469.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/vnapotalhopbaothongtinvegiaibaochiquocgialanthuxviiistand-1718855973169-17188559732111813249264-59-126-232-403-crop-1718856144144358663436.jpg\" /></a>Báo Tuổi Trẻ được trao giải C cho loạt bài về phát triển công nghiệp văn hóa của nhóm ba tác giả Đậu Dung - Thiên Điểu - Mi Ly.', 0, 1),
+(12791, 1439, 'Tiêu đề tin tức', 'Cháy nhà 5 tầng ở Hà Nội, cứu thoát 1 người', 0, 1),
+(12792, 1439, 'Mô tả', '<a href=\"https://tuoitre.vn/chay-nha-5-tang-o-ha-noi-cuu-thoat-1-nguoi-20240620113341913.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/hien-truong-chay-nha-dan-ha-noi-17188574895671262684349-75-164-573-960-crop-17188577417691637234486.jpeg\" /></a>Vụ cháy xảy ra tại ngôi nhà 5 tầng nằm sâu trong ngõ phố Hà Trì thuộc phường Hà Cầu (quận Hà Đông, Hà Nội) rạng sáng 20-6.', 0, 1),
+(12793, 1440, 'Tiêu đề tin tức', 'Vụ nhận hối lộ tại trung tâm đăng kiểm: Vì sao không xử lý người đưa hối lộ?', 0, 1),
+(12794, 1440, 'Mô tả', '<a href=\"https://tuoitre.vn/vu-nhan-hoi-lo-tai-trung-tam-dang-kiem-vi-sao-khong-xu-ly-nguoi-dua-hoi-lo-20240620112433628.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dang-kiem-1718857308799714451984-0-0-1080-1728-crop-17188573618222064175479.jpg\" /></a>Các chủ xe trực tiếp hoặc qua trung gian đưa tiền để được cấp giấy chứng nhận cải tạo xe. Nhưng họ không bị xử lý hành vi đưa hối lộ, vì sao?', 0, 1),
+(12795, 1441, 'Tiêu đề tin tức', 'Bộ trưởng Nguyễn Chí Dũng: Không có kế hoạch khả thi, quy hoạch thủ đô chỉ là kỳ vọng', 0, 1),
+(12796, 1441, 'Mô tả', '<a href=\"https://tuoitre.vn/bo-truong-nguyen-chi-dung-khong-co-ke-hoach-kha-thi-quy-hoach-thu-do-chi-la-ky-vong-20240620104328249.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/nguyenchidung-17188544397901228562377-14-0-502-780-crop-17188546325571467557385.jpg\" /></a>Ông Dũng cho rằng phải xác định cơ chế, nguồn lực, kế hoạch để thực hiện được quy hoạch thủ đô. Nếu không chỉ là kỳ vọng, định hướng tương lai.', 0, 1),
+(12797, 1442, 'Tiêu đề tin tức', 'Chủ tịch nước Tô Lâm chủ trì lễ đón Tổng thống Putin', 0, 1),
+(12798, 1442, 'Mô tả', '<a href=\"https://tuoitre.vn/chu-tich-nuoc-to-lam-chu-tri-le-don-tong-thong-putin-20240620094752667.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/ctn-to-lam-don-putin-1718861265792100130335-121-524-872-1726-crop-17188613320261087494679.jpg\" /></a>Sau khi đến Hà Nội rạng sáng 20-6, Tổng thống Nga Vladimir Putin bắt đầu chuyến thăm cấp nhà nước đến Việt Nam với một ngày gồm các hoạt động ngoại giao dày đặc.', 0, 1),
+(12799, 1443, 'Tiêu đề tin tức', 'Phó cục trưởng Cục An ninh đối ngoại làm giám đốc Công an tỉnh Hà Tĩnh', 0, 1),
+(12800, 1443, 'Mô tả', '<a href=\"https://tuoitre.vn/pho-cuc-truong-cuc-an-ninh-doi-ngoai-lam-giam-doc-cong-an-tinh-ha-tinh-2024062009273329.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/dai-ta-nguyen-xuan-thao-giam-doc-cong-an-ha-tinh-phat-bieu-nhan-nhiem-vu-1718849919295278061818-125-0-750-1000-crop-17188501067771382266416.jpg\" /></a>Đại tá Nguyễn Xuân Thao - phó cục trưởng Cục An ninh đối ngoại - được Bộ Công an điều động, bổ nhiệm giám đốc Công an tỉnh Hà Tĩnh.', 0, 1),
+(12801, 1444, 'Tiêu đề tin tức', 'Xe khách giường nằm chạy giờ cấm ở Bình Thạnh: Cảnh sát giao thông hứa xử lý dứt điểm', 0, 1),
+(12802, 1444, 'Mô tả', '<a href=\"https://tuoitre.vn/xe-khach-giuong-nam-chay-gio-cam-o-binh-thanh-canh-sat-giao-thong-hua-xu-ly-dut-diem-20240620072533053.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/anh-7-17186978693831677989490-0-154-1126-1956-crop-17188409671317617195.jpg\" /></a>Phòng Cảnh sát giao thông chỉ đạo các đơn vị xử lý dứt điểm tình trạng xe khách giường nằm chạy khung giờ cấm quanh bến xe Miền Đông cũ.', 0, 1),
+(12803, 1445, 'Tiêu đề tin tức', 'Chuyên gia Nga: Việt Nam là đối tác đặc biệt quan trọng của Nga', 0, 1),
+(12804, 1445, 'Mô tả', '<a href=\"https://tuoitre.vn/chuyen-gia-nga-viet-nam-la-doi-tac-dac-biet-quan-trong-cua-nga-20240620083954429.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/chan-dung-ong-alexander-butko-17188474424851008113575-0-0-692-1107-crop-17188474763041849316362.jpg\" /></a>\'Việt Nam có tầm quan trọng đặc biệt đối với Nga do sự tin tưởng chính trị sâu sắc và nền tảng lớn trong quan hệ song phương\'.', 0, 1),
+(12805, 1446, 'Tiêu đề tin tức', 'Khi nước Nga hướng đông và nhìn về Việt Nam', 0, 1),
+(12806, 1446, 'Mô tả', '<a href=\"https://tuoitre.vn/khi-nuoc-nga-huong-dong-va-nhin-ve-viet-nam-20240620083311636.htm\"><img src=\"https://cdn1.tuoitre.vn/zoom/80_50/471584752817336320/2024/6/20/tong-thong-nga-tham-vn-17188482171601900974201-75-68-832-1280-crop-1718848261399439060862.png\" /></a>Tổng thống Nga mang đến Hà Nội không chỉ sự coi trọng rất lớn mà còn cả những kỳ vọng về giai đoạn phát triển mới với Việt Nam.', 0, 1),
+(12807, 1447, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-oppo-a17k-3gb-64gb-hang-chinh-hang-p204671569.html?spid=273356351', 1, 0),
+(12808, 1447, 'Tên sản phẩm', 'Điện Thoại Oppo A17k 3GB/64GB - Hàng Chính Hãng', 0, 1),
+(12809, 1447, 'Giá sản phẩm', '2550000', 0, 0),
+(12810, 1447, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/3e/bd/e4/ef73e0c3d163750ac33c413826a23690.jpg', 0, 0),
+(12811, 1448, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-oppo-a17k-3gb-64gb-hang-chinh-hang-p204872160.html?spid=204872162', 1, 0),
+(12812, 1448, 'Tên sản phẩm', 'Điện thoại Oppo A17k (3GB/64GB) - Hàng chính hãng', 0, 1),
+(12813, 1448, 'Giá sản phẩm', '2539000', 0, 0),
+(12814, 1448, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/3b/63/7e/4a2b685397627cea65312c6114c85192.jpg', 0, 0),
+(12815, 1449, 'Link chi tiết sản phẩm', 'https://tiki.vn/dien-thoai-poco-x6-5g-8gb-256gb-hang-chinh-hang-p274946446.html?spid=274947132', 1, 0),
+(12816, 1449, 'Tên sản phẩm', 'Điện Thoại POCO X6 5G (8GB/256GB) - Hàng Chính Hãng', 0, 1),
+(12817, 1449, 'Giá sản phẩm', '6750000', 0, 0),
+(12818, 1449, 'url ảnh', 'https://salt.tikicdn.com/cache/280x280/ts/product/e6/45/47/01b2b0d98071e452d282215c2d03b7fe.jpg', 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `item_types`
+-- Table structure for table `item_types`
 --
 
 CREATE TABLE `item_types` (
@@ -2091,7 +2891,7 @@ CREATE TABLE `item_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `item_types`
+-- Dumping data for table `item_types`
 --
 
 INSERT INTO `item_types` (`id`, `type`, `description`) VALUES
@@ -2101,7 +2901,7 @@ INSERT INTO `item_types` (`id`, `type`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `websites`
+-- Table structure for table `websites`
 --
 
 CREATE TABLE `websites` (
@@ -2111,7 +2911,7 @@ CREATE TABLE `websites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `websites`
+-- Dumping data for table `websites`
 --
 
 INSERT INTO `websites` (`id`, `name`, `url`) VALUES
@@ -2120,177 +2920,189 @@ INSERT INTO `websites` (`id`, `name`, `url`) VALUES
 (3, 'Tuổi trẻ', 'https://tuoitre.vn/');
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `crawl_action_details`
+-- Indexes for table `crawl_action_details`
 --
 ALTER TABLE `crawl_action_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_action_types`
+-- Indexes for table `crawl_action_types`
 --
 ALTER TABLE `crawl_action_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_configs`
+-- Indexes for table `crawl_configs`
 --
 ALTER TABLE `crawl_configs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_data_types`
+-- Indexes for table `crawl_data_types`
 --
 ALTER TABLE `crawl_data_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_details`
+-- Indexes for table `crawl_details`
 --
 ALTER TABLE `crawl_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_option_condition_types`
+-- Indexes for table `crawl_option_condition_types`
 --
 ALTER TABLE `crawl_option_condition_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_option_details`
+-- Indexes for table `crawl_option_details`
 --
 ALTER TABLE `crawl_option_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_option_types`
+-- Indexes for table `crawl_option_types`
 --
 ALTER TABLE `crawl_option_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_result_types`
+-- Indexes for table `crawl_result_types`
 --
 ALTER TABLE `crawl_result_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `crawl_types`
+-- Indexes for table `crawl_types`
 --
 ALTER TABLE `crawl_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `items`
+-- Indexes for table `http_method_types`
+--
+ALTER TABLE `http_method_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `items`
 --
 ALTER TABLE `items`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `item_details`
+-- Indexes for table `item_details`
 --
 ALTER TABLE `item_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `item_types`
+-- Indexes for table `item_types`
 --
 ALTER TABLE `item_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `websites`
+-- Indexes for table `websites`
 --
 ALTER TABLE `websites`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `crawl_action_details`
+-- AUTO_INCREMENT for table `crawl_action_details`
 --
 ALTER TABLE `crawl_action_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_action_types`
+-- AUTO_INCREMENT for table `crawl_action_types`
 --
 ALTER TABLE `crawl_action_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_configs`
+-- AUTO_INCREMENT for table `crawl_configs`
 --
 ALTER TABLE `crawl_configs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_data_types`
+-- AUTO_INCREMENT for table `crawl_data_types`
 --
 ALTER TABLE `crawl_data_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_details`
+-- AUTO_INCREMENT for table `crawl_details`
 --
 ALTER TABLE `crawl_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=428;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=567;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_option_condition_types`
+-- AUTO_INCREMENT for table `crawl_option_condition_types`
 --
 ALTER TABLE `crawl_option_condition_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_option_details`
+-- AUTO_INCREMENT for table `crawl_option_details`
 --
 ALTER TABLE `crawl_option_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_option_types`
+-- AUTO_INCREMENT for table `crawl_option_types`
 --
 ALTER TABLE `crawl_option_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_result_types`
+-- AUTO_INCREMENT for table `crawl_result_types`
 --
 ALTER TABLE `crawl_result_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `crawl_types`
+-- AUTO_INCREMENT for table `crawl_types`
 --
 ALTER TABLE `crawl_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT cho bảng `items`
+-- AUTO_INCREMENT for table `http_method_types`
+--
+ALTER TABLE `http_method_types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1207;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1450;
 
 --
--- AUTO_INCREMENT cho bảng `item_details`
+-- AUTO_INCREMENT for table `item_details`
 --
 ALTER TABLE `item_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12294;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12819;
 
 --
--- AUTO_INCREMENT cho bảng `item_types`
+-- AUTO_INCREMENT for table `item_types`
 --
 ALTER TABLE `item_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT cho bảng `websites`
+-- AUTO_INCREMENT for table `websites`
 --
 ALTER TABLE `websites`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;

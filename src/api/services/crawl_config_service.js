@@ -79,6 +79,8 @@ exports.getAllConfigInfor = async () => {
 // Tạo mới
 exports.create = async (name, description) => {
     try {
+        // if(...) kiểm tra tên
+
         return await crawlConfigs.create({
             name: name,
             description: description,
@@ -114,10 +116,12 @@ exports.update = async (id, crawlConfigData) => {
         crawlConfig.crawl_type_id = crawlConfigData.crawl_type_id;
         crawlConfig.result_type_id = crawlConfigData.result_type_id;
         crawlConfig.item_selector = crawlConfigData.item_selector || null;
-        crawlConfig.data_selector = crawlConfigData.data_selector || null;
         crawlConfig.item_type_id = crawlConfigData.item_type_id;
         crawlConfig.url = crawlConfigData.url;
         crawlConfig.website_id = crawlConfigData.website_id;
+        crawlConfig.http_method_type_id = crawlConfigData.http_method_type_id;
+        crawlConfig.body_api = crawlConfigData.body_api;
+        crawlConfig.headers_api = crawlConfigData.headers_api;
         crawlConfig.is_complete = crawlConfigData.is_complete || false;
         crawlConfig.update_at = Date.now();
         

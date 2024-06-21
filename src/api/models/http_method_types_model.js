@@ -1,6 +1,6 @@
 const { sequelize, DataTypes } = require('../../config/database.config');
 
-const CrawlTypes = sequelize.define('CrawlTypes', {
+const HttpMethodType = sequelize.define('CrawlOptionTypes', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -14,17 +14,17 @@ const CrawlTypes = sequelize.define('CrawlTypes', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  have_actions: {
+  have_body: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },
-  have_http_method: {
+  have_headers: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },
 }, {
-  tableName: 'crawl_types',
+  tableName: 'http_method_types',
   timestamps: false,
 });
 
-module.exports = CrawlTypes;
+module.exports = HttpMethodType;

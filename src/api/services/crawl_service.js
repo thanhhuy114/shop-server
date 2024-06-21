@@ -3,6 +3,7 @@ const itemService = require('./item_service');
 const htmlCrawlService = require('./html_crawl_service');
 const apiCrawlService = require('./api_crawl_service');
 const rssCrawlService = require('./rss_crawl_service');
+const {CRAWL_TYPES, CRAWL_RESULT_TYPES} = require('../untils/constans/constans');
 
 // Hàm thực hiện thu thập dữ liệu
 exports.handleCrawlingData = async (crawlConfigInfor) => {
@@ -13,15 +14,15 @@ exports.handleCrawlingData = async (crawlConfigInfor) => {
     // Thực hiện thu thập theo từng loại
     let crawlResult = [];
 
-    if (crawlType === 'HTML') {
-        if(resultType === 'single') {
+    if (crawlType == CRAWL_TYPES.HTML) {
+        if(resultType == CRAWL_RESULT_TYPES.SINGLE) {
             crawlResult = await htmlCrawlService.singleCrawl(
                 crawlConfigInfor.crawl_config, 
                 crawlConfigInfor.crawl_action_details, 
                 crawlConfigInfor.crawl_details, 
                 crawlConfigInfor.crawl_option_details
             );
-        } else if (resultType === 'multi') {
+        } else if (resultType == CRAWL_RESULT_TYPES.MULTIPLE) {
             crawlResult = await htmlCrawlService.multiCrawl(
                 crawlConfigInfor.crawl_config, 
                 crawlConfigInfor.crawl_action_details, 
@@ -29,28 +30,28 @@ exports.handleCrawlingData = async (crawlConfigInfor) => {
                 crawlConfigInfor.crawl_option_details
             );
         }
-    } else if (crawlType === 'API') {
-        if(resultType === 'single') {
+    } else if (crawlType == CRAWL_TYPES.API) {
+        if(resultType == CRAWL_RESULT_TYPES.SINGLE) {
             crawlResult = await apiCrawlService.singleCrawl(
                 crawlConfigInfor.crawl_config, 
                 crawlConfigInfor.crawl_details, 
                 crawlConfigInfor.crawl_option_details
             );
-        } else if (resultType === 'multi') {
+        } else if (resultType == CRAWL_RESULT_TYPES.MULTIPLE) {
             crawlResult = await apiCrawlService.multiCrawl(
                 crawlConfigInfor.crawl_config, 
                 crawlConfigInfor.crawl_details, 
                 crawlConfigInfor.crawl_option_details
             );
         }
-    } else if (crawlType === 'RSS') {
-        if(resultType === 'single') {
+    } else if (crawlType == CRAWL_TYPES.RSS) {
+        if(resultType == CRAWL_RESULT_TYPES.SINGLE) {
             crawlResult = await rssCrawlService.singleCrawl(
                 crawlConfigInfor.crawl_config, 
                 crawlConfigInfor.crawl_details, 
                 crawlConfigInfor.crawl_option_details
             );
-        } else if (resultType === 'multi') {
+        } else if (resultType == CRAWL_RESULT_TYPES.MULTIPLE) {
             crawlResult = await rssCrawlService.multiCrawl(
                 crawlConfigInfor.crawl_config,
                 crawlConfigInfor.crawl_details, 

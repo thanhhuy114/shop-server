@@ -13,6 +13,9 @@ const typeRoutes = require('./api/routes/type_routes.js');
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+const cors = require('cors')
+
+app.use(cors())
 
 // routes thu thập dữ liệu từ HTML
 app.use('/api/crawl-config', crawlConfigRoutes);

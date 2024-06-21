@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const typeService = require('./type_service');
 const optionDetailService = require('./crawl_option_detail_service');
 const actionDetailService = require('./crawl_action_detail_service');
+const {CRAWL_DATA_TYPES} = require('../untils/constans/constans');
 
 // Hàm khởi tạo trình duyệt
 const initPage = async () => {
@@ -24,9 +25,15 @@ const initPage = async () => {
 
 // Lấy dữ liệu 1 đối tượng
 exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
+    let browser;
+    
     try {
         // Khởi tạo trình duyệt và chuyển đến trang chứa dữ liệu
-        const { browser, page } = await initPage();
+        const result = await initPage();
+        browser = result.browser;
+        const page = result.page;
+
+        // chuyển đến trang
         await page.goto(crawlConfig.url, { waitUntil: "networkidle2"});
 
         // Thực hiện các hành động trong quá trình lấy dữ liệu
@@ -41,11 +48,11 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
             const type = (await typeService.getCrawlDataType(data_type_id)).type;
             
             let value;
-            if (type === 'attribute') {
+            if (type == CRAWL_DATA_TYPES.ATTRIBUTE) {
                 value = await page.$eval(selector, (el, attr) => el.getAttribute(attr), attribute);
-            } else if (type === 'content') {
-                value = await page.$eval(selector, el => el.textContent.trim());
-            } else if (type === 'count') {
+            } else if (type == CRAWL_DATA_TYPES.CONTENT) {
+                value = await page.$eval(selector, el => el.textContent);
+            } else if (type == CRAWL_DATA_TYPES.COUNT) {
                 value = await page.$$eval(selector, elements => elements.length);
             }
 
@@ -60,6 +67,8 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
 
         return [data];
     } catch (error) {
+        browser.close();
+
         console.error('Đã xảy ra lỗi khi lấy dữ liệu của 1 item:', error);
         return [];
     }
@@ -67,12 +76,16 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
 
 // Lấy dữ liệu tất cả đối tượng
 exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
-    // Khai báo mảng kết quả
-    const results = [];
-
+    let browser;
+    
     try {
+        // Khai báo mảng kết quả
+        const results = [];
+
         // Khởi tạo trình duyệt
-        const { browser, page } = await initPage();
+        const result = await initPage();
+        browser = result.browser;
+        const page = result.page;
 
         // Chuyển đến trang 
         await page.goto(crawlConfig.url, { waitUntil: 'networkidle2' });
@@ -99,11 +112,11 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
                 const type = (await typeService.getCrawlDataType(data_type_id)).type;
 
                 let value;
-                if (type === 'attribute') {
+                if (type == CRAWL_DATA_TYPES.ATTRIBUTE) {
                     value = $(selector).attr(attribute);
-                } else if (type === 'count') {
+                } else if (type == CRAWL_DATA_TYPES.COUNT) {
                     value = $(selector).length;
-                } else if (type === 'content') {
+                } else if (type == CRAWL_DATA_TYPES.CONTENT) {
                     value = $(selector).text();
                 }
 
@@ -121,6 +134,8 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
         
         return results;
     } catch (error) {
+        browser.close();
+
         console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả item:', error);
         throw error;
     }

@@ -1,5 +1,6 @@
 const optionDetails = require('../models/crawl_option_details_model');
 const typeService = require('../services/type_service');
+const {OPTIONS, CONDITIONS} = require('../untils/constans/constans');
 
 // Lấy danh sách lựa chọn của một chi tiết thu thập
 exports.getList = async (crawlDetailId) => {
@@ -21,7 +22,7 @@ exports.getList = async (crawlDetailId) => {
 exports.save = async (crawlDetailId, optionDetailDatas) => {
     try {
         // Kiểm tra null
-        if(optionDetailDatas.length <= 0) {
+        if(!optionDetailDatas) {
             return [];
         }
         
@@ -106,7 +107,7 @@ exports.handleOptions = async (options, crawl_detail_id, value) => {
             const checkConditionResult = await checkCondition(type_option_condition_id, condition_value, value);
 
             // Thêm vào đầu chuỗi
-            if (type_option === 'prepend') {
+            if (type_option == OPTIONS.PREPEND) {
                 // Thực hiện option nếu điều kiện đúng
                 if (checkConditionResult) {
                     value = option_value + value;
@@ -114,7 +115,7 @@ exports.handleOptions = async (options, crawl_detail_id, value) => {
             }
 
             // Thêm vào cuối chuỗi
-            if (type_option === 'append') {
+            else if (type_option == OPTIONS.APPEND) {
                 // Thực hiện option nếu điều kiện đúng
                 if (checkConditionResult) {
                     value = value + option_value;
@@ -122,12 +123,14 @@ exports.handleOptions = async (options, crawl_detail_id, value) => {
             }
 
             // Loại bỏ ký tự không phải số
-            if (type_option === 'to number') {
+            else if (type_option == OPTIONS.TO_NUMBER) {
                 // Thực hiện option nếu điều kiện đúng
                 if (checkConditionResult) {
                     value = value.replace(/\D/g, '');
                 }
             }
+
+            // Thêm các lựa chọn khác
         }
     }
 
@@ -144,11 +147,11 @@ const checkCondition = async (conditionId, conditionValue, value) => {
     const conditionType = (await typeService.getCrawlOptionConditionType(conditionId)).type;
 
     // Kiểm tra cho từng loại điều kiện
-    if (conditionType === 'Start with') {
+    if (conditionType == CONDITIONS.START_WITH) {
         return value.toLowerCase().startsWith(conditionValue.toLowerCase());
-    } else if (conditionType === 'End with') {
+    } else if (conditionType == CONDITIONS.END_WITH) {
         return value.toLowerCase().endsWith(conditionValue.toLowerCase());
-    } else if (conditionType === 'Contain') {
+    } else if (conditionType == CONDITIONS.CONTAINS) {
         return value.toLowerCase().includes(conditionValue.toLowerCase());
     } else {
         console.error('Loại điều kiện chưa được định nghĩa:', conditionType);
