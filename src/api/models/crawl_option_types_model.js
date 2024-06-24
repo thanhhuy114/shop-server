@@ -18,6 +18,10 @@ const CrawlOptionTypes = sequelize.define('CrawlOptionTypes', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },
+  have_new_value: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
 }, {
   tableName: 'crawl_option_types',
   timestamps: false,

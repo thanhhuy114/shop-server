@@ -69,6 +69,7 @@ const add = async (crawlDetailId, optionDetailData) => {
             crawl_detail_id: crawlDetailId,
             option_type_id: optionDetailData.option_type_id,
             option_value: optionDetailData.option_value,
+            new_value: optionDetailData.new_value,
             option_condition_type_id: optionDetailData.option_condition_type_id,
             condition_value: optionDetailData.condition_value
         });
@@ -98,7 +99,7 @@ exports.deleteAll = async (itemDetailId) => {
 exports.handleOptions = async (options, crawl_detail_id, value) => {
     for (const option of options) {
         if(option.crawl_detail_id === crawl_detail_id) {
-            const { option_type_id, option_value, type_option_condition_id, condition_value } = option;
+            const { option_type_id, option_value, new_value, type_option_condition_id, condition_value } = option;
 
             // Lấy loại option
             const type_option = (await typeService.getCrawlOptionType(option_type_id)).type;
@@ -130,7 +131,116 @@ exports.handleOptions = async (options, crawl_detail_id, value) => {
                 }
             }
 
-            // Thêm các lựa chọn khác
+            // Loại bỏ một chuỗi phù hợp trong kết quả
+            else if (type_option == OPTIONS.REMOVE) {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
+                    // Nếu muốn xóa chuỗi từ "a" đến "b", đầu vào có dạng: "a...b"
+                    const optionValues = option_value.split('...');
+
+                    if (optionValues.length == 1) {
+                        value = value.replace(option_value, '');
+                    } else if (optionValues.length == 2) {
+                        const startValue = optionValues[0];
+                        const endValue = optionValues[1];
+
+                        // Tạo biểu thức chính quy để tìm đoạn chuỗi từ startValue đến endValue
+                        const regex = new RegExp(`${startValue}.*?${endValue}`, 's');
+
+                        // Kiểm tra xem có khớp nào không trước khi thực hiện thay thế
+                        if (regex.test(value)) {
+                            // Thay thế đoạn chuỗi phù hợp với chuỗi rỗng
+                            value = value.replace(regex, '');
+                        }
+                    } else {
+                        console.log("option_value không hợp lệ!");
+                    }
+                }
+            } 
+            
+            // Loại bỏ tất cả các chuỗi phù hợp
+            else if (type_option == OPTIONS.REMOVE_ALL) {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
+                    // Nếu muốn xóa chuỗi từ "a" đến "b", đầu vào có dạng: "a...b"
+                    const optionValues = option_value.split('...');
+            
+                    if (optionValues.length == 1) {
+                        value = value.replace(new RegExp(option_value, 'g'), '');
+                    } else if (optionValues.length == 2) {
+                        const startValue = optionValues[0];
+                        const endValue = optionValues[1];
+            
+                        // Tạo biểu thức chính quy để tìm tất cả các đoạn chuỗi từ startValue đến endValue
+                        const regex = new RegExp(`${startValue}.*?${endValue}`, 'gs');
+            
+                        // Kiểm tra xem có khớp nào không trước khi thực hiện thay thế
+                        if (regex.test(value)) {
+                            // Thay thế tất cả các đoạn chuỗi phù hợp với chuỗi rỗng
+                            value = value.replace(regex, '');
+                        }
+                    } else {
+                        console.log("option_value không hợp lệ!");
+                    }
+                }
+            }
+
+            // Thay thế một chuỗi phù hợp trong kết quả
+            else if (type_option == OPTIONS.REPLACE) {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
+                    // Nếu muốn thay thế chuỗi từ "a" đến "b", đầu vào có dạng: "a...b"
+                    const optionValues = option_value.split('...');
+
+                    if (optionValues.length == 1) {
+                        value = value.replace(option_value, new_value);
+                    } else if (optionValues.length == 2) {
+                        const startValue = optionValues[0];
+                        const endValue = optionValues[1];
+
+                        // Tạo biểu thức chính quy để tìm đoạn chuỗi từ startValue đến endValue
+                        const regex = new RegExp(`${startValue}.*?${endValue}`, 's');
+
+                        // Kiểm tra xem có khớp nào không trước khi thực hiện thay thế
+                        if (regex.test(value)) {
+                            // Thay thế đoạn chuỗi phù hợp với new_value
+                            value = value.replace(regex, new_value);
+                        }
+                    } else {
+                        console.log("option_value không hợp lệ!");
+                    }
+                }
+            } 
+            
+            // Thay thế tất cả các chuỗi phù hợp
+            else if (type_option == OPTIONS.REPLACE_ALL) {
+                // Thực hiện option nếu điều kiện đúng
+                if (checkConditionResult) {
+                    // Nếu muốn thay thế chuỗi từ "a" đến "b", đầu vào có dạng: "a...b"
+                    const optionValues = option_value.split('...');
+            
+                    if (optionValues.length == 1) {
+                        value = value.replace(new RegExp(option_value, 'g'), new_value);
+                    } else if (optionValues.length == 2) {
+                        const startValue = optionValues[0];
+                        const endValue = optionValues[1];
+            
+                        // Tạo biểu thức chính quy để tìm tất cả các đoạn chuỗi từ startValue đến endValue
+                        const regex = new RegExp(`${startValue}.*?${endValue}`, 'gs');
+            
+                        // Kiểm tra xem có khớp nào không trước khi thực hiện thay thế
+                        if (regex.test(value)) {
+                            // Thay thế tất cả các đoạn chuỗi phù hợp với new_value
+                            value = value.replace(regex, new_value);
+                        }
+                    } else {
+                        console.log("option_value không hợp lệ!");
+                    }
+                }
+            }
+
+            // Thêm các lựa chọn khác ở đây
+
         }
     }
 

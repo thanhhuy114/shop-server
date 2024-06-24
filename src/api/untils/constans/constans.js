@@ -1,13 +1,5 @@
 /* Tất cả các hằng được lưu trữ ở đây */
 
-// Hằng số HTTP Method Types
-const HTTP_METHODS = {
-    GET: 'GET',
-    POST: 'POST',
-    PUT: 'PUT',
-    DELETE: 'DELETE',
-    PATCH: 'PATCH'
-};
 
 // Hằng số về HTTP Status Codes
 const HTTP_STATUS = {
@@ -20,6 +12,17 @@ const HTTP_STATUS = {
     NOT_FOUND: 404
 };
 
+/* Các hằng số bên dưới bắt buộc phải trùng khớp với các bảng trong database */
+
+// Hằng số HTTP Method Types
+const HTTP_METHODS = {
+    GET: 'GET',
+    POST: 'POST',
+    PUT: 'PUT',
+    DELETE: 'DELETE',
+    PATCH: 'PATCH'
+};
+
 // Hằng số về các hành động mô phỏng người dùng khi thu thập bằng HTML
 const ACTIONS = {
     CLICK_WHEN_APPEAR: 'Click when appear',
@@ -30,7 +33,11 @@ const ACTIONS = {
 const OPTIONS = {
     APPEND: 'append',
     PREPEND: 'prepend',
-    TO_NUMBER: 'to number'
+    TO_NUMBER: 'to number',
+    REMOVE: 'remove',
+    REMOVE_ALL: 'remove all',
+    REPLACE: 'replace',
+    REPLACE_ALL: 'replace all'
 };
 
 // Hằng số về các lựa chọn
