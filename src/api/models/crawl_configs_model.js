@@ -39,7 +39,7 @@ const CrawlConfigs = sequelize.define('CrawlConfigs', {
     allowNull: true,
   },
   http_method_type_id: {
-    type: DataTypes.TEXT,
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   body_api: {

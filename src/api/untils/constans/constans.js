@@ -4,12 +4,12 @@
 // Hằng số về HTTP Status Codes
 const HTTP_STATUS = {
     OK: 200, // gọi api thành công
-    INTERNAL_SERVER_ERROR: 500, // gọi api gặp lỗi
     CREATED: 201,
     BAD_REQUEST: 400, //gọi api gặp lỗi như: xóa dữ liệu thất bại vì id không tồn tại
     UNAUTHORIZED: 401,
     FORBIDDEN: 403,
-    NOT_FOUND: 404
+    NOT_FOUND: 404,
+    INTERNAL_SERVER_ERROR: 500 // gọi api gặp lỗi
 };
 
 /* Các hằng số bên dưới bắt buộc phải trùng khớp với các bảng trong database */

@@ -54,20 +54,9 @@ exports.getConfigInfor = async (crawlConfigId) => {
 }
 
 // Lấy các thông tin cấu hình của 1 phiên thu thập
-exports.getAllConfigInfor = async () => {
+exports.getAll = async () => {
     try {
-        // Khai báo mảng kết quả
-        const results = [];
-
-        // Lấy tất cả cấu hình 
-        const allConfig = await crawlConfigs.findAll();
-
-        // Lấy chi tiết cấu hình của từ cấu hình
-        for (const config of allConfig) {
-            const configInfor = await this.getConfigInfor(config.id)
-
-            results.push(configInfor);
-        }
+        const results = await crawlConfigs.findAll();
 
         return results;
     } catch (error) {

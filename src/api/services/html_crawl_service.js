@@ -56,6 +56,8 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
                 value = await page.$$eval(selector, elements => elements.length);
             }
 
+            if (!value) value = '';
+
             // Thực hiện các option
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
@@ -119,6 +121,8 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
                 } else if (type == CRAWL_DATA_TYPES.CONTENT) {
                     value = $(selector).text();
                 }
+
+                if (!value) value = '';
 
                 // Thực hiện các option
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);

@@ -18,7 +18,7 @@ exports.get = async (req, res) => {
 // Lấy thông tin một phiên cấu hình thu thập
 exports.getAll = async (req, res) => {
     try {
-        const allCrawlConfigInfor = await crawlConfigService.getAllConfigInfor();
+        const allCrawlConfigInfor = await crawlConfigService.getAll();
         
         res.status(HTTP_STATUS.OK).json(allCrawlConfigInfor);
     } catch (error) {

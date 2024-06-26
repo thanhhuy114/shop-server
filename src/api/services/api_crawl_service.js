@@ -55,6 +55,8 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                     }
                 }
 
+                if (!value) value = '';
+
             // Thực hiện các option
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
@@ -127,6 +129,8 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                         value = value[attr];
                     }
                 }
+
+                if (!value) value = '';
 
                 // Thực hiện các option
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
