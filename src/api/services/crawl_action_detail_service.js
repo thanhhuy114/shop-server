@@ -99,14 +99,18 @@ const deleteAll = async (crawlConfigId) => {
 
 // Hàm thực hiện xử lý các hành động
 exports.handleActions = async (page, actions) => {
-    for (const action of actions) {
-        const actionType = (await typeService.getCrawlActionType(action.action_type_id)).type;
+    try {
+        for (const action of actions) {
+            const actionType = (await typeService.getCrawlActionType(action.action_type_id)).type;
 
-        if (actionType == ACTIONS.CLICK_WHEN_APPEA) {
-            clickWhenAppear(page, action.selector);
-        } else if (actionType == ACTIONS.SHOW_AL) {
-            await showAll(page, action.selector);
+            if (actionType == ACTIONS.CLICK_WHEN_APPEAR) {
+                clickWhenAppear(page, action.selector);
+            } else if (actionType == ACTIONS.SHOW_ALL) {
+                await showAll(page, action.selector);
+            }
         }
+    } catch (error) {
+        console.log('Lỗi khi thực hiện xử lý các hành động trong handleActions():', error);
     }
 };
 

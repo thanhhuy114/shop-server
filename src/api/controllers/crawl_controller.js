@@ -17,10 +17,10 @@ exports.crawlingData = async (req, res) => {
         );
 
         // Thực hiện thu thập
-        const items = await crawlService.handleCrawlingData(crawlConfigInfor);
+        const {items, errors} = await crawlService.handleCrawlingData(crawlConfigInfor);
 
         // Gửi kết quả về client
-        res.status(HTTP_STATUS.OK).json({ crawl_config_infor: newCrawlConfigInfor, items });
+        res.status(HTTP_STATUS.OK).json({ crawl_config_infor: newCrawlConfigInfor, items, errors });
     } catch (error) {
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Đã xảy ra lỗi khi thu thập dữ liệu'});
         console.log('Lỗi khi thực hiện thu thập dữ liệu, với cấu hình thu tập được gửi từ client', error);
@@ -37,10 +37,10 @@ exports.reCrawlingData = async (req, res) => {
         const crawlConfigInfor = await crawlConfigService.getConfigInfor(id);
 
         //  Thực hiện thu thập
-        const items = await crawlService.handleCrawlingData(crawlConfigInfor);
+        const {items, errors} = await crawlService.handleCrawlingData(crawlConfigInfor);
 
         // Gửi kết quả về client
-        res.status(HTTP_STATUS.OK).json({ crawl_config_infor: crawlConfigInfor, items });
+        res.status(HTTP_STATUS.OK).json({ crawl_config_infor: crawlConfigInfor, items, errors });
     } catch (error) {
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Đã xảy ra lỗi khi thu thập dữ liệu'});
         console.log('Lỗi khi thực hiện cập nhật lại dữ liệu thu thập, với cấu hình thu tập được lấy từ database theo id', error);

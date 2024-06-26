@@ -12,7 +12,26 @@ const HTTP_STATUS = {
     INTERNAL_SERVER_ERROR: 500 // gọi api gặp lỗi
 };
 
-/* Các hằng số bên dưới bắt buộc phải trùng khớp với các bảng trong database */
+// Hằng số về lỗi trong quá trình thu thập
+const ERROR_CODES = {
+    // Lỗi không xác định
+    UNKNOWN_ERROR: 'E000',
+
+    // Lỗi không tìm thấy phần tử
+    ELEMENT_NOT_FOUND: 'E001',
+
+    // Lỗi không lấy được giá trị từ phần tử
+    ELEMENT_VALUE_NOT_FOUND: 'E002',
+
+    // Lỗi khi tìm danh sách item
+    ITEM_LIST_NOT_FOUND: 'E003',
+};
+
+/* 
+    ###
+    Các hằng số bên dưới bắt buộc phải trùng khớp với các bảng trong database 
+    ###
+*/
 
 // Hằng số HTTP Method Types
 const HTTP_METHODS = {
@@ -71,6 +90,7 @@ const CRAWL_DATA_TYPES = {
 module.exports = {
     HTTP_METHODS,
     HTTP_STATUS,
+    ERROR_CODES,
     ACTIONS,
     OPTIONS,
     CONDITIONS,

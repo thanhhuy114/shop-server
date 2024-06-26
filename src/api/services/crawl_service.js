@@ -11,9 +11,10 @@ exports.handleCrawlingData = async (crawlConfigInfor) => {
     const crawlType = (await typeService.getCrawlType(crawlConfigInfor.crawl_config.crawl_type_id)).type;
     const resultType = (await typeService.getCrawlResultType(crawlConfigInfor.crawl_config.result_type_id)).type;
 
-    // Thực hiện thu thập theo từng loại
+    // Kết quả thu thập
     let crawlResult = [];
 
+    // Thực hiện thu thập theo từng loại
     if (crawlType == CRAWL_TYPES.HTML) {
         if(resultType == CRAWL_RESULT_TYPES.SINGLE) {
             crawlResult = await htmlCrawlService.singleCrawl(
@@ -60,24 +61,27 @@ exports.handleCrawlingData = async (crawlConfigInfor) => {
         }
     }
 
-    // Lưu lại danh sách items
-    const items = await saveCrawlResult(
-        crawlResult,
-        crawlConfigInfor.crawl_config.item_type_id,
-        crawlConfigInfor.crawl_config.website_id,
-        crawlConfigInfor.crawl_config.id
-    );
+    
 
-    return items;
+    // Trả về danh sách item thu thập được và các lỗi trong quá trình thu thập
+    return {items: crawlResult.items, errors: crawlResult.errors};
 };
 
+// // Lưu lại danh sách items
+    // const items = await saveCrawlResult(
+    //     crawlResult.items,
+    //     crawlConfigInfor.crawl_config.item_type_id,
+    //     crawlConfigInfor.crawl_config.website_id,
+    //     crawlConfigInfor.crawl_config.id
+    // );
+
 // Hàm lưu kết quả thu thập được vào database
-const saveCrawlResult = async (crawlResult, itemTypeId, websiteId, crawlConfigId) => {
+const saveCrawlResult = async (itemDatas, itemTypeId, websiteId, crawlConfigId) => {
     // Khai báo
     const results = [];
 
-    // Duyệt qua kết quả thu được (crawlResult - danh sách item)
-    for (const item of crawlResult) {
+    // Duyệt qua kết quả thu được - danh sách item
+    for (const item of itemDatas) {
         const itemDetails = [];
 
         // Duyệt qua từng phần tử JSON trong mảng con

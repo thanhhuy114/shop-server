@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const typeService = require('./type_service');
 const optionDetailService = require('./crawl_option_detail_service');
 const actionDetailService = require('./crawl_action_detail_service');
-const {CRAWL_DATA_TYPES} = require('../untils/constans/constans');
+const {CRAWL_DATA_TYPES, ERROR_CODES} = require('../untils/constans/constans');
 
 // Hàm khởi tạo trình duyệt
 const initPage = async () => {
@@ -25,7 +25,14 @@ const initPage = async () => {
 
 // Lấy dữ liệu 1 đối tượng
 exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
+    // Khai báo trình duyệt
     let browser;
+
+    // Mảng lưu kết quả trả về
+    const itemDetails = [];
+
+    // Mảng lưu trữ lỗi
+    const errors = [];
     
     try {
         // Khởi tạo trình duyệt và chuyển đến trang chứa dữ liệu
@@ -39,51 +46,92 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
         // Thực hiện các hành động trong quá trình lấy dữ liệu
         if (crawlActionDetails) await actionDetailService.handleActions(page, crawlActionDetails);
 
-        // Mảng lưu kết quả trả về
-        const data = [];
+        // Khai báo biến lưu tên thuộc tính thu thập
+        let name;
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
-            const { id, name, selector, attribute, data_type_id, is_contain_keywords, is_primary_key } = crawlDetail;
-            const type = (await typeService.getCrawlDataType(data_type_id)).type;
-            
-            let value;
-            if (type == CRAWL_DATA_TYPES.ATTRIBUTE) {
-                value = await page.$eval(selector, (el, attr) => el.getAttribute(attr), attribute);
-            } else if (type == CRAWL_DATA_TYPES.CONTENT) {
-                value = await page.$eval(selector, el => el.textContent);
-            } else if (type == CRAWL_DATA_TYPES.COUNT) {
-                value = await page.$$eval(selector, elements => elements.length);
-            }
+            // Lấy các thông tin thu thập của thuộc tính
+            name = crawlDetail.name;
+            const { id, selector, attribute, data_type_id, is_contain_keywords, is_primary_key } = crawlDetail;
 
-            if (!value) value = '';
+            // Lấy cách thu thập 
+            const type = (await typeService.getCrawlDataType(data_type_id)).type;
+
+            let value;
+            if (type === CRAWL_DATA_TYPES.ATTRIBUTE) {
+                try {
+                    value = await page.$eval(selector, (el, attr) => el.getAttribute(attr), attribute);
+                    
+                    if (!value) {
+                        value = '';
+                        if (!checkErrorExists(errors, name)) {
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error: 'Element attribute value not found!' });
+                        }
+                    }
+                } catch (err) {
+                    if (!checkErrorExists(errors, name)) {
+                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find element for attribute retrieval!' });
+                    }
+                }
+            } else if (type === CRAWL_DATA_TYPES.CONTENT) {
+                try {
+                    value = await page.$eval(selector, el => el.textContent);
+                    
+                    if (!value) {
+                        value = '';
+                        if (!checkErrorExists(errors, name)) {
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error: 'Element content not found!' });
+                        }
+                    }
+                } catch (err) {
+                    if (!checkErrorExists(errors, name)) {
+                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find element for content retrieval!' });
+                    }
+                }
+            } else if (type === CRAWL_DATA_TYPES.COUNT) {
+                try {
+                    value = await page.$$eval(selector, elements => elements.length);
+                } catch (err) {
+                    if (!checkErrorExists(errors, name)) {
+                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find elements for counting!' });
+                    }
+                }
+            }
+                
 
             // Thực hiện các option
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào mảng kết quả
-            data.push({ id, name, value, is_contain_keywords, is_primary_key });
+            itemDetails.push({ id, name, value, is_contain_keywords, is_primary_key });
         }
 
         browser.close();
 
-        return [data];
+        return {items: [itemDetails], errors};
     } catch (error) {
         browser.close();
 
-        console.error('Đã xảy ra lỗi khi lấy dữ liệu của 1 item:', error);
-        return [];
+        // Lưu lại lỗi
+        errors.push({ error_at: '?', error_code: ERROR_CODES.UNKNOWN_ERROR, error_message: error.message});
+
+        return {items: [itemDetails], errors};
     }
 };
 
 // Lấy dữ liệu tất cả đối tượng
 exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
+    // Khai báo trình duyệt
     let browser;
+
+    // Khai báo mảng kết quả
+    const results = [];
+
+    // Mảng lưu trữ lỗi
+    const errors = [];
     
     try {
-        // Khai báo mảng kết quả
-        const results = [];
-
         // Khởi tạo trình duyệt
         const result = await initPage();
         browser = result.browser;
@@ -95,10 +143,19 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
         // Thực hiện các hành động trong lúc thu thập 
         if (crawlActionDetails) await actionDetailService.handleActions(page, crawlActionDetails);
         
-        // Lấy nội dung HTML của danh sách sản phẩm lưu vào mảng
-        const datasHtml = await page.$$eval(crawlConfig.item_selector, elements => {
-            return elements.map(element => element.outerHTML);
-        });
+        let datasHtml;
+        try{
+            // Lấy nội dung HTML của danh sách item lưu vào mảng
+            datasHtml = await page.$$eval(crawlConfig.item_selector, elements => {
+                return elements.map(element => element.outerHTML);
+            });
+        } catch (error) {
+            // Thêm lỗi vào mảng chứa lỗi
+            errors.push({ error_at: item_selector, error_code: ERROR_CODES.ITEM_LIST_NOT_FOUND, error_message: 'Failed to get list item from page' });
+
+            // Kết thúc thu thập
+            return { items: results, errors};
+        } 
 
         // Truy xuất mảng, lấy thông tin từng item
         for (let dataHtml of datasHtml) {
@@ -115,14 +172,45 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
 
                 let value;
                 if (type == CRAWL_DATA_TYPES.ATTRIBUTE) {
-                    value = $(selector).attr(attribute);
+                    try {
+                        const element = $(selector);
+                        value = element.attr(attribute);
+                        
+                        if (!value) {
+                            value = '';
+                            if (!checkErrorExists(errors, name)) {
+                                errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error: 'Element value not found!' });
+                            }
+                        }
+                    } catch (err) {
+                        if (!checkErrorExists(errors, name)) {
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find the element for attribute retrieval!' });
+                        }
+                    }
                 } else if (type == CRAWL_DATA_TYPES.COUNT) {
-                    value = $(selector).length;
+                    try {
+                        value = $(selector).length;
+                    } catch (err) {
+                        if (!checkErrorExists(errors, name)) {
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find elements for counting!' });
+                        }
+                    }
                 } else if (type == CRAWL_DATA_TYPES.CONTENT) {
-                    value = $(selector).text();
+                    try {
+                        value = $(selector).text();
+                        
+                        if (!value) {
+                            value = '';
+                            if (!checkErrorExists(errors, name)) {
+                                errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error: 'Element content not found!' });
+                            }
+                        }
+                    } catch (err) {
+                        if (!checkErrorExists(errors, name)) {
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find element for content retrieval!' });
+                        }
+                    }
                 }
-
-                if (!value) value = '';
 
                 // Thực hiện các option
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
@@ -136,11 +224,18 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
 
         browser.close();
         
-        return results;
+        return {items: results, errors};
     } catch (error) {
         browser.close();
 
-        console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả item:', error);
-        throw error;
+        // Lưu lại lỗi
+        errors.push({ error_at: '?', error_code: ERROR_CODES.UNKNOWN_ERROR, error_message: error.message});
+
+        return {items: results, errors};
     }
 };
+
+// Hàm kiểm tra xem một lỗi đã tồn tại trong mảng errors chưa
+function checkErrorExists(errors, name) {
+    return errors.some(error => error.error_at === name);
+}
