@@ -42,7 +42,36 @@ exports.reCrawlingData = async (req, res) => {
         // Gửi kết quả về client
         res.status(HTTP_STATUS.OK).json({ crawl_config_infor: crawlConfigInfor, items, errors });
     } catch (error) {
-        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Đã xảy ra lỗi khi thu thập dữ liệu'});
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Đã xảy ra lỗi khi thu thập dữ liệu' });
         console.log('Lỗi khi thực hiện cập nhật lại dữ liệu thu thập, với cấu hình thu tập được lấy từ database theo id', error);
+    }
+};
+
+// Hàm thực hiện lưu lại dữ liệu thu thập
+exports.saveCrawlResult = async (req, res) => {
+    try {
+        const { crawl_config_infor, items } = req.body;
+
+        const results = await crawlService.saveCrawlResult(
+            items, 
+            crawl_config_infor.crawl_config.item_type_id, 
+            crawl_config_infor.crawl_config.website_id, 
+            crawl_config_infor.crawl_config.id
+        );
+
+        const completed = await crawlConfigService.complete(crawl_config_infor.crawl_config.id);
+
+        if (completed) {
+            res.status(HTTP_STATUS.OK).json({ items : results });
+        } else {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({ 
+                error: 'Đánh dấu hoàn thành cấu hình thất bại!',
+                items: []
+            });
+        }
+    } catch (error) {
+        // Xử lý lỗi nếu có
+        console.error('Lỗi khi lưu kết quả thu thập:', error);
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Đã xảy ra lỗi khi lưu lại kết quả thu thập' });
     }
 };

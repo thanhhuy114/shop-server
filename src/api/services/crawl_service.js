@@ -61,22 +61,12 @@ exports.handleCrawlingData = async (crawlConfigInfor) => {
         }
     }
 
-    
-
     // Trả về danh sách item thu thập được và các lỗi trong quá trình thu thập
     return {items: crawlResult.items, errors: crawlResult.errors};
 };
 
-// // Lưu lại danh sách items
-    // const items = await saveCrawlResult(
-    //     crawlResult.items,
-    //     crawlConfigInfor.crawl_config.item_type_id,
-    //     crawlConfigInfor.crawl_config.website_id,
-    //     crawlConfigInfor.crawl_config.id
-    // );
-
 // Hàm lưu kết quả thu thập được vào database
-const saveCrawlResult = async (itemDatas, itemTypeId, websiteId, crawlConfigId) => {
+exports.saveCrawlResult = async (itemDatas, itemTypeId, websiteId, crawlConfigId) => {
     // Khai báo
     const results = [];
 

@@ -8,4 +8,7 @@ router.post('/crawl-data', crawlController.crawlingData);
 // Thu thập lại dữ liệu của một phiên thu thập
 router.get('/re-crawl-data/:id', crawlController.reCrawlingData);
 
+// Lưu kết quả thu thập
+router.post('/save-crawl-result', crawlController.saveCrawlResult);
+
 module.exports = router;
