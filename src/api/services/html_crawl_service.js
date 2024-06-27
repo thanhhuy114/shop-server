@@ -66,12 +66,12 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
                     if (!value) {
                         value = '';
                         if (!checkErrorExists(errors, name)) {
-                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error: 'Element attribute value not found!' });
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error_message: 'Element attribute value not found!' });
                         }
                     }
                 } catch (err) {
                     if (!checkErrorExists(errors, name)) {
-                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find element for attribute retrieval!' });
+                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error_message: err.message });
                     }
                 }
             } else if (type === CRAWL_DATA_TYPES.CONTENT) {
@@ -81,12 +81,12 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
                     if (!value) {
                         value = '';
                         if (!checkErrorExists(errors, name)) {
-                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error: 'Element content not found!' });
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error_message: 'Element content not found!' });
                         }
                     }
                 } catch (err) {
                     if (!checkErrorExists(errors, name)) {
-                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find element for content retrieval!' });
+                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error_message: err.message });
                     }
                 }
             } else if (type === CRAWL_DATA_TYPES.COUNT) {
@@ -94,7 +94,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
                     value = await page.$$eval(selector, elements => elements.length);
                 } catch (err) {
                     if (!checkErrorExists(errors, name)) {
-                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find elements for counting!' });
+                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error_message: err.message });
                     }
                 }
             }
@@ -151,7 +151,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
             });
         } catch (error) {
             // Thêm lỗi vào mảng chứa lỗi
-            errors.push({ error_at: item_selector, error_code: ERROR_CODES.ITEM_LIST_NOT_FOUND, error_message: 'Failed to get list item from page' });
+            errors.push({ error_at: item_selector, error_code: ERROR_CODES.ITEM_LIST_NOT_FOUND, error_message: error.message });
 
             // Kết thúc thu thập
             return { items: results, errors};
@@ -179,12 +179,12 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
                         if (!value) {
                             value = '';
                             if (!checkErrorExists(errors, name)) {
-                                errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error: 'Element value not found!' });
+                                errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error_message: 'Element attribute not found!' });
                             }
                         }
                     } catch (err) {
                         if (!checkErrorExists(errors, name)) {
-                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find the element for attribute retrieval!' });
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error_message: err.message });
                         }
                     }
                 } else if (type == CRAWL_DATA_TYPES.COUNT) {
@@ -192,7 +192,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
                         value = $(selector).length;
                     } catch (err) {
                         if (!checkErrorExists(errors, name)) {
-                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find elements for counting!' });
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error_message: err.message });
                         }
                     }
                 } else if (type == CRAWL_DATA_TYPES.CONTENT) {
@@ -202,12 +202,12 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
                         if (!value) {
                             value = '';
                             if (!checkErrorExists(errors, name)) {
-                                errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error: 'Element content not found!' });
+                                errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error_message: 'Element content not found!' });
                             }
                         }
                     } catch (err) {
                         if (!checkErrorExists(errors, name)) {
-                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error: 'Failed to find element for content retrieval!' });
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_NOT_FOUND, error_message: err.message });
                         }
                     }
                 }

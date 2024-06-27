@@ -1,10 +1,16 @@
 const axios = require('axios');
 const optionDetailService = require('../services/crawl_option_detail_service');
 const typeService = require('./type_service');
-const {HTTP_METHODS} = require('../untils/constans/constans');
+const {HTTP_METHODS, ERROR_CODES} = require('../untils/constans/constans');
 
 // Lấy dữ liệu 1 đối tượng
 exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
+    // Mảng lưu trữ lỗi
+    const errors = [];
+
+    // Mảng lưu kết quả trả về
+    const data = [];
+
     try {
         // Lấy kết quả trả về của API (API = crawlConfig.url)
             // Khai báo kết quả gọi API
@@ -19,25 +25,28 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             const httpMethodType = (await typeService.getHttpMethodType(crawlConfig.http_method_type_id)).type;
 
             // Lấy kết quả trả về của API
-            if(httpMethodType === HTTP_METHODS.GET) {
-                const response = await axios.get(url, { headers });
-                apiResults = response.data;
-            } else if(httpMethodType === HTTP_METHODS.POST) {
-                const response = await axios.post(crawlConfig.url, body, { headers });
-                apiResults = response.data;
-            } else if (httpMethodType === HTTP_METHODS.PUT) {
-                const response = await axios.put(url, body, { headers });
-                apiResults = response.data;
-            } else if (httpMethodType === HTTP_METHODS.PATCH) {
-                const response = await axios.patch(url, body, { headers });
-                apiResults = response.data;
-            } else if (httpMethodType === HTTP_METHODS.DELETE) {
-                const response = await axios.delete(url, { headers });
-                apiResults = response.data;
-            }
+            try {
+                if(httpMethodType == HTTP_METHODS.GET) {
+                    const response = await axios.get(url, { headers });
+                    apiResults = response.data;
+                } else if(httpMethodType == HTTP_METHODS.POST) {
+                    const response = await axios.post(crawlConfig.url, body, { headers });
+                    apiResults = response.data;
+                } else if (httpMethodType == HTTP_METHODS.PUT) {
+                    const response = await axios.put(url, body, { headers });
+                    apiResults = response.data;
+                } else if (httpMethodType == HTTP_METHODS.PATCH) {
+                    const response = await axios.patch(url, body, { headers });
+                    apiResults = response.data;
+                } else if (httpMethodType == HTTP_METHODS.DELETE) {
+                    const response = await axios.delete(url, { headers });
+                    apiResults = response.data;
+                }
+            } catch (error) {
+                errors.push({ error_at: url, errorCode: ERROR_CODES.API_NOT_FOUND, error_message: error.message });
 
-        // Mảng lưu kết quả trả về
-        const data = [];
+                return {items: data, errors};
+            }
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
@@ -55,7 +64,12 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                     }
                 }
 
-                if (!value) value = '';
+                if (!value) {
+                    value = '';
+                    if (!checkErrorExists(errors, name)) {
+                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error_message: 'Element attribute not found!' });
+                    }
+                }
 
             // Thực hiện các option
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
@@ -64,10 +78,11 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             data.push({ id, name, value, is_contain_keywords, is_primary_key });
         }
 
-        return [data];
+        return {items: data, errors};
     } catch (error) {
-        console.error('Đã xảy ra lỗi khi lấy dữ liệu của 1 item bằng API:', error);
-        return [];
+        errors.push({ error_at: '?', error_code: ERROR_CODES.UNKNOWN_ERROR, error_message: error.message});
+
+        return {items: data, errors};
     }
 };
 
@@ -75,6 +90,9 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
     // Khai báo mảng kết quả
     const results = [];
+    
+    // Mảng lưu trữ lỗi
+    const errors = [];
 
     try {
         // Lấy kết quả trả về của API (API = crawlConfig.url)
@@ -91,21 +109,27 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             
 
             // Lấy kết quả trả về của API
-            if(httpMethodType === HTTP_METHODS.GET) {
-                const response = await axios.get(url, { headers });
-                apiResults = response.data;
-            } else if(httpMethodType === HTTP_METHODS.POST) {
-                const response = await axios.post(crawlConfig.url, body, { headers });
-                apiResults = response.data;
-            } else if (httpMethodType === HTTP_METHODS.PUT) {
-                const response = await axios.put(url, body, { headers });
-                apiResults = response.data;
-            } else if (httpMethodType === HTTP_METHODS.PATCH) {
-                const response = await axios.patch(url, body, { headers });
-                apiResults = response.data;
-            } else if (httpMethodType === HTTP_METHODS.DELETE) {
-                const response = await axios.delete(url, { headers });
-                apiResults = response.data;
+            try {
+                if(httpMethodType === HTTP_METHODS.GET) {
+                    const response = await axios.get(url, { headers });
+                    apiResults = response.data;
+                } else if(httpMethodType === HTTP_METHODS.POST) {
+                    const response = await axios.post(crawlConfig.url, body, { headers });
+                    apiResults = response.data;
+                } else if (httpMethodType === HTTP_METHODS.PUT) {
+                    const response = await axios.put(url, body, { headers });
+                    apiResults = response.data;
+                } else if (httpMethodType === HTTP_METHODS.PATCH) {
+                    const response = await axios.patch(url, body, { headers });
+                    apiResults = response.data;
+                } else if (httpMethodType === HTTP_METHODS.DELETE) {
+                    const response = await axios.delete(url, { headers });
+                    apiResults = response.data;
+                }
+            } catch (error) {
+                errors.push({ error_at: url, errorCode: ERROR_CODES.API_NOT_FOUND, error_message: error.message });
+
+                return {items: results, errors};
             }
 
         // Lấy danh sách item dạng json trong trang
@@ -130,7 +154,12 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                     }
                 }
 
-                if (!value) value = '';
+                if (!value) {
+                    value = '';
+                    if (!checkErrorExists(errors, name)) {
+                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error_message: 'Element attribute not found!' });
+                    }
+                }
 
                 // Thực hiện các option
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
@@ -142,9 +171,15 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             results.push(data);
         }
         
-        return results;
+        return {items: results, errors};
     } catch (error) {
-        console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả item bằng API:', error);
-        throw error;
+        errors.push({ error_at: '?', error_code: ERROR_CODES.UNKNOWN_ERROR, error_message: error.message});
+
+        return {items: results, errors};
     }
 };
+
+// Hàm kiểm tra xem một lỗi đã tồn tại trong mảng errors chưa
+function checkErrorExists(errors, name) {
+    return errors.some(error => error.error_at === name);
+}

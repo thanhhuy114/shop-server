@@ -14,17 +14,20 @@ const HTTP_STATUS = {
 
 // Hằng số về lỗi trong quá trình thu thập
 const ERROR_CODES = {
-    // Lỗi không xác định
+    // Lỗi không xác định 
     UNKNOWN_ERROR: 'E000',
 
     // Lỗi không tìm thấy phần tử
     ELEMENT_NOT_FOUND: 'E001',
 
-    // Lỗi không lấy được giá trị từ phần tử
+    // Lỗi không lấy được giá trị từ phần tử (tìm thấy phần tử nhưng không lấy được giá trị: cách lấy sai, truyền attribute sai)
     ELEMENT_VALUE_NOT_FOUND: 'E002',
 
-    // Lỗi khi tìm danh sách item
+    // Lỗi khi tìm danh sách item (item_selector lỗi)
     ITEM_LIST_NOT_FOUND: 'E003',
+
+    // Lỗi không tìm thấy API (url không hợp lệ)
+    API_NOT_FOUND: 'E004',
 };
 
 /* 

@@ -1,9 +1,16 @@
 const axios = require('axios');
 const xml2js = require('xml2js');
 const optionDetailService = require('./crawl_option_detail_service');
+const {ERROR_CODES} = require('../untils/constans/constans');
 
 // Lấy dữ liệu 1 đối tượng
 exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
+    // Mảng lưu trữ lỗi
+    const errors = [];
+
+    // Mảng lưu kết quả trả về
+    const itemDetails = [];
+
     try {
         // Lấy rss
         const response = await axios.get(crawlConfig.url);
@@ -23,8 +30,12 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                 itemDatas = itemDatas[attr];
             }
 
-        // Mảng lưu kết quả trả về
-        const itemDetails = [];
+            if (!itemDatas) {
+                value = '';
+                if (!checkErrorExists(errors, item_selector)) {
+                    errors.push({ error_at: item_selector, errorCode: ERROR_CODES.item_selector, error_message: 'Element attribute not found!' });
+                }
+            }
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
@@ -39,8 +50,13 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                 for (const attr of attributes) {
                     value = value[attr];
                 }
-                    
-                if (!value) value = '';
+
+                if (!value) {
+                    value = '';
+                    if (!checkErrorExists(errors, name)) {
+                        errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error_message: 'Element attribute not found!' });
+                    }
+                }
 
             // Thực hiện các option
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
@@ -49,10 +65,11 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             itemDetails.push({ id, name, value, is_contain_keywords, is_primary_key });
         }
 
-        return [itemDetails];
+        return {items: itemDetails, errors};
     } catch (error) {
-        console.error('Đã xảy ra lỗi khi lấy dữ liệu của 1 item:', error);
-        return [];
+        errors.push({ error_at: '?', error_code: ERROR_CODES.UNKNOWN_ERROR, error_message: error.message});
+
+        return {items: itemDetails, errors};
     }
 };
 
@@ -60,6 +77,9 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
     // Khai báo mảng kết quả
     const results = [];
+
+    // Mảng lưu trữ lỗi
+    const errors = [];
 
     try {
         // Lấy rss
@@ -78,6 +98,13 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             let itemDatas = parsedData;
             for (const attr of attributes) {
                 itemDatas = itemDatas[attr];
+            }
+
+            if (!itemDatas) {
+                itemDatas = [];
+                if (!checkErrorExists(errors, item_selector)) {
+                    errors.push({ error_at: item_selector, errorCode: ERROR_CODES.item_selector, error_message: 'Element attribute not found!' });
+                }
             }
 
         // Duyệt qua từ item
@@ -98,7 +125,12 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                         value = itemData[attr];
                     }
 
-                    if (!value) value = '';
+                    if (!value) {
+                        value = '';
+                        if (!checkErrorExists(errors, name)) {
+                            errors.push({ error_at: name, errorCode: ERROR_CODES.ELEMENT_VALUE_NOT_FOUND, error_message: 'Element attribute not found!' });
+                        }
+                    }
 
                 // Thực hiện các option
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
@@ -110,9 +142,15 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             results.push(itemDetails);
         }
         
-        return results;
+        return {items: results, errors};
     } catch (error) {
-        console.error('Đã xảy ra lỗi khi lấy dữ liệu tất cả item:', error);
-        return [];
+        errors.push({ error_at: '?', error_code: ERROR_CODES.UNKNOWN_ERROR, error_message: error.message});
+
+        return {items: results, errors};
     }
 };
+
+// Hàm kiểm tra xem một lỗi đã tồn tại trong mảng errors chưa
+function checkErrorExists(errors, name) {
+    return errors.some(error => error.error_at === name);
+}
