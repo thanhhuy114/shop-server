@@ -2,6 +2,7 @@ const crawlConfigs = require('../models/crawl_configs_model');
 const crawlConfigService = require('./crawl_config_service');
 const actionDetailService = require('./crawl_action_detail_service');
 const crawlDetailService = require('./crawl_detail_service');
+const { Op } = require('sequelize');
 
 // Lưu lại các thông tin cấu hình của 1 phiên thu thập
 exports.saveConfigInfor = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
@@ -65,6 +66,27 @@ exports.getAll = async () => {
     }
 }
 
+// Lấy danh sách các cấu hình cần cập nhật (update_at quá 7 ngày, is_complete = true)
+exports.getOutdatedConfigs = async () => {
+    try {
+        const today = new Date();
+        const sevenDaysAgo = new Date(today);
+        sevenDaysAgo.setDate(today.getDate() - 7);
+
+        const results = await crawlConfigs.findAll({
+            where: {
+                //update_at: { [Op.lte]: sevenDaysAgo },
+                is_complete: true
+            }
+        });
+
+    return results;
+    } catch (error) {
+        console.error('Lỗi khi lấy các configs cần cập nhật:', error);
+        return [];
+    }
+};
+
 // Tạo mới
 exports.create = async (name, description) => {
     try {
@@ -112,7 +134,7 @@ exports.update = async (id, crawlConfigData) => {
         crawlConfig.body_api = crawlConfigData.body_api;
         crawlConfig.headers_api = crawlConfigData.headers_api;
         crawlConfig.is_complete = crawlConfigData.is_complete || false;
-        crawlConfig.update_at = Date.now();
+        crawlConfig.update_at = new Date();
         
         crawlConfig.save();
 
@@ -123,13 +145,31 @@ exports.update = async (id, crawlConfigData) => {
     }
 }
 
+// Cập nhật ngày cập nhật dữ liệu
+exports.updateDate = async (id) => {
+    try {
+        const crawlConfig = await crawlConfigs.findByPk(id);
+        if (!crawlConfig) {
+            return false;
+        }
+
+        crawlConfig.update_at = new Date();
+        await crawlConfig.save();
+
+        return true;
+    } catch (error) {
+        console.error('Lỗi khi cập nhật ngày cập nhật dữ liệu:', error);
+        return false;
+    }
+}
+
 // Đánh dấu hoàn thành
 exports.complete = async (id) => {
     try {
         const crawlConfig = await crawlConfigs.findByPk(id);
         
         crawlConfig.is_complete = true;
-        crawlConfig.update_at = Date.now();
+        crawlConfig.update_at = new Date();
         
         crawlConfig.save();
 
