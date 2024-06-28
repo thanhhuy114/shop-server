@@ -10,6 +10,7 @@ const crawlRoutes = require('./api/routes/crawl_routes.js');
 const itemRoutes = require('./api/routes/item_routes.js');
 const itemDetailRoutes = require('./api/routes/item_detail_routes.js');
 const typeRoutes = require('./api/routes/type_routes.js');
+const userRoutes = require('./api/routes/user_routes.js');
 
 const crawlService = require('./api/services/crawl_service.js')
 
@@ -41,11 +42,15 @@ app.use('/api/item-detail', itemDetailRoutes);
 // routes của các bảng chứa loại
 app.use('/api/type', typeRoutes);
 
-const port = process.env.PORT
-app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`)
-})
+// routes users
+app.use('/api/user', userRoutes);
 
-// kiểm tra và cập nhật khi vửa khởi động server
-console.log('Đang thực hiện kiểm tra và cập nhật dữ liệu thu thập...');
-crawlService.checkAndUpdateData();
+const port = process.env.PORT
+    app.listen(port, () => {
+
+    console.log(`Server is running at http://localhost:${port}`);
+
+    // kiểm tra và cập nhật khi vửa khởi động server
+    console.log('Đang thực hiện kiểm tra và cập nhật dữ liệu thu thập quá hạn...');
+    crawlService.checkAndUpdateData();
+})

@@ -6,6 +6,10 @@ const CrawlConfigs = sequelize.define('CrawlConfigs', {
     primaryKey: true,
     autoIncrement: true,
   },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   name: {
     type: DataTypes.TEXT,
     allowNull: false,

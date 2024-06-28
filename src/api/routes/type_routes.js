@@ -39,4 +39,10 @@ router.get('/get-all-crawl-option-condition-types', typeController.getAllCrawlOp
 // Routes cho loại phương thức gọi API
 router.get('/get-all-http-method-types', typeController.getAllHttpMethodTypes);
 
+// Routes cho loại user
+router.get('/get-all-user-types', typeController.getAllUserTypes);
+
+// Routes cho loại gói đăng ký
+router.get('/get-all-package-types', typeController.getAllPackageTypes);
+
 module.exports = router;

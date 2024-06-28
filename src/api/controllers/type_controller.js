@@ -184,3 +184,25 @@ exports.getAllHttpMethodTypes = async (req, res) => {
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại phương thức gọi API.' });
     }
 };
+
+// Bảng loại user
+exports.getAllUserTypes = async (req, res) => {
+    try {
+        const userTypes = await typeService.getAllUserTypes();
+        res.status(HTTP_STATUS.OK).json(userTypes);
+    } catch (error) {
+        console.error(error);
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại tài khoản người dùng.' });
+    }
+};
+
+// Bảng loại gói đăng ký
+exports.getAllPackageTypes = async (req, res) => {
+    try {
+        const packageTypes = await typeService.getAllPackageTypes();
+        res.status(HTTP_STATUS.OK).json(packageTypes);
+    } catch (error) {
+        console.error(error);
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại gói đăng ký.' });
+    }
+};

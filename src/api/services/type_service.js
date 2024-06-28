@@ -7,6 +7,8 @@ const crawlOptionTypes = require('../models/crawl_option_types_model');
 const crawlResultTypes = require('../models/crawl_result_types_model');
 const crawlDataTypes = require('../models/crawl_data_types_model');
 const htmlMethodTypes = require('../models/http_method_types_model');
+const userTypes = require('../models/user_types_model');
+const packageTypes = require('../models/package_types_model');
 
 // Bảng loại sản phẩm
 exports.getItemType = async (id) => {
@@ -155,4 +157,30 @@ exports.getHttpMethodType = async (id) => {
 
 exports.getAllHttpMethodTypes = async () => {
     return await htmlMethodTypes.findAll();
+}
+
+// Bảng loại user
+exports.getUserType = async (id) => {
+    return await userTypes.findByPk(id);
+}
+
+exports.getAllUserTypes = async () => {
+    return await userTypes.findAll({
+        where:{
+            deleted: false,
+        }
+    });
+}
+
+// Bảng loại gói đăng ký
+exports.getPackageType = async (id) => {
+    return await packageTypes.findByPk(id);
+}
+
+exports.getAllPackageTypes = async () => {
+    return await packageTypes.findAll({
+        where:{
+            deleted: false,
+        }
+    });
 }

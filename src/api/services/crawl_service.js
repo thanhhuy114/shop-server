@@ -109,6 +109,10 @@ exports.checkAndUpdateData = async () => {
         // Lấy danh sách cần cập nhật (thu thập lại)
         const outdateConfigs = await crawlConfigService.getOutdatedConfigs();
 
+        if (outdateConfigs.length == 0) { 
+            console.log('Không có các kết quả thu thập quá hạn cần cập nhật');
+        }
+
         for (crawlConfig of outdateConfigs) {
             updateCrawlResult(crawlConfig.id);
         }

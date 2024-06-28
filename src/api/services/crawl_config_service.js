@@ -2,7 +2,7 @@ const crawlConfigs = require('../models/crawl_configs_model');
 const crawlConfigService = require('./crawl_config_service');
 const actionDetailService = require('./crawl_action_detail_service');
 const crawlDetailService = require('./crawl_detail_service');
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 
 // Lưu lại các thông tin cấu hình của 1 phiên thu thập
 exports.saveConfigInfor = async (crawlConfig, crawlActionDetails, crawlDetails, crawlOptionDetails) => {
@@ -54,10 +54,26 @@ exports.getConfigInfor = async (crawlConfigId) => {
     }
 }
 
-// Lấy các thông tin cấu hình của 1 phiên thu thập
+// Lấy tất cả cấu hình
 exports.getAll = async () => {
     try {
         const results = await crawlConfigs.findAll();
+
+        return results;
+    } catch (error) {
+        console.error('Lỗi khi lấy cấu hình thu thập:', error);
+        return null;
+    }
+}
+
+// Lấy tất cả cấu hình của một user
+exports.getAllByUserId = async (userId) => {
+    try {
+        const results = await crawlConfigs.findAll({
+            where: {
+                user_id: userId,
+            }
+        });
 
         return results;
     } catch (error) {
@@ -75,7 +91,7 @@ exports.getOutdatedConfigs = async () => {
 
         const results = await crawlConfigs.findAll({
             where: {
-                //update_at: { [Op.lte]: sevenDaysAgo },
+                update_at: { [Op.lte]: sevenDaysAgo },
                 is_complete: true
             }
         });

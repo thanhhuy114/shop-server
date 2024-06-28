@@ -15,12 +15,26 @@ exports.get = async (req, res) => {
     }
 }
 
-// Lấy thông tin một phiên cấu hình thu thập
+// Lấy tất cả cấu hình thu thập
 exports.getAll = async (req, res) => {
     try {
         const allCrawlConfigInfor = await crawlConfigService.getAll();
         
         res.status(HTTP_STATUS.OK).json(allCrawlConfigInfor);
+    } catch (error) {
+        console.error(`Lỗi khi tất cả lấy cấu hình:`, error);
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi lấy tất cả cấu hình` });
+    }
+}
+
+// Lấy tất cả cấu hình của một user
+exports.getAllByUserId = async (req, res) => {
+    try {
+        const {user_id} = req.params;
+
+        const crawlConfigInfors = await crawlConfigService.getAllByUserId(user_id);
+        
+        res.status(HTTP_STATUS.OK).json(crawlConfigInfors);
     } catch (error) {
         console.error(`Lỗi khi tất cả lấy cấu hình:`, error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi lấy tất cả cấu hình` });
