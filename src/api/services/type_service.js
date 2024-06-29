@@ -164,6 +164,12 @@ exports.getUserType = async (id) => {
     return await userTypes.findByPk(id);
 }
 
+exports.getUserTypeByTypeName = async (typeName) => {
+    return await userTypes.findOne({
+        where: {type: typeName}
+    });
+}
+
 exports.getAllUserTypes = async () => {
     return await userTypes.findAll({
         where:{

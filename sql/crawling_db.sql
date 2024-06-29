@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 29, 2024 at 08:27 AM
+-- Generation Time: Jun 29, 2024 at 06:16 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -5777,11 +5777,11 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` text NOT NULL,
   `password` text NOT NULL,
-  `email` text NOT NULL,
-  `phone` text NOT NULL,
+  `email` text DEFAULT NULL,
+  `phone` text DEFAULT NULL,
   `user_type_id` int(11) NOT NULL,
   `fullname` text NOT NULL,
-  `out_date` datetime NOT NULL,
+  `out_date` datetime DEFAULT NULL,
   `config_count` int(11) NOT NULL,
   `locked` tinyint(1) NOT NULL,
   `package_type_id` int(11) DEFAULT NULL
@@ -5792,7 +5792,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `phone`, `user_type_id`, `fullname`, `out_date`, `config_count`, `locked`, `package_type_id`) VALUES
-(1, 'tdgt2@gmail.com', 't12345', 'tdgt@gmail.com', '0987654321', 1, 'thịnh', '2024-07-28 00:00:00', 18, 0, 1);
+(1, 'tdgt2@gmail.com', 't12345', 'tdgt@gmail.com', '0987654321', 1, 'thịnh', '2024-07-28 00:00:00', 18, 0, 1),
+(6, 'tdgt4@gmail.com', 't12345', '', '', 3, 'Trần Dương Gia Thịnh', '0000-00-00 00:00:00', 0, 0, NULL),
+(7, 'tdgt5@gmail.com', 't12345', '', '', 3, 'Trần Dương Gia Thịnh', NULL, 0, 0, NULL),
+(8, 'tdgt6@gmail.com', 't12345', NULL, NULL, 3, 'Trần Dương Gia Thịnh', NULL, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -5815,7 +5818,8 @@ CREATE TABLE `user_types` (
 
 INSERT INTO `user_types` (`id`, `type`, `description`, `price`, `max_configs`, `deleted`) VALUES
 (1, 'Cơ bản', 'Loại tài khoản cơ bản', 100000, 20, 0),
-(2, 'VIP', 'Loại tài khoản VIP', 300000, 100, 0);
+(2, 'VIP', 'Loại tài khoản VIP', 300000, 100, 0),
+(3, 'Default', 'Loại tài khoản mặc định khi vừa tạo', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -6048,13 +6052,13 @@ ALTER TABLE `package_types`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user_types`
 --
 ALTER TABLE `user_types`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `websites`

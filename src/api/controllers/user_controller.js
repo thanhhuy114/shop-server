@@ -24,7 +24,66 @@ exports.create = async (req, res) => {
             }
         }
     } catch (err) {
-        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi tạo mới user:`, err });
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi tạo mới user: ${err}` });
+    }
+}
+
+// Xóa user
+exports.delete = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await userService.delete(id);
+
+        if (result) {
+            res.status(HTTP_STATUS.OK).json({ success: 'Xóa user thành công!' });
+        } else {
+            res.status(HTTP_STATUS.NOT_FOUND).json({ error: 'User không tồn tại!' });
+        }
+    } catch (error) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi xóa user' });
+    }
+}
+
+// Sửa user
+exports.update = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userData = req.body.user;
+        const updatedUser = await userService.update(id, userData);
+
+        if (updatedUser) {
+            res.status(HTTP_STATUS.OK).json({ success: 'Cập nhật user thành công!', user: updatedUser });
+        } else {
+            res.status(HTTP_STATUS.NOT_FOUND).json({ error: 'User không tồn tại!' });
+        }
+    } catch (error) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi cập nhật user' });
+    }
+}
+
+// Lấy 1 user
+exports.getById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await userService.getById(id);
+
+        if (user) {
+            res.status(HTTP_STATUS.OK).json({user});
+        } else {
+            res.status(HTTP_STATUS.NOT_FOUND).json({ error: 'User không tồn tại!' });
+        }
+    } catch (error) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy thông tin user' });
+    }
+}
+
+// Lấy tất cả user
+exports.getAll = async (req, res) => {
+    try {
+        const users = await userService.getAll();
+        res.status(HTTP_STATUS.OK).json({users});
+    } catch (error) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách user' });
     }
 }
 
@@ -48,11 +107,11 @@ exports.checkLogin = async (req, res) => {
 
         if (user) {
             const currentDate  = new Date();
-            if (user.out_date < currentDate) {
-                res.status(HTTP_STATUS.FORBIDDEN).json({ error: 'Tài khoản đã hết hạn đăng ký!' });
-            }
-            else if (user.locked) {
+            if (user.locked) {
                 res.status(HTTP_STATUS.FORBIDDEN).json({ error: 'Tài khoản đã bị khóa!' });
+            }
+            else if (user.out_date < currentDate) {
+                res.status(HTTP_STATUS.OK).json({ success: 'Đăng nhập thành công! Tài khoản này đã hết hạn đăng ký!', user });
             }
             else {
                 res.status(HTTP_STATUS.OK).json({ success: 'Đăng nhập thành công!', user });

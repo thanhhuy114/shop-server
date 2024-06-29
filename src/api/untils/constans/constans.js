@@ -89,6 +89,11 @@ const CRAWL_DATA_TYPES = {
     ATTRIBUTE: 'attribute'
 };
 
+// Hằng số về loại tài khoản
+const USER_TYPES = {
+    DEFAULT: 'Default', // loại tài khoản mặc định khi vừa tạo
+};
+
 // Export các hằng số
 module.exports = {
     HTTP_METHODS,
@@ -99,5 +104,7 @@ module.exports = {
     CONDITIONS,
     CRAWL_TYPES,
     CRAWL_RESULT_TYPES,
-    CRAWL_DATA_TYPES
+    CRAWL_DATA_TYPES,
+    USER_TYPES,
+    
 };

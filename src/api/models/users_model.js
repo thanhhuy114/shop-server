@@ -12,7 +12,7 @@ const Users = sequelize.define('Users', {
     },
     package_type_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     username: {
         type: DataTypes.TEXT,
@@ -28,15 +28,15 @@ const Users = sequelize.define('Users', {
     },
     email: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
     },
     phone: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
     },
     out_date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
     config_count: {
         type: DataTypes.INTEGER,
