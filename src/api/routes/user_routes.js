@@ -6,7 +6,7 @@ const userController = require('../controllers/user_controller');
 router.post('/create', userController.create);
 
 // Kiểm tra đang nhập
-router.get('/check-login/:username/:password', userController.checkLogin)
+router.post('/check-login', userController.checkLogin)
 
 // Kiểm tra tên đăng nhập đã tồn tại
 router.get('/check-user-name-exists/:username', userController.checkUsernameExists);

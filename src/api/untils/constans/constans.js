@@ -7,7 +7,7 @@ const HTTP_STATUS = {
     CREATED: 201,
     BAD_REQUEST: 400, //gọi api gặp lỗi như: xóa dữ liệu thất bại vì id không tồn tại
     UNAUTHORIZED: 401,
-    FORBIDDEN: 403,
+    FORBIDDEN: 403, // người dùng không đủ quyền
     NOT_FOUND: 404,
     INTERNAL_SERVER_ERROR: 500 // gọi api gặp lỗi
 };

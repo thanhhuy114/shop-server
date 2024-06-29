@@ -1,4 +1,5 @@
 const crawlConfigService = require('../services/crawl_config_service');
+const userService = require('../services/user_service');
 const {HTTP_STATUS} = require('../untils/constans/constans');
 
 // Lấy thông tin một phiên cấu hình thu thập
@@ -58,13 +59,28 @@ exports.checkNameExists = async (req, res) => {
 // Tạo mới một phiên cấu hình thu thập
 exports.create = async (req, res) => {
     try {
-        const { name, description } = req.body;
+        const { user_id, name, description } = req.body;
 
-        const newCrawlConfig = await crawlConfigService.create(name, description);
-        
-        res.status(HTTP_STATUS.OK).json(newCrawlConfig);
+        if (!user_id) res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Cần cung cấp user_id để tạo mới cấu hình' });
+
+        else {
+            // Kiểm tra tài khoãn có thể tạo thêm cấu hình hay không
+            const checkConfigLimit = await userService.checkConfigLimit(user_id);
+
+            if(checkConfigLimit) {
+                // Tạo mới
+                const newCrawlConfig = await crawlConfigService.create(user_id, name, description);
+                
+                if (newCrawlConfig) {
+                    res.status(HTTP_STATUS.OK).json({ success: 'Tạo mới cấu hình thu thập thành công!' , crawl_config: newCrawlConfig});
+                } else {
+                    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Tạo mới cấu hình thu thập thất bại!' });
+                }
+            } else {
+                res.status(HTTP_STATUS.FORBIDDEN).json({ error: 'Tài khoản đã đạt giới hạn tạo mới cấu hình!' });
+            }
+        }
     } catch (error) {
-        console.error(`Lỗi khi tạo mới cấu hình:`, error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi tạo mới cấu hình` });
     }
 }

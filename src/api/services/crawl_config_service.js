@@ -2,6 +2,7 @@ const crawlConfigs = require('../models/crawl_configs_model');
 const crawlConfigService = require('./crawl_config_service');
 const actionDetailService = require('./crawl_action_detail_service');
 const crawlDetailService = require('./crawl_detail_service');
+const userService = require('../services/user_service');
 const { Op, where } = require('sequelize');
 
 // Lưu lại các thông tin cấu hình của 1 phiên thu thập
@@ -104,15 +105,20 @@ exports.getOutdatedConfigs = async () => {
 };
 
 // Tạo mới
-exports.create = async (name, description) => {
+exports.create = async (userId, name, description) => {
     try {
-        // if(...) kiểm tra tên
-
-        return await crawlConfigs.create({
+        // Tạo mới cấu hình
+        const newCrawlConfig = await crawlConfigs.create({
+            user_id: userId,
             name: name,
             description: description,
             is_complete: false
         });
+
+        // Cập nhật số lượng cấu hình đã tạo của user đó (tăng thêm 1)
+        await userService.increaseConfigCount(userId);
+
+        return newCrawlConfig;
     } catch (error) {
         console.error('Lỗi khi tạo mới cấu hình thu thập:', error);
         return null;

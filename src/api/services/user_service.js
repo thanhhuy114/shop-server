@@ -1,5 +1,5 @@
 const users = require('../models/users_model');
-const typeService = require('../services/type_service')
+const typeService = require('../services/type_service');
 
 // Tạo mới
 exports.create = async (userData) => {
@@ -45,10 +45,37 @@ exports.checkUsernameExists = async (username) => {
 // Kiểm tra đăng nhập
 exports.checkLogin = async (username, password) => {
     try {
-        const user = await users.findOne({ where: { username, password } });
+        const user = await users.findOne({ 
+            where: { 
+                username: username, 
+                password: password
+            } 
+        });
+
         return user;
     } catch (error) {
         console.error('Lỗi khi kiểm tra đăng nhập:', error);
         return null;
+    }
+};
+
+// Kiểm tra số lượng cấu hình đã tạo đạt giới hạn hay chưa (true => chưa đạt giới hạn => có thể tạo thêm)
+exports.checkConfigLimit = async (id) => {
+    try {
+        // Lấy số lượng cấu hình đã tạo của user
+        const user = await users.findByPk(id);
+        const configCount = user.config_count;
+
+        // Lấy số lượng cấu hình có thể tạo tối đa của loại tài tài khoản mà người dùng đăng ký
+        const userTypeId = user.user_type_id;
+        const userType = await typeService.getUserType(userTypeId);
+        const configLimit = userType.max_configs;
+        
+        // Kiểm tra
+        if (configLimit - configCount > 0) return true;
+        else return false;
+    } catch (error) {
+        console.error('Lỗi kiểm tra số lượng cấu hình đã tạo có đạt giới hạn:', error);
+        return false;
     }
 };
