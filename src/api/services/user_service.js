@@ -53,6 +53,25 @@ exports.update = async (id, userData) => {
     }
 };
 
+// tăng số lượng cấu hình đã tạo thêm 1
+exports.increaseConfigCount = async (id) => {
+    try {
+        const user = await users.findByPk(id);
+        if (!user) {
+            return null;
+        }
+
+        user.config_count = user.config_count + 1;
+
+        await user.save();
+
+        return user;
+    } catch (error) {
+        console.error('Lỗi khi tăng số lượng cấu hình đã tạo thêm 1:', error);
+        return null;
+    }
+};
+
 // Lấy 1 user
 exports.getById = async (id) => {
     try {

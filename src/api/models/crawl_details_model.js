@@ -30,6 +30,10 @@ const CrawlDetails = sequelize.define('CrawlDetails', {
     type: DataTypes.BOOLEAN,
     allowNull: true,
   },
+  is_detail_url: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
   is_contain_keywords: {
     type: DataTypes.BOOLEAN,
     allowNull: true,

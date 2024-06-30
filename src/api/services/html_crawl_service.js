@@ -53,7 +53,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
         for (const crawlDetail of crawlDetails) {
             // Lấy các thông tin thu thập của thuộc tính
             name = crawlDetail.name;
-            const { id, selector, attribute, data_type_id, is_contain_keywords, is_primary_key } = crawlDetail;
+            const { id, selector, attribute, data_type_id, is_detail_url, is_contain_keywords, is_primary_key } = crawlDetail;
 
             // Lấy cách thu thập 
             const type = (await typeService.getCrawlDataType(data_type_id)).type;
@@ -104,7 +104,7 @@ exports.singleCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, craw
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào mảng kết quả
-            itemDetails.push({ id, name, value, is_contain_keywords, is_primary_key });
+            itemDetails.push({ id, name, value, is_detail_url, is_contain_keywords, is_primary_key });
         }
 
         browser.close();
@@ -167,7 +167,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
 
             // Duyệt qua các selector
             for (const crawlDetail of crawlDetails) {
-                const { id, name, selector, attribute, data_type_id, is_contain_keywords, is_primary_key } = crawlDetail;
+                const { id, name, selector, attribute, data_type_id, is_detail_url, is_contain_keywords, is_primary_key } = crawlDetail;
                 const type = (await typeService.getCrawlDataType(data_type_id)).type;
 
                 let value;
@@ -216,7 +216,7 @@ exports.multiCrawl = async (crawlConfig, crawlActionDetails, crawlDetails, crawl
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
-                data.push({ id, name, value, is_contain_keywords, is_primary_key });
+                data.push({ id, name, value, is_detail_url, is_contain_keywords, is_primary_key });
             }
 
             results.push(data);

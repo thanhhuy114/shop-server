@@ -39,7 +39,7 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
-            const { id, name, selector, is_contain_keywords, is_primary_key } = crawlDetail;
+            const { id, name, selector, is_detail_url, is_contain_keywords, is_primary_key } = crawlDetail;
 
             // Lấy giá trị của thuộc tính cần lấy
                 // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
@@ -62,7 +62,7 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào kết quả
-            itemDetails.push({ id, name, value, is_contain_keywords, is_primary_key });
+            itemDetails.push({ id, name, value, is_detail_url, is_contain_keywords, is_primary_key });
         }
 
         return {items: itemDetails, errors};
@@ -113,7 +113,7 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 
             // Duyệt qua các selector
             for (const crawlDetail of crawlDetails) {
-                const { id, name, selector, is_contain_keywords, is_primary_key } = crawlDetail;
+                const { id, name, selector, is_detail_url, is_contain_keywords, is_primary_key } = crawlDetail;
 
                 // Lấy giá trị của thuộc tính cần lấy
                     // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
@@ -136,7 +136,7 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
-                itemDetails.push({ id, name, value, is_contain_keywords, is_primary_key });
+                itemDetails.push({ id, name, value, is_detail_url, is_contain_keywords, is_primary_key });
             }
 
             results.push(itemDetails);

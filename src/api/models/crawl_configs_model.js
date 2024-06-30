@@ -10,6 +10,10 @@ const CrawlConfigs = sequelize.define('CrawlConfigs', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  parent_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
   name: {
     type: DataTypes.TEXT,
     allowNull: false,

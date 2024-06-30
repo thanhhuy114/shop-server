@@ -62,6 +62,30 @@ exports.handleCrawlingData = async (crawlConfigInfor) => {
         }
     }
 
+    // Thực hiện vào trang chi tiết của từng item (nếu có cấu hình con)
+    const childConfigs = crawlConfigInfor.child_configs;
+    if (childConfigs) {
+        if (childConfigs.length > 0) {
+            for (const childConfigInfor of childConfigs) {
+                for (let i = 0; i < crawlResult.items.length; i++) {
+                    for (const itemDetail of crawlResult.items[i]) {
+                        if (itemDetail.is_detail_url) {
+                            childConfigInfor.crawl_config.url = itemDetail.value;
+
+                            const childCrawlResult = await this.handleCrawlingData(childConfigInfor);
+
+                            for ( const itemDetail of childCrawlResult.items){
+                                crawlResult.items[i].push(...itemDetail);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // Trả về danh sách item thu thập được và các lỗi trong quá trình thu thập
     return {items: crawlResult.items, errors: crawlResult.errors};
 }
@@ -122,6 +146,7 @@ exports.checkAndUpdateData = async () => {
     }
 }
 
+// Cập nhật dữ liệu thu thập cho các cấu hình quá hạn
 const updateCrawlResult = async (id) => {
     // Lấy cấu hình thu thập từ database
     const crawlConfigInfor = await crawlConfigService.getConfigInfor(id);

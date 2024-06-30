@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
             const newUser = await userService.create(user);
 
             if (newUser) {
-                res.status(HTTP_STATUS.OK).json({ success: 'Tạo mới user thành công!' , user: newUser});
+                res.status(HTTP_STATUS.CREATED).json({ success: 'Tạo mới user thành công!' , user: newUser});
             } else {
                 res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Tạo mới user thất bại!' });
             }
@@ -111,7 +111,11 @@ exports.checkLogin = async (req, res) => {
                 res.status(HTTP_STATUS.FORBIDDEN).json({ error: 'Tài khoản đã bị khóa!' });
             }
             else if (user.out_date < currentDate) {
-                res.status(HTTP_STATUS.OK).json({ success: 'Đăng nhập thành công! Tài khoản này đã hết hạn đăng ký!', user });
+                res.status(HTTP_STATUS.OK).json({ 
+                    success: 'Đăng nhập thành công! Tài khoản này đã hết hạn đăng ký!', 
+                    error: 'Tài khoản đã hết hạn đăng ký!',
+                    user 
+                });
             }
             else {
                 res.status(HTTP_STATUS.OK).json({ success: 'Đăng nhập thành công!', user });

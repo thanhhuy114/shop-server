@@ -13,7 +13,8 @@ exports.crawlingData = async (req, res) => {
             crawlConfigInfor.crawl_config,
             crawlConfigInfor.crawl_action_details, 
             crawlConfigInfor.crawl_details, 
-            crawlConfigInfor.crawl_option_details
+            crawlConfigInfor.crawl_option_details,
+            crawlConfigInfor.child_configs
         );
 
         // Thực hiện thu thập

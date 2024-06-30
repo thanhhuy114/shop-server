@@ -50,7 +50,7 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 
         // Duyệt qua từng chi tiết cần crawl
         for (const crawlDetail of crawlDetails) {
-            const { id, name, attribute, is_contain_keywords, is_primary_key } = crawlDetail;
+            const { id, name, attribute, is_detail_url, is_contain_keywords, is_primary_key } = crawlDetail;
 
             // Lấy giá trị của thuộc tính cần lấy
                 // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
@@ -75,7 +75,7 @@ exports.singleCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
             if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
             // Thêm vào mảng kết quả
-            data.push({ id, name, value, is_contain_keywords, is_primary_key });
+            data.push({ id, name, value, is_detail_url, is_contain_keywords, is_primary_key });
         }
 
         return {items: data, errors};
@@ -141,7 +141,7 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
 
             // Duyệt qua các selector
             for (const crawlDetail of crawlDetails) {
-                const { id, name, attribute, is_contain_keywords, is_primary_key } = crawlDetail;
+                const { id, name, attribute, is_detail_url, is_contain_keywords, is_primary_key } = crawlDetail;
 
                 // Tách các thuộc tính lồng nhau bằng cách sử dụng dấu chấm
                 const attributes = attribute.split('.');
@@ -165,7 +165,7 @@ exports.multiCrawl = async (crawlConfig, crawlDetails, crawlOptionDetails) => {
                 if (crawlOptionDetails) value = await optionDetailService.handleOptions(crawlOptionDetails, id, value);
 
                 // Thêm vào kết quả
-                data.push({ id, name, value, is_contain_keywords, is_primary_key });
+                data.push({ id, name, value, is_detail_url, is_contain_keywords, is_primary_key });
             }
 
             results.push(data);

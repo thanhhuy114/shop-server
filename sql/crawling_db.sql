@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 29, 2024 at 06:16 PM
+-- Generation Time: Jun 30, 2024 at 06:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,7 +41,8 @@ CREATE TABLE `crawl_action_details` (
 INSERT INTO `crawl_action_details` (`id`, `crawl_config_id`, `action_type_id`, `selector`) VALUES
 (31, 57, 1, '.cancel-button-top'),
 (32, 57, 1, '.cancel-button-top'),
-(51, 58, 1, '.cancel-button-top');
+(53, 58, 1, '.cancel-button-top'),
+(61, 72, 1, '.cancel-button-top');
 
 -- --------------------------------------------------------
 
@@ -85,20 +86,26 @@ CREATE TABLE `crawl_configs` (
   `http_method_type_id` int(11) DEFAULT NULL,
   `body_api` text DEFAULT NULL,
   `headers_api` text DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL
+  `user_id` int(11) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `crawl_configs`
 --
 
-INSERT INTO `crawl_configs` (`id`, `name`, `description`, `crawl_type_id`, `result_type_id`, `item_selector`, `item_type_id`, `url`, `website_id`, `is_complete`, `update_at`, `http_method_type_id`, `body_api`, `headers_api`, `user_id`) VALUES
-(57, 'tên phiên cấu hình', 'mô tả', 1, 1, NULL, 1, 'https://cellphones.com.vn/iphone-13.html', 1, 1, '2024-06-27 16:25:35', 1, NULL, NULL, 1),
-(58, 'tên phiên cấu hình', 'mô tả', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 1, '2024-06-27 16:26:02', 1, NULL, NULL, 1),
-(59, 'tên phiên cấu hình', 'mô tả', 2, 1, NULL, 1, 'https://tiki.vn/api/v2/products/184036446?platform=web&spid=32033721&version=3', 2, 1, '2024-06-27 16:25:01', 1, 'body', 'headers', 1),
-(60, 'tên phiên cấu hình', 'mô tả', 2, 2, 'data', 1, 'https://tiki.vn/api/personalisssssh/v1/blocks/listings?limit=40&include=advertisement&aggregations=2&version=home-persionalized&trackity_id=de9c7848-5276-89fb-a8cb-fd07fbc0b86b&category=1795&page=1&urlKey=dien-thoai-smartphone', 2, 1, '2024-06-27 16:25:24', 1, 'body', 'headers', 1),
-(61, 'tên phiên cấu hình', 'mô tả', 3, 2, 'rss.channel.item', 2, 'https://tuoitre.vn/rss/thoi-su.rss', 3, 1, '2024-06-27 16:26:55', NULL, NULL, NULL, 1),
-(62, 'tên phiên cấu hình', 'mô tả', 3, 2, 'rss.channel.item', 2, 'https://cdn.24h.com.vn/upload/rss/anninhhinhsu.rss', 3, 1, '2024-06-27 16:27:50', NULL, NULL, NULL, 1);
+INSERT INTO `crawl_configs` (`id`, `name`, `description`, `crawl_type_id`, `result_type_id`, `item_selector`, `item_type_id`, `url`, `website_id`, `is_complete`, `update_at`, `http_method_type_id`, `body_api`, `headers_api`, `user_id`, `parent_id`) VALUES
+(57, 'tên phiên cấu hình', 'mô tả', 1, 1, NULL, 1, 'https://cellphones.com.vn/iphone-13.html', 1, 1, '2024-06-27 16:25:35', 1, NULL, NULL, 1, NULL),
+(58, 'tên phiên cấu hình', 'mô tả', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-30 05:56:50', 1, NULL, NULL, 1, NULL),
+(59, 'tên phiên cấu hình', 'mô tả', 2, 1, NULL, 1, 'https://tiki.vn/api/v2/products/184036446?platform=web&spid=32033721&version=3', 2, 1, '2024-06-27 16:25:01', 1, 'body', 'headers', 1, NULL),
+(60, 'tên phiên cấu hình', 'mô tả', 2, 2, 'data', 1, 'https://tiki.vn/api/personalisssssh/v1/blocks/listings?limit=40&include=advertisement&aggregations=2&version=home-persionalized&trackity_id=de9c7848-5276-89fb-a8cb-fd07fbc0b86b&category=1795&page=1&urlKey=dien-thoai-smartphone', 2, 1, '2024-06-27 16:25:24', 1, 'body', 'headers', 1, NULL),
+(61, 'tên phiên cấu hình', 'mô tả', 3, 2, 'rss.channel.item', 2, 'https://tuoitre.vn/rss/thoi-su.rss', 3, 1, '2024-06-27 16:26:55', NULL, NULL, NULL, 1, NULL),
+(62, 'tên phiên cấu hình', 'mô tả', 3, 2, 'rss.channel.item', 2, 'https://cdn.24h.com.vn/upload/rss/anninhhinhsu.rss', 3, 1, '2024-06-27 16:27:50', NULL, NULL, NULL, 1, NULL),
+(69, 'test2', 'mô tả', NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-06-30 15:15:58', NULL, NULL, NULL, 6, NULL),
+(70, 'test2', 'mô tả', NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-06-30 15:16:21', NULL, NULL, NULL, 1, NULL),
+(71, 'test2', 'mô tả', NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-06-30 15:21:40', NULL, NULL, NULL, 1, NULL),
+(72, 'test2', 'mô tả', 1, 2, '.product-info-container.product-item', 1, 'https://cellphones.com.vn/mobile.html', 1, 0, '2024-06-30 16:24:19', NULL, NULL, NULL, 1, NULL),
+(76, '', '', 1, 1, NULL, 1, '', 1, 0, '2024-06-30 16:24:19', NULL, NULL, NULL, -1, 72);
 
 -- --------------------------------------------------------
 
@@ -139,37 +146,56 @@ CREATE TABLE `crawl_details` (
   `attribute` text DEFAULT NULL,
   `data_type_id` int(11) NOT NULL,
   `is_primary_key` tinyint(1) DEFAULT NULL,
-  `is_contain_keywords` tinyint(1) DEFAULT NULL
+  `is_contain_keywords` tinyint(1) DEFAULT NULL,
+  `is_detail_url` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `crawl_details`
 --
 
-INSERT INTO `crawl_details` (`id`, `crawl_config_id`, `name`, `selector`, `attribute`, `data_type_id`, `is_primary_key`, `is_contain_keywords`) VALUES
-(781, 57, 'Tên sản phẩm', 'h121', NULL, 1, 0, 1),
-(782, 57, 'Giá sản phẩm', 'div.tpt-box.active p.tpt---sale-price', NULL, 1, 0, 0),
-(783, 57, 'url ảnh', 'div.swiper-slide.button__view-gallery.swiper-slide-visible img', 'src', 3, 0, 0),
-(802, 58, 'Link chi tiết sản phẩm', 'a.product__link', 'href', 3, 1, 0),
-(803, 58, 'Tên sản phẩm', 'hs3', NULL, 1, 0, 1),
-(804, 58, 'Giá sản phẩm', '.product__price--show', NULL, 1, 0, 0),
-(805, 58, 'Khuyến mãi', '.product__price--percent-detail', NULL, 1, 0, 0),
-(806, 58, 'url ảnh', 'img.product__img', 'src', 3, 0, 0),
-(807, 58, 'Số sao đánh giá', '.icon-star.is-active', NULL, 2, 0, 0),
-(824, 59, 'Link chi tiết sản phẩm', '', 'url_path', 0, 1, 0),
-(825, 59, 'Tên sản phẩm', '', 'name', 0, 0, 1),
-(826, 59, 'Giá sản phẩm', '', 'aprice', 0, 0, 0),
-(827, 59, 'url ảnh', '', 'thumbnail_url', 0, 0, 0),
-(856, 60, 'Link chi tiết sản phẩm', '', 'url_path', 0, 1, 0),
-(857, 60, 'Tên sản phẩm', '', 'name', 0, 0, 1),
-(858, 60, 'Giá sản phẩm', '', 'aprice', 0, 0, 0),
-(859, 60, 'url ảnh', '', 'athumbnail_url', 0, 0, 0),
-(866, 61, 'link', 'link', NULL, 0, 1, 1),
-(867, 61, 'Tiêu đề tin tức', 'title', NULL, 0, 0, 1),
-(868, 61, 'Mô tả', 'description', NULL, 0, 0, 1),
-(869, 62, 'link tin tức', 'link', NULL, 0, 0, 1),
-(870, 62, 'Tiêu đề tin tức', 'titwle', NULL, 0, 0, 1),
-(871, 62, 'Mô tả', 'description', NULL, 0, 0, 1);
+INSERT INTO `crawl_details` (`id`, `crawl_config_id`, `name`, `selector`, `attribute`, `data_type_id`, `is_primary_key`, `is_contain_keywords`, `is_detail_url`) VALUES
+(781, 57, 'Tên sản phẩm', 'h121', NULL, 1, 0, 1, NULL),
+(782, 57, 'Giá sản phẩm', 'div.tpt-box.active p.tpt---sale-price', NULL, 1, 0, 0, NULL),
+(783, 57, 'url ảnh', 'div.swiper-slide.button__view-gallery.swiper-slide-visible img', 'src', 3, 0, 0, NULL),
+(824, 59, 'Link chi tiết sản phẩm', '', 'url_path', 0, 1, 0, NULL),
+(825, 59, 'Tên sản phẩm', '', 'name', 0, 0, 1, NULL),
+(826, 59, 'Giá sản phẩm', '', 'aprice', 0, 0, 0, NULL),
+(827, 59, 'url ảnh', '', 'thumbnail_url', 0, 0, 0, NULL),
+(856, 60, 'Link chi tiết sản phẩm', '', 'url_path', 0, 1, 0, NULL),
+(857, 60, 'Tên sản phẩm', '', 'name', 0, 0, 1, NULL),
+(858, 60, 'Giá sản phẩm', '', 'aprice', 0, 0, 0, NULL),
+(859, 60, 'url ảnh', '', 'athumbnail_url', 0, 0, 0, NULL),
+(866, 61, 'link', 'link', NULL, 0, 1, 1, NULL),
+(867, 61, 'Tiêu đề tin tức', 'title', NULL, 0, 0, 1, NULL),
+(868, 61, 'Mô tả', 'description', NULL, 0, 0, 1, NULL),
+(869, 62, 'link tin tức', 'link', NULL, 0, 0, 1, NULL),
+(870, 62, 'Tiêu đề tin tức', 'titwle', NULL, 0, 0, 1, NULL),
+(871, 62, 'Mô tả', 'description', NULL, 0, 0, 1, NULL),
+(878, 58, 'Link chi tiết sản phẩm', 'a.product__link', 'href', 3, 1, 0, NULL),
+(879, 58, 'Tên sản phẩm', 'h3', NULL, 1, 0, 1, NULL),
+(880, 58, 'Giá sản phẩm', '.product__price--show', NULL, 1, 0, 0, NULL),
+(881, 58, 'Khuyến mãi', '.product__price--percent-detail', NULL, 1, 0, 0, NULL),
+(882, 58, 'url ảnh', 'img.product__img', 'src', 3, 0, 0, NULL),
+(883, 58, 'Số sao đánh giá', '.icon-star.is-active', NULL, 2, 0, 0, NULL),
+(902, 73, 'Tên sản phẩm 2', 'h1', NULL, 1, 0, 1, NULL),
+(903, 73, 'Giá sản phẩm 2', 'div.tpt-box.active p.tpt---sale-price', NULL, 1, 0, 0, NULL),
+(904, 73, 'url ảnh 2', 'div.swiper-slide.button__view-gallery.swiper-slide-visible img', 'src', 3, 0, 0, NULL),
+(911, 74, 'Tên sản phẩm 2', 'h1', NULL, 1, 0, 1, 0),
+(912, 74, 'Giá sản phẩm 2', 'div.tpt-box.active p.tpt---sale-price', NULL, 1, 0, 0, 0),
+(913, 74, 'url ảnh 2', 'div.swiper-slide.button__view-gallery.swiper-slide-visible img', 'src', 3, 0, 0, 0),
+(932, 75, 'Tên sản phẩm 2', 'h1', NULL, 1, 0, 1, 0),
+(933, 75, 'Giá sản phẩm 2', 'div.tpt-box.active p.tpt---sale-price', NULL, 1, 0, 0, 0),
+(934, 75, 'url ảnh 2', 'div.swiper-slide.button__view-gallery.swiper-slide-visible img', 'src', 3, 0, 0, 0),
+(935, 72, 'Link chi tiết sản phẩm', 'a.product__link', 'href', 3, 1, 0, 1),
+(936, 72, 'Tên sản phẩm', 'h3', NULL, 1, 0, 1, 0),
+(937, 72, 'Giá sản phẩm', '.product__price--show', NULL, 1, 0, 0, 0),
+(938, 72, 'Khuyến mãi', '.product__price--percent-detail', NULL, 1, 0, 0, 0),
+(939, 72, 'url ảnh', 'img.product__img', 'src', 3, 0, 0, 0),
+(940, 72, 'Số sao đánh giá', '.icon-star.is-active', NULL, 2, 0, 0, 0),
+(941, 76, 'Tên sản phẩm 2', 'h1', NULL, 1, 0, 1, 0),
+(942, 76, 'Giá sản phẩm 2', 'div.tpt-box.active p.tpt---sale-price', NULL, 1, 0, 0, 0),
+(943, 76, 'url ảnh 2', 'div.swiper-slide.button__view-gallery.swiper-slide-visible img', 'src', 3, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -216,12 +242,22 @@ CREATE TABLE `crawl_option_details` (
 INSERT INTO `crawl_option_details` (`id`, `crawl_detail_id`, `option_type_id`, `option_condition_type_id`, `condition_value`, `option_value`, `new_value`) VALUES
 (285, 781, 6, NULL, NULL, '|', '---'),
 (286, 782, 3, NULL, NULL, NULL, NULL),
-(293, 802, 1, NULL, '/iphone', 'https://cellphones.com.vn/', NULL),
-(294, 804, 3, NULL, NULL, NULL, NULL),
 (299, 824, 1, NULL, NULL, 'https://tiki.vn/', NULL),
 (307, 856, 1, NULL, NULL, 'https://tiki.vn/', NULL),
 (308, 871, 5, NULL, NULL, '\n\n', NULL),
-(309, 871, 4, NULL, NULL, '<a...br />', NULL);
+(309, 871, 4, NULL, NULL, '<a...br />', NULL),
+(312, 878, 1, NULL, '/iphone', 'https://cellphones.com.vn/', NULL),
+(313, 880, 3, NULL, NULL, NULL, NULL),
+(320, 902, 6, NULL, NULL, '|', '---'),
+(321, 903, 3, NULL, NULL, NULL, NULL),
+(324, 911, 6, NULL, NULL, '|', '---'),
+(325, 912, 3, NULL, NULL, NULL, NULL),
+(332, 932, 6, NULL, NULL, '|', '---'),
+(333, 933, 3, NULL, NULL, NULL, NULL),
+(334, 935, 1, NULL, NULL, 'https://cellphones.com.vn', NULL),
+(335, 937, 3, NULL, NULL, NULL, NULL),
+(336, 941, 6, NULL, NULL, '|', '---'),
+(337, 942, 3, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -5792,8 +5828,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `phone`, `user_type_id`, `fullname`, `out_date`, `config_count`, `locked`, `package_type_id`) VALUES
-(1, 'tdgt2@gmail.com', 't12345', 'tdgt@gmail.com', '0987654321', 1, 'thịnh', '2024-07-28 00:00:00', 18, 0, 1),
-(6, 'tdgt4@gmail.com', 't12345', '', '', 3, 'Trần Dương Gia Thịnh', '0000-00-00 00:00:00', 0, 0, NULL),
+(1, 'tdgt2@gmail.com', 't12345', 'tdgt@gmail.com', '0987654321', 1, 'thịnh', '2024-07-28 00:00:00', 19, 0, 1),
+(6, 'tdgt4@gmail.com', 't12345', '', '', 1, 'Trần Dương Gia Thịnh', '0000-00-00 00:00:00', 0, 0, NULL),
 (7, 'tdgt5@gmail.com', 't12345', '', '', 3, 'Trần Dương Gia Thịnh', NULL, 0, 0, NULL),
 (8, 'tdgt6@gmail.com', 't12345', NULL, NULL, 3, 'Trần Dương Gia Thịnh', NULL, 0, 0, NULL);
 
@@ -5962,7 +5998,7 @@ ALTER TABLE `websites`
 -- AUTO_INCREMENT for table `crawl_action_details`
 --
 ALTER TABLE `crawl_action_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `crawl_action_types`
@@ -5974,7 +6010,7 @@ ALTER TABLE `crawl_action_types`
 -- AUTO_INCREMENT for table `crawl_configs`
 --
 ALTER TABLE `crawl_configs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `crawl_data_types`
@@ -5986,7 +6022,7 @@ ALTER TABLE `crawl_data_types`
 -- AUTO_INCREMENT for table `crawl_details`
 --
 ALTER TABLE `crawl_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=872;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=944;
 
 --
 -- AUTO_INCREMENT for table `crawl_option_condition_types`
@@ -5998,7 +6034,7 @@ ALTER TABLE `crawl_option_condition_types`
 -- AUTO_INCREMENT for table `crawl_option_details`
 --
 ALTER TABLE `crawl_option_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=310;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=338;
 
 --
 -- AUTO_INCREMENT for table `crawl_option_types`

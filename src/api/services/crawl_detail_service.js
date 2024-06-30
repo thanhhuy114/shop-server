@@ -98,6 +98,7 @@ const add = async (crawlConfigId, crawlDetailData, crawlOptionDetails) => {
             selector: crawlDetailData.selector,
             attribute: crawlDetailData.attribute,
             data_type_id: crawlDetailData.data_type_id,
+            is_detail_url: crawlDetailData.is_detail_url || false,
             is_primary_key: crawlDetailData.is_primary_key || false,
             is_contain_keywords: crawlDetailData.is_contain_keywords || false
         });
