@@ -14,7 +14,10 @@ router.get('/get-all-by-user-id/:user_id', crawlConfigController.getAllByUserId)
 // Kiểm tra tên của 1 phiên cấu hình thu thập đã tồn tại hay chưa
 router.get('/check-name-exists/:name', crawlConfigController.checkNameExists);
 
-// Tạo mới 1 phiên cấu hình thu thập
+// Tạo mới 1 cấu hình thu thập
 router.post('/create', crawlConfigController.create);
+
+// Cập nhật thông tin 1 cấu hình
+router.put('/update', crawlConfigController.update);
 
 module.exports = router;

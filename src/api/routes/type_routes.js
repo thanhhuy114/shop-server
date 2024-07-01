@@ -8,14 +8,14 @@ const typeController = require('../controllers/type_controller');
 // Routes cho loại sản phẩm
 router.get('/get-all-item-types', typeController.getAllItemTypes);
 router.post('/add-item-type', typeController.addItemType);
-router.post('/update-item-type', typeController.updateItemType);
-router.post('/delete-item-type', typeController.deleteItemType);
+router.put('/update-item-type', typeController.updateItemType);
+router.delete('/delete-item-type/:id', typeController.deleteItemType);
 
 // Routes cho tên website
 router.get('/get-all-websites', typeController.getAllWebsites);
 router.post('/add-website', typeController.addWebsite);
-router.post('/update-website', typeController.updateWebsite);
-router.post('/delete-website', typeController.deleteWebsite);
+router.put('/update-website', typeController.updateWebsite);
+router.delete('/delete-website/:id', typeController.deleteWebsite);
 
 // Routes cho loại thu thập
 router.get('/get-all-crawl-types', typeController.getAllCrawlTypes);

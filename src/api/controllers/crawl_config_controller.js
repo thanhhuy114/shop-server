@@ -9,7 +9,7 @@ exports.get = async (req, res) => {
 
         const crawlConfigInfor = await crawlConfigService.getConfigInfor(id);
         
-        res.status(HTTP_STATUS.OK).json(crawlConfigInfor);
+        res.status(HTTP_STATUS.OK).json({crawl_config_infor: crawlConfigInfor});
     } catch (error) {
         console.error(`Lỗi khi lấy cấu hình:`, error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi lấy cấu hình` });
@@ -19,9 +19,9 @@ exports.get = async (req, res) => {
 // Lấy tất cả cấu hình thu thập
 exports.getAll = async (req, res) => {
     try {
-        const allCrawlConfigInfor = await crawlConfigService.getAll();
+        const allCrawlConfig = await crawlConfigService.getAll();
         
-        res.status(HTTP_STATUS.OK).json(allCrawlConfigInfor);
+        res.status(HTTP_STATUS.OK).json({crawl_configs: allCrawlConfig});
     } catch (error) {
         console.error(`Lỗi khi tất cả lấy cấu hình:`, error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi lấy tất cả cấu hình` });
@@ -33,9 +33,9 @@ exports.getAllByUserId = async (req, res) => {
     try {
         const {user_id} = req.params;
 
-        const crawlConfigInfors = await crawlConfigService.getAllByUserId(user_id);
+        const crawlConfigs = await crawlConfigService.getAllByUserId(user_id);
         
-        res.status(HTTP_STATUS.OK).json(crawlConfigInfors);
+        res.status(HTTP_STATUS.OK).json({crawl_configs: crawlConfigs});
     } catch (error) {
         console.error(`Lỗi khi tất cả lấy cấu hình:`, error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi lấy tất cả cấu hình` });
@@ -49,7 +49,7 @@ exports.checkNameExists = async (req, res) => {
 
         const checkResult = await crawlConfigService.checkNameExists(name);
 
-        res.status(HTTP_STATUS.OK).json(checkResult);
+        res.status(HTTP_STATUS.OK).json({exists: checkResult});
     } catch (error) {
         console.error('Lỗi khi kiểm tran tên cấu hình:', error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi kiểm tra tên cấu hình' });
@@ -82,5 +82,35 @@ exports.create = async (req, res) => {
         }
     } catch (error) {
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi tạo mới cấu hình` });
+    }
+}
+
+// Cập nhật thông tin cấu hình thu thập
+exports.update = async (req, res) => {
+    try {
+        const { crawl_config } = req.body;
+
+        // Chỉ được cập nhật khi cấu hình chưa được hoàn thành ()
+            // Kiểm tra tài khoãn có thể tạo thêm cấu hình hay không
+            const checkResult = await crawlConfigService.checkConfigCompleted(crawl_config.id);
+
+            if (checkResult == null) {
+                res.status(HTTP_STATUS.BAD_REQUEST).json({ error: `Không tìm thấy cấu hình có id này: ${crawl_config.id}` });
+            }
+
+            if(checkResult) {
+                res.status(HTTP_STATUS.FORBIDDEN).json({ error: 'Không thể chỉnh sửa khi cấu hình đã hoàn thành!' });
+                
+            } else {
+                const updateConfig = await crawlConfigService.update(crawl_config.id, crawl_config);
+                
+                if (updateConfig) {
+                    res.status(HTTP_STATUS.OK).json({ success: 'Cập nhật cấu hình thu thập thành công!' , crawl_config: updateConfig});
+                } else {
+                    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Cập nhật cấu hình thu thập thất bại!' });
+                }
+            }
+    } catch (error) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: `Lỗi khi cập nhật cấu hình` });
     }
 }

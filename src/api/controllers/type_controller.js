@@ -14,9 +14,9 @@ exports.getAllItemTypes = async (req, res) => {
 
 exports.addItemType = async (req, res) => {
     try {
-        const data = req.body.data;
+        const data = req.body.item_type;
         const newItemType = await typeService.addItemType(data);
-        res.status(HTTP_STATUS.CREATED).json(newItemType);
+        res.status(HTTP_STATUS.CREATED).json({item_type: newItemType});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi thêm loại sản phẩm.' });
@@ -25,9 +25,9 @@ exports.addItemType = async (req, res) => {
 
 exports.updateItemType = async (req, res) => {
     try {
-        const data = req.body.data;
+        const data = req.body.item_type;
         const updatedItemType = await typeService.updateItemType(data);
-        res.status(HTTP_STATUS.OK).json(updatedItemType);
+        res.status(HTTP_STATUS.OK).json({item_type:updatedItemType});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi cập nhật loại sản phẩm.' });
@@ -36,7 +36,7 @@ exports.updateItemType = async (req, res) => {
 
 exports.deleteItemType = async (req, res) => {
     try {
-        const id = req.body.id;
+        const {id} = req.params;
         const result = await typeService.deleteItemType(id);
         if (result) {
             res.status(HTTP_STATUS.OK).json({ success: 'Xóa loại sản phẩm thành công!' });
@@ -53,7 +53,7 @@ exports.deleteItemType = async (req, res) => {
 exports.getAllWebsites = async (req, res) => {
     try {
         const websites = await typeService.getAllWebsites();
-        res.status(HTTP_STATUS.OK).json(websites);
+        res.status(HTTP_STATUS.OK).json({websites});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách website.' });
@@ -62,9 +62,9 @@ exports.getAllWebsites = async (req, res) => {
 
 exports.addWebsite = async (req, res) => {
     try {
-        const data = req.body.data;
+        const data = req.body.website;
         const newWebsite = await typeService.addWebsite(data);
-        res.status(HTTP_STATUS.CREATED).json(newWebsite);
+        res.status(HTTP_STATUS.CREATED).json({website:newWebsite});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi thêm website.' });
@@ -73,9 +73,9 @@ exports.addWebsite = async (req, res) => {
 
 exports.updateWebsite = async (req, res) => {
     try {
-        const data = req.body.data;
+        const data = req.body.website;
         const updatedWebsite = await typeService.updateWebsite(data);
-        res.status(HTTP_STATUS.OK).json(updatedWebsite);
+        res.status(HTTP_STATUS.OK).json({website:updatedWebsite});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi cập nhật website.' });
@@ -84,7 +84,7 @@ exports.updateWebsite = async (req, res) => {
 
 exports.deleteWebsite = async (req, res) => {
     try {
-        const id = req.body.id;
+        const {id} = req.params;
         const result = await typeService.deleteWebsite(id);
         if (result) {
             res.status(HTTP_STATUS.OK).json({ success: 'Xóa website thành công!' });
@@ -101,7 +101,7 @@ exports.deleteWebsite = async (req, res) => {
 exports.getAllCrawlTypes = async (req, res) => {
     try {
         const crawlTypes = await typeService.getAllCrawlTypes();
-        res.status(HTTP_STATUS.OK).json(crawlTypes);
+        res.status(HTTP_STATUS.OK).json({crawl_type: crawlTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại thu thập.' });
@@ -112,7 +112,7 @@ exports.getAllCrawlTypes = async (req, res) => {
 exports.getAllCrawlResultTypes = async (req, res) => {
     try {
         const crawlResultTypes = await typeService.getAllCrawlResultTypes();
-        res.status(HTTP_STATUS.OK).json(crawlResultTypes);
+        res.status(HTTP_STATUS.OK).json({crawl_result_types:crawlResultTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại kết quả thu thập.' });
@@ -123,7 +123,7 @@ exports.getAllCrawlResultTypes = async (req, res) => {
 exports.getAllCrawlActionTypes = async (req, res) => {
     try {
         const crawlActionTypes = await typeService.getAllCrawlActionTypes();
-        res.status(HTTP_STATUS.OK).json(crawlActionTypes);
+        res.status(HTTP_STATUS.OK).json({crawl_action_types:crawlActionTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại hành động thu thập.' });
@@ -134,7 +134,7 @@ exports.getAllCrawlActionTypes = async (req, res) => {
 exports.getAllCrawlDataTypes = async (req, res) => {
     try {
         const crawlDataTypes = await typeService.getAllCrawlDataTypes();
-        res.status(HTTP_STATUS.OK).json(crawlDataTypes);
+        res.status(HTTP_STATUS.OK).json({crawl_data_types:crawlDataTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại dữ liệu thu thập.' });
@@ -145,7 +145,7 @@ exports.getAllCrawlDataTypesByCrawlTypeId = async (req, res) => {
     try {
         const { id } = req.params;
         const crawlDataTypes = await typeService.getAllCrawlDataTypesByCrawlTypeId(id);
-        res.status(HTTP_STATUS.OK).json(crawlDataTypes);
+        res.status(HTTP_STATUS.OK).json({crawl_data_types:crawlDataTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại dữ liệu thu thập.' });
@@ -156,7 +156,7 @@ exports.getAllCrawlDataTypesByCrawlTypeId = async (req, res) => {
 exports.getAllCrawlOptionTypes = async (req, res) => {
     try {
         const crawlOptionTypes = await typeService.getAllCrawlOptionTypes();
-        res.status(HTTP_STATUS.OK).json(crawlOptionTypes);
+        res.status(HTTP_STATUS.OK).json({crawl_option_types:crawlOptionTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại lựa chọn thu thập.' });
@@ -167,7 +167,7 @@ exports.getAllCrawlOptionTypes = async (req, res) => {
 exports.getAllCrawlOptionConditionTypes = async (req, res) => {
     try {
         const crawlOptionConditionTypes = await typeService.getAllCrawlOptionConditionTypes();
-        res.status(HTTP_STATUS.OK).json(crawlOptionConditionTypes);
+        res.status(HTTP_STATUS.OK).json({crawl_option_condition_types:crawlOptionConditionTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại điều kiện lựa chọn thu thập.' });
@@ -178,7 +178,7 @@ exports.getAllCrawlOptionConditionTypes = async (req, res) => {
 exports.getAllHttpMethodTypes = async (req, res) => {
     try {
         const httpMethodTypes = await typeService.getAllHttpMethodTypes();
-        res.status(HTTP_STATUS.OK).json(httpMethodTypes);
+        res.status(HTTP_STATUS.OK).json({http_method_types:httpMethodTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại phương thức gọi API.' });
@@ -189,7 +189,7 @@ exports.getAllHttpMethodTypes = async (req, res) => {
 exports.getAllUserTypes = async (req, res) => {
     try {
         const userTypes = await typeService.getAllUserTypes();
-        res.status(HTTP_STATUS.OK).json(userTypes);
+        res.status(HTTP_STATUS.OK).json({user_types:userTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại tài khoản người dùng.' });
@@ -200,7 +200,7 @@ exports.getAllUserTypes = async (req, res) => {
 exports.getAllPackageTypes = async (req, res) => {
     try {
         const packageTypes = await typeService.getAllPackageTypes();
-        res.status(HTTP_STATUS.OK).json(packageTypes);
+        res.status(HTTP_STATUS.OK).json({package_types:packageTypes});
     } catch (error) {
         console.error(error);
         res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Lỗi khi lấy danh sách loại gói đăng ký.' });

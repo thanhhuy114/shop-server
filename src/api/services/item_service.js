@@ -36,6 +36,7 @@ exports.getAll = async () => {
             // Lưu item vào kết quả trả về
             results.push({
                 id: item.id,
+                item_type_id: item.item_type_id,
                 item_type_name: itemType.type, 
                 websiteName: website.name, 
                 website_url: website.url, 
@@ -44,7 +45,7 @@ exports.getAll = async () => {
         }
 
         // Trả về kết quả
-        return { items: results };
+        return results;
     } catch (error) {
         console.error('Lỗi khi lấy tất cả item:', error);
         return [];
@@ -86,6 +87,7 @@ exports.getListItemByItemType = async (itemTypeId) => {
             // Lưu item vào kết quả trả về
             results.push({
                 id: item.id,
+                item_type_id: item.item_type_id,
                 item_type_name: itemType.type, 
                 websiteName: website.name, 
                 website_url: website.url, 
@@ -94,7 +96,7 @@ exports.getListItemByItemType = async (itemTypeId) => {
         }
 
         // Trả về kết quả
-        return { items: results };
+        return results;
     } catch (error) {
         console.error('Lỗi khi lấy tất cả item:', error);
         return [];

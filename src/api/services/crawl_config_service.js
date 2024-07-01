@@ -3,6 +3,7 @@ const crawlConfigService = require('./crawl_config_service');
 const actionDetailService = require('./crawl_action_detail_service');
 const crawlDetailService = require('./crawl_detail_service');
 const userService = require('../services/user_service');
+const { CHILD_CONFIGS } = require('../untils/constans/constans');
 const { Op } = require('sequelize');
 
 // Lưu lại các thông tin cấu hình của 1 phiên thu thập
@@ -101,7 +102,12 @@ exports.getConfigInfor = async (crawlConfigId) => {
 // Lấy tất cả cấu hình
 exports.getAll = async () => {
     try {
-        const results = await crawlConfigs.findAll();
+        const results = await crawlConfigs.findAll({
+            where: {
+                // Chỉ lấy các cấu hình cha
+                parent_id: null
+            }
+        });
 
         return results;
     } catch (error) {
@@ -116,6 +122,9 @@ exports.getAllByUserId = async (userId) => {
         const results = await crawlConfigs.findAll({
             where: {
                 user_id: userId,
+                
+                // Chỉ lấy các cấu hình cha
+                parent_id: null
             }
         });
 
@@ -173,14 +182,8 @@ const createChildConfig = async (parentId, configData) => {
     try {
         // Tạo mới cấu hình
         const newCrawlConfig = await crawlConfigs.create({
-            user_id: -1,
-            name: '',
-            description: '',
-            item_type_id: null,
-            url: '',
-            website_id: null,
-            is_complete: false,
-            update_at: new Date(),
+            // Tạo các giá trị không cần thiết (để tránh lỗi chứ không dùng đến)
+            ...CHILD_CONFIGS,
 
             // Chỉ quan tâm các thông tin bên dưới khi là cấu hình con
             parent_id: parentId,
@@ -194,6 +197,19 @@ const createChildConfig = async (parentId, configData) => {
         return newCrawlConfig;
     } catch (error) {
         console.error('Lỗi khi tạo cấu hình thu thập con:', error);
+        return null;
+    }
+}
+
+// Kiểm tra tên đã tồn tại
+exports.checkConfigCompleted = async (id) => {
+    try {
+        const crawlConfig = await crawlConfigs.findByPk(id);
+
+        if (crawlConfig) return crawlConfig.is_complete? true : false;
+        else return null;
+    } catch (error) {
+        console.error('Lỗi khi lấy kiểm tra cấu hình đã hoàn thành hay chưa:', error);
         return null;
     }
 }
@@ -219,20 +235,21 @@ exports.update = async (id, crawlConfigData) => {
     try {
         const crawlConfig = await crawlConfigs.findByPk(id);
 
-        crawlConfig.crawl_type_id = crawlConfigData.crawl_type_id;
-        crawlConfig.result_type_id = crawlConfigData.result_type_id;
-        crawlConfig.parent_id = crawlConfig.parent_id || null;
-        crawlConfig.item_selector = crawlConfigData.item_selector || null;
-        crawlConfig.item_type_id = crawlConfigData.item_type_id;
-        crawlConfig.url = crawlConfigData.url;
-        crawlConfig.website_id = crawlConfigData.website_id;
-        crawlConfig.http_method_type_id = crawlConfigData.http_method_type_id;
-        crawlConfig.body_api = crawlConfigData.body_api;
-        crawlConfig.headers_api = crawlConfigData.headers_api;
-        crawlConfig.is_complete = crawlConfigData.is_complete || false;
+        if (!crawlConfig) {
+            console.error('Cấu hình thu thập không tồn tại:', id);
+            return null;
+        }
+
+        // Cập nhật các thuộc tính nếu chúng tồn tại trong crawlConfigData
+        Object.keys(crawlConfigData).forEach(key => {
+            if (crawlConfigData[key] !== undefined) {
+                crawlConfig[key] = crawlConfigData[key];
+            }
+        });
+
         crawlConfig.update_at = new Date();
         
-        crawlConfig.save();
+        await crawlConfig.save();
 
         return crawlConfig;
     } catch (error) {

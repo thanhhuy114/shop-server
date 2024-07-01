@@ -5,7 +5,7 @@
 const HTTP_STATUS = {
     OK: 200, // gọi api thành công
     CREATED: 201, // tạo thành công
-    BAD_REQUEST: 400, // gọi api gặp lỗi như: xóa dữ liệu thất bại vì id không tồn tại
+    BAD_REQUEST: 400, // lỗi như: xóa dữ liệu thất bại vì id không tồn tại...
     UNAUTHORIZED: 401, // thông tin xác thực sai
     FORBIDDEN: 403, // người dùng không đủ quyền
     NOT_FOUND: 404, // không tìm thấy
@@ -94,6 +94,21 @@ const USER_TYPES = {
     DEFAULT: 'Default', // loại tài khoản mặc định khi vừa tạo
 };
 
+// Hằng số cho cấu hình "con" khi tạo mới 
+// - Các giá trị này chỉ dùng để hiển thị
+// - Không bao giờ được dùng để kiểm tra logic
+// - Vì các thông tin này đã có ở cấu hình "cha"
+const CHILD_CONFIGS = {
+    user_id: -1,
+    name: '',
+    description: '',
+    item_type_id: null,
+    url: '',
+    website_id: null,
+    is_complete: false,
+    update_at: new Date()
+}
+
 // Export các hằng số
 module.exports = {
     HTTP_METHODS,
@@ -106,5 +121,6 @@ module.exports = {
     CRAWL_RESULT_TYPES,
     CRAWL_DATA_TYPES,
     USER_TYPES,
+    CHILD_CONFIGS,
 
 };
